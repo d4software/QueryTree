@@ -14,4 +14,4 @@ packages/*
 .vscode
 *.userprefs
 querytree.key
-*/wwwroot/*
+*/wwwroot/js/*
