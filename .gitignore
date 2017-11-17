@@ -1,0 +1,16 @@
+*/bin/
+*/obj/
+*/packages/*
+*.suo
+*.user
+App_Data/
+*Web.config
+*Thumbs.db
+packages/*
+.vs/
+.DS_Store
+
+**/*.pubxml
+.vscode
+*.userprefs
+querytree.key

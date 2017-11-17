@@ -1,0 +1,217 @@
+﻿@model QueryTree.ViewModels.DatabaseConnectionDetailsViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="DatabaseConnectionDetails">
+    <div class="back-to-parent-nav">Back to: @Html.ActionLink("Home", "Index")</div>
+    <h2>@Html.DisplayFor(model => model.Name)</h2>
+    <h5>@Html.DisplayFor(model => model.Description)</h5>
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active">
+			<a href="#queries" aria-controls="queries" role="tab" data-toggle="tab">Reports</a>
+		</li>
+
+	@if (ViewBag.UserCanModifyDatabase)
+    {
+		<li role="presentation">
+			<a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a>
+		</li>
+    }
+    @if (ViewBag.UserCanManageDatabaseAccess)
+    {
+        <li role="presentation">
+            <a href="#manageUsers" aria-controls="manageUsers" role="tab" data-toggle="tab">Users</a>
+        </li>
+    }
+
+	</ul>
+
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="queries">
+            <br/>
+			@if (Model.SavedQueries.Any())
+            {
+                if (ViewBag.UserCanModifyQueries)
+                {
+					<p>
+						<button type="button" class="btn btn-success btn-lg" onclick="location.href = '@Url.Action("Create", "Simple", new { connectionId = Model.DatabaseConnectionID })'">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New Report
+						</button>
+					</p>
+                }
+
+                foreach (var item in Model.SavedQueries)
+                {
+					<div class="row">
+						<div class="col-md-12">
+							<div class="well">
+								<h4>@item.Name</h4>
+								<div class="row">
+									<div class="col-lg-6">
+										<p>@item.Description</p>
+										<p class="small">Last edited by @item.LastEditedBy.UserName on @item.LastEditedOn</p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+                                        <a href="@Url.Action("Details", "Queries", new { id = item.QueryID })" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View report</a>
+                                        @if (ViewBag.UserCanModifyQueries)
+                                        {
+                                            var controller = "Queries";
+                                            if (item.IsSimpleQuery)
+                                            {
+                                                controller = "Simple";
+                                            }
+                                            <a href="@Url.Action("Edit", controller, new { id = item.QueryID })" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit report</a>
+                                        }
+									</div>
+									<div class="col-md-6">
+										@if (ViewBag.UserCanModifyQueries)
+                                        {
+											<a href="@Url.Action("Delete", "Queries", new { id = item.QueryID })" class="btn btn-lg btn-warning rhs-delete"><span class="glyphicon glyphicon-remove"></span>&nbsp;Delete</a>
+                                        }
+									</div>
+								</div>								
+							</div>
+						</div>
+					</div>
+                }
+            }
+            else if (ViewBag.UserCanModifyQueries)
+            {
+				<h5>You don't have any reports saved for this database yet, let's create one:</h5>
+				<button type="button" class="btn btn-success btn-lg" onclick="location.href = '@Url.Action("Create", "Simple", new { connectionId = Model.DatabaseConnectionID })'">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create Report
+				</button>
+            }
+		</div>
+        @if (ViewBag.UserCanModifyDatabase)
+        {
+		<div role="tabpanel" class="tab-pane" id="details">
+			<h4>Database Details</h4>
+			<dl class="dl-horizontal">
+				<dt>
+					@Html.DisplayNameFor(model => model.Type)
+				</dt>
+
+				<dd>
+					@Html.DisplayFor(model => model.Type)
+				</dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.OrganisationName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.OrganisationName)
+                </dd>
+
+				<dt>
+					@Html.DisplayNameFor(model => model.Server)
+				</dt>
+
+				<dd>
+					@Html.DisplayFor(model => model.Server)
+				</dd>
+
+				<dt>
+					@Html.DisplayNameFor(model => model.Port)
+				</dt>
+
+				<dd>
+					@Html.DisplayFor(model => model.Port)
+				</dd>
+
+				<dt>
+					@Html.DisplayNameFor(model => model.Username)
+				</dt>
+
+				<dd>
+					@Html.DisplayFor(model => model.Username)
+				</dd>
+
+                @if (Model.UseSsh)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SshPort)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SshPort)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SshUsername)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SshUsername)
+                    </dd>
+                }
+			</dl>
+            @if (ViewBag.UserCanModifyDatabase)
+            {
+            <div>
+                @Html.ActionLink("Edit these Details", "Edit", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-lg btn-primary" })
+            </div>
+            }
+        </div>
+        }
+        @if (ViewBag.UserCanManageDatabaseAccess)
+        {
+        <div role="tabpanel" class="tab-pane" id="manageUsers">
+            <h4>Users</h4>
+            <button type="button" class="btn btn-success btn-lg" style="margin-bottom:15px;" onclick="location.href = '@Url.Action("Create", "UserDatabaseConnections", new { id = Model.DatabaseConnectionID })'">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Invite User
+            </button>
+            @if (Model.AccessUsers.Count > 0)
+            {
+            <table class="table">
+                <tr>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Created On
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.AccessUsers)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                        <td>
+                            @if (item.ApplicationUser != null)
+                            {
+                                @Html.DisplayTextFor(modelItem => item.ApplicationUser.Email)
+                            }
+                            else
+                            {
+                                @Html.DisplayTextFor(modelItem => item.InviteEmail)
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "UserDatabaseConnections", new { id = item.UserDatabaseConnectionID }, new { }) |
+                            @Html.ActionLink("Delete", "Delete", "UserDatabaseConnections", new { id = item.UserDatabaseConnectionID }, new { })
+                        </td>
+                    </tr>
+                }
+            </table>
+            }
+        </div>
+        }
+	</div>
+</div>

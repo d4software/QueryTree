@@ -1,0 +1,392 @@
+﻿
+#binding-root {
+  height: 100%;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+a {
+  color: blue;
+  text-decoration: none;
+}
+div.row {
+  width: 100%;
+}
+div#navbar {
+  border-bottom: solid 1px #aaaaaa;
+  width: 100%;
+  height: 60px;
+  background-color: #f2f1f0;
+  color: #888888;
+  padding: 0;
+  min-width: 500px;
+  overflow: hidden;
+}
+div#navbar img#logo {
+  float: right;
+  margin-top: -58px;
+}
+div#navbar #worksheet_name_box {
+  margin: 35px 130px 0 20px;
+  height: 24px;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+}
+div#navbar #worksheet_name_input {
+  margin: 0;
+  padding: 0;
+  height: 14px;
+}
+div#navbar #worksheet_name {
+  font-size: 1.4em;
+  margin-right: 16px;
+}
+div#navbar #worksheet_name:hover {
+  background-color: #aaa;
+  cursor: text;
+}
+div#navbar #connection_status_checking {
+  vertical-align: top;
+}
+div#navbar #connection_status_text {
+  margin-right: 135px;
+  overflow: hidden;
+}
+div#navbar ul {
+  display: block;
+  padding: 15px 0 0 0;
+  line-height: 16px;
+}
+div#navbar ul li {
+  display: inline;
+  list-style-type: none;
+  padding: 0 10px 0 10px;
+}
+div#navbar ul li img {
+  vertical-align: middle;
+  padding-left: 6px;
+}
+div#navbar ul#worksheet_options {
+  margin-left: 10px;
+  float: left;
+  clear: right;
+}
+div#navbar ul#worksheet_options img {
+  vertical-align: top;
+}
+div#navbar ul#account_options {
+  float: right;
+}
+div#top_panel {
+  position: relative;
+  overflow: hidden;
+  height: 50%;
+}
+div#top_panel .toolbar {
+  background-color: #111111;
+  color: #D9D9D9;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+div#top_panel .toolbar ul.icon_list {
+  list-style-type: none;
+  list-style-image: none;
+  padding: 0;
+  height: 100%;
+  display: block;
+}
+div#top_panel .toolbar ul.icon_list li {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin: 2px 2px 2px 2px;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 8px;
+  cursor: move;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+div#top_panel .toolbar ul.icon_list li canvas {
+  margin-left: auto;
+  margin-right: auto;
+}
+div#top_panel .toolbar ul.icon_list li span {
+  margin-top: 4px;
+  display: block;
+}
+div#top_panel .toolbar ul.icon_list li:hover {
+  box-shadow: 0 0 3px 3px #eeeeee;
+}
+div#top_panel .toolbar .ui-draggable-dragging {
+  visibility: hidden;
+}
+div#top_panel .vertical_toolbar {
+  background-color: #111111;
+  color: #D9D9D9;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 88px;
+  float: left;
+  height: 100%;
+}
+div#top_panel .vertical_toolbar ul.icon_list {
+  list-style-type: none;
+  list-style-image: none;
+  padding: 0;
+  height: 100%;
+  display: block;
+}
+div#top_panel .vertical_toolbar ul.icon_list li {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin: 2px 2px 2px 2px;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 8px;
+  cursor: move;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+div#top_panel .vertical_toolbar ul.icon_list li canvas {
+  margin-left: auto;
+  margin-right: auto;
+}
+div#top_panel .vertical_toolbar ul.icon_list li span {
+  margin-top: 4px;
+  display: block;
+}
+div#top_panel .vertical_toolbar ul.icon_list li:hover {
+  box-shadow: 0 0 3px 3px #eeeeee;
+}
+div#top_panel .vertical_toolbar .ui-draggable-dragging {
+  visibility: hidden;
+}
+div#top_panel .vertical_toolbar ul {
+  margin: 10px 0 10px 0;
+  text-align: center;
+}
+div#top_panel div#data_tools {
+  background-color: #111111;
+  color: #D9D9D9;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 88px;
+  float: left;
+  height: 100%;
+}
+div#top_panel div#data_tools ul.icon_list {
+  list-style-type: none;
+  list-style-image: none;
+  padding: 0;
+  height: 100%;
+  display: block;
+}
+div#top_panel div#data_tools ul.icon_list li {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin: 2px 2px 2px 2px;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 8px;
+  cursor: move;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+div#top_panel div#data_tools ul.icon_list li canvas {
+  margin-left: auto;
+  margin-right: auto;
+}
+div#top_panel div#data_tools ul.icon_list li span {
+  margin-top: 4px;
+  display: block;
+}
+div#top_panel div#data_tools ul.icon_list li:hover {
+  box-shadow: 0 0 3px 3px #eeeeee;
+}
+div#top_panel div#data_tools .ui-draggable-dragging {
+  visibility: hidden;
+}
+div#top_panel div#data_tools ul {
+  margin: 10px 0 10px 0;
+  text-align: center;
+}
+div#top_panel div#workspace {
+  background: #eeeeee;
+  height: 100%;
+  margin-left: 88px;
+  overflow: auto;
+}
+.account {
+  padding: 10px;
+  font-weight: normal;
+  font-size: 1.2em;
+}
+.account h3 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+.account .section-container {
+  padding: 10px;
+  margin: 10px 0 10px 0;
+}
+.section-container table,
+th,
+td {
+  margin: 1px;
+  color: black;
+}
+.section-container table a:link,
+.section-container table a:visited {
+  color: blue;
+}
+.section-container table thead,
+tfoot {
+  background: gray;
+  font-weight: bold;
+}
+.section-container table tr:nth-of-type(even) {
+  background: #CCC;
+}
+.section-container table tr:nth-of-type(odd) {
+  background: #FFF;
+}
+.section-container table td {
+  padding: 5px;
+}
+.message {
+  margin: 10px;
+  border: red solid 1px;
+  display: block;
+  width: 400px;
+  padding: 10px;
+}
+.section-container span {
+  display: block;
+  min-width: 140px;
+}
+.account-details .title {
+  float: left;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+a.button-link {
+  display: inline-block;
+  background-color: #5c8ab7;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  width: auto;
+  margin: 5px 5px 5px 5px;
+  padding: 9px 9px 9px 9px;
+}
+.subscription-details {
+  float: left;
+  width: 450px;
+}
+.subscription-details ul.subscription-plan-list {
+  margin-top: 15px;
+}
+.subscription-details ul.subscription-plan-list li.subscription-plan-item {
+  margin: 15px 5px 5px 5px;
+}
+.subscription-details ul.subscription-plan-list li.subscription-plan-item input.subscription-select {
+  margin: 0px 5px 0px 0px;
+  float: left;
+}
+.subscription-details ul.subscription-plan-list li.subscription-plan-item .title {
+  float: left;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin: 0 0 5px 0;
+}
+.subscription-details ul.subscription-plan-list li.subscription-plan-item .cost {
+  float: left;
+  margin: 0 0 0 6px;
+}
+.subscription-details ul.subscription-plan-list li.subscription-plan-item .description {
+  clear: both;
+  margin-left: 18px;
+}
+.voucher-details {
+  float: left;
+  margin: 20px 0 20px 18px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  width: 400px;
+}
+.voucher-details span {
+  font-size: 0.9em;
+}
+.voucher-details input.voucher-code {
+  margin: 8px 0 0 0;
+  width: 250px;
+}
+.voucher-details h4.vouchers-applied-title {
+  margin: 20px 0 10px 0;
+  font-size: 1.12em;
+}
+.voucher-details ul.vouchers-applied li.voucher {
+  margin: 10px 0 10px 10px;
+}
+.voucher-details ul.vouchers-applied li.voucher span {
+  display: inline-block;
+}
+.voucher-details ul.vouchers-applied li.voucher .voucher-code {
+  font-weight: bold;
+  min-width: 180px;
+}
+.payment {
+  clear: both;
+  margin: 20px 0 20px 18px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  width: 400px;
+}
+.payment span.total-text {
+  min-width: 135px;
+  float: left;
+}
+.payment form#payment-form label {
+  display: inline-block;
+  width: 130px;
+}
+.payment form#payment-form button {
+  margin: 10px 0 0 125px;
+}
+.notificationBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #c44;
+  color: #fff;
+  border-bottom: solid 1px #900;
+  text-align: center;
+  padding: 8px 0 8px 0;
+  display: none;
+  /*notification bars are always hidden by default*/
+}
+.notificationBar a {
+  color: #fff;
+  font-weight: bold;
+}
+.notificationBar .closeButton {
+  float: right;
+  padding: 2px 2px;
+  margin: -2px 10px -2px;
+  border: solid 1px #fff;
+}

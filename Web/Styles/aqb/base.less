@@ -1,0 +1,386 @@
+#qt-container {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+div.row {
+  width: 100%;
+} 
+
+div#navbar {
+  border-bottom: solid 1px #aaaaaa;
+  width: 100%;
+  height: 60px;
+  background-color: #f2f1f0;
+  color: #888888;
+  padding: 0;
+  min-width: 500px;
+  overflow: hidden;
+
+  img#logo {
+    float: right;
+    margin-top: -58px;
+  }
+
+  #worksheet_name_box {
+    margin: 35px 130px 0 20px;
+    height: 24px;
+    float: left;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  #worksheet_name_input {
+    margin: 0;
+    padding: 0;
+    height: 14px;
+  }
+
+  #worksheet_name {
+    font-size: 1.4em;
+    margin-right: 16px;
+  }
+
+  #worksheet_name:hover {
+    background-color: #aaa;
+    cursor: text;
+  }
+
+  #connection_status_checking {
+    vertical-align: top;
+  }
+
+  #connection_status_text {
+    margin-right: 135px;
+    overflow: hidden;
+  }
+
+  ul {
+    display: block;
+    padding: 15px 0 0 0;
+    line-height: 16px;
+
+    li {
+      display: inline;
+      list-style-type: none;
+      padding: 0 10px 0 10px;
+
+      img {
+        vertical-align: middle;
+        padding-left: 6px;
+      }
+    }
+  }
+
+  ul#worksheet_options {
+    margin-left: 10px;
+    float: left;
+    clear:right;
+
+    img {
+      vertical-align: top;
+    }
+  }
+
+  ul#account_options {
+    float: right;
+  }
+}
+
+div#top_panel {
+  position: relative;
+  overflow: hidden;
+  height: 50%;
+
+  .toolbar {
+    background-color: #111111;
+    color: #D9D9D9;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    ul.icon_list {
+      list-style-type: none;
+      list-style-image: none;
+      padding: 0;
+      height: 100%;
+      display: block;
+
+      li {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin: 2px 2px 2px 2px;
+        overflow: hidden;
+        text-align: center;
+        border-radius: 8px;
+        cursor: move;
+
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+
+        canvas {
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        span {
+          margin-top: 4px;
+          display: block;
+        }
+
+      }
+
+      li:hover {
+        box-shadow: 0 0 3px 3px #eeeeee;
+      }
+    }
+
+    .ui-draggable-dragging {
+      visibility: hidden;
+    }
+  }
+
+  @toolbar_width: 88px;
+
+  .vertical_toolbar {
+    .toolbar;
+    width: @toolbar_width;
+    float: left;
+    height: 100%;
+
+    ul {
+      margin: 10px 0 10px 0;
+      text-align: center;
+      li {
+      }
+    }
+  }
+
+  div#data_tools {
+    .vertical_toolbar;
+  }
+
+  div#workspace {
+    background: #eeeeee;
+    height: 100%;
+    margin-left: @toolbar_width;
+    overflow: auto;
+  }
+}
+
+.account {
+  padding: 10px;
+  font-weight: normal;
+  font-size: 1.2em;
+}
+
+.account h3 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+
+.account .section-container {
+  padding: 10px;
+  margin: 10px 0 10px 0;
+}
+
+.section-container table, th, td {
+  margin: 1px;
+  color: black;
+}
+
+.section-container table a:link, .section-container table a:visited {
+  color: blue;
+}
+
+.section-container table thead, tfoot {
+  background: gray;
+  font-weight: bold;
+}
+
+.section-container table tr:nth-of-type(even) {
+  background: #CCC
+}
+
+.section-container table tr:nth-of-type(odd) {
+  background: #FFF
+}
+
+.section-container table td {
+  padding: 5px;
+}
+
+.message {
+  margin: 10px;
+  border: red solid 1px;
+  display: block;
+  width: 400px;
+  padding: 10px;
+}
+
+.section-container span {
+  display: block;
+  min-width: 140px;
+}
+
+.account-details {
+  .title {
+    float: left;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-left: 10px;
+  }
+
+  .value {
+
+  }
+}
+
+a.button-link {
+  display: inline-block;
+  background-color: #5c8ab7;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  width: auto;
+  margin: 5px 5px 5px 5px;
+  padding: 9px 9px 9px 9px;
+}
+
+.subscription-details {
+  float: left;
+  width: 450px;
+
+  ul.subscription-plan-list {
+    margin-top: 15px;
+
+    li.subscription-plan-item {
+      margin: 15px 5px 5px 5px;
+
+      input.subscription-select {
+        margin: 0px 5px 0px 0px;
+        float: left;
+      }
+
+      .title {
+        float: left;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin: 0 0 5px 0;
+      }
+
+      .cost {
+        float: left;
+        margin: 0 0 0 6px;
+      }
+
+      .description {
+        clear: both;
+        margin-left: 18px;
+      }
+    }
+  }
+}
+
+.voucher-details {
+  float: left;
+  margin: 20px 0 20px 18px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  width: 400px;
+
+  span {
+    font-size: 0.9em;
+  }
+
+  input.voucher-code {
+    margin: 8px 0 0 0;
+    width: 250px;
+  }
+
+  h4.vouchers-applied-title {
+    margin: 20px 0 10px 0;
+    font-size: 1.12em;
+  }
+
+  ul.vouchers-applied {
+    li.voucher {
+      margin: 10px 0 10px 10px;
+
+      span {
+        display: inline-block;
+      }
+
+      .voucher-code {
+        font-weight: bold;
+        min-width: 180px;
+      }
+
+      .voucher-description {
+
+      }
+    }
+  }
+}
+
+.payment {
+  clear: both;
+  margin: 20px 0 20px 18px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  width: 400px;
+
+  span.total-text {
+    min-width: 135px;
+    float: left;
+  }
+
+  form#payment-form {
+    label {
+      display: inline-block;
+      width: 130px;
+    }
+
+    button {
+      margin: 10px 0 0 125px;
+    }
+  }
+}
+
+.notificationBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #c44;
+  color: #fff;
+  border-bottom: solid 1px #900;
+  text-align: center;
+  padding: 8px 0 8px 0;
+  display: none; /*notification bars are always hidden by default*/
+
+  a {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .closeButton {
+    float: right;
+    padding: 2px 2px;
+    margin: -2px 10px -2px;
+    border: solid 1px #fff;
+  }
+}
+
+

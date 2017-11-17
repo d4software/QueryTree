@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "QueryTree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Confirm Removal</h3>
+<div>
+    <hr />
+    <p>Are you sure you want to remove @ViewBag.Email from your organisation?</p>
+        @Html.ActionLink("Remove", "RemoveConfirmation", new { email = ViewBag.Email }, new { @class = "btn btn-lg btn-danger" })
+        @Html.ActionLink("Cancel", "Index", new { }, new { @class = "btn btn-default" })
+</div>

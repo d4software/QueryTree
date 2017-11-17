@@ -1,0 +1,369 @@
+﻿#qt-container {
+  height: 100%;
+  font-family: sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+div#resize_bar {
+  height: 8px;
+  width: 100%;
+  border-top: solid 1px #eeeeee;
+  background-color: #aaaaaa;
+  border-bottom: solid 1px #888888;
+  cursor: row-resize;
+}
+div.bottomPanelResizer {
+  width: 100%;
+  opacity: 0.3;
+  height: 8px;
+  background-color: #111;
+  cursor: row-resize;
+}
+div#bottom_panel {
+  height: 50%;
+  position: relative;
+  min-width: 100%;
+  background: #ffffff;
+}
+div#bottom_panel div#bottom_left_panel {
+  float: left;
+  width: 100%;
+  display: none;
+}
+div#bottom_panel div#bottom_left_panel div#results_container {
+  overflow: auto;
+  margin-right: 159px;
+}
+div#bottom_panel div#bottom_left_panel div#results_container div#nonTabularResultsContainer div.chart {
+  width: 90%;
+  height: 90%;
+  margin: 15px 15px 15px 15px;
+}
+div#bottom_panel div#bottom_left_panel div#results_container div#nonTabularResultsContainer div.dataTable {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+div#bottom_panel ul#result_options {
+  overflow: hidden;
+  float: left;
+  width: 159px;
+  margin-left: -160px;
+  background: #eeeeee;
+  border-left: solid 1px #aaaaaa;
+}
+div#bottom_panel ul#result_options li {
+  margin: 6px 8px 6px 8px;
+}
+div#bottom_panel ul#result_options li a.wide {
+  width: 139px;
+}
+div#bottom_panel ul#result_options li a.small {
+  width: 30px;
+}
+div#bottom_panel ul#result_options li a.small span {
+  padding: .4em 0;
+}
+.status_text {
+  font-size: 1.2em;
+  color: #888888;
+  text-align: center;
+  position: relative;
+  top: 48%;
+}
+.status_text a {
+  color: #888888;
+}
+div.dialog {
+  display: none;
+  overflow: hidden;
+  min-width: 324px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+div.dialog h1 {
+  font-size: 1.8em;
+  padding: 4px 0 4px;
+}
+div.dialog h2 {
+  font-size: 1.6em;
+}
+div.dialog h3 {
+  font-size: 1.4em;
+}
+div.dialog h4 {
+  font-size: 1.2em;
+}
+div.dialog a {
+  color: #5c8ab7;
+}
+div.dialog a.toolHelpLink,
+div.dialog a.refreshData,
+div.dialog a.textButton {
+  display: block;
+  margin-top: 10px;
+  float: left;
+  clear: both;
+}
+div.dialog a.rowAction {
+  display: block;
+  float: left;
+  width: 41px;
+  line-height: 18px;
+  padding-left: 4px;
+}
+div.dialog a.rowAction.onOwnRow {
+  margin-left: 120px;
+  clear: both;
+}
+div.dialog a.refreshData {
+  margin-left: 120px;
+}
+div.dialog a.button {
+  display: inline-block;
+  text-align: center;
+  background: #5c8ab7;
+  color: white;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  font-weight: bold;
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+div.dialog p {
+  display: inline-block;
+  margin: 8px 0 5px 0;
+}
+div.dialog form {
+  height: 100%;
+}
+div.dialog form h3 {
+  float: left;
+  clear: left;
+  padding-top: 10px;
+  padding-bottom: 3px;
+}
+div.dialog form label {
+  float: left;
+  width: 120px;
+  display: block;
+  clear: left;
+  line-height: 22px;
+  vertical-align: middle;
+}
+div.dialog form label.fullWidth {
+  float: none;
+  width: auto;
+}
+div.dialog form label.columnTitle {
+  width: auto;
+}
+div.dialog form span {
+  display: block;
+  float: left;
+  clear: left;
+  width: 200px;
+  line-height: 22px;
+  vertical-align: middle;
+}
+div.dialog form span.dataLabel {
+  display: inline-block;
+  float: none;
+}
+div.dialog form fieldset {
+  margin-top: 4px;
+  float: left;
+}
+div.dialog form input[type=text],
+div.dialog form input[type=number],
+div.dialog form input[type=file] {
+  float: left;
+  width: 195px;
+}
+div.dialog form select {
+  float: left;
+  width: 199px;
+}
+div.dialog form input.datepicker,
+div.dialog form input.timepicker {
+  width: 80px;
+  margin-right: 10px;
+}
+div.dialog form input[type=checkbox] {
+  float: left;
+}
+div.dialog form .leftSettingsColumn {
+  float: left;
+  width: 48%;
+  clear: left;
+}
+div.dialog form .rightSettingsColumn {
+  float: right;
+  width: 48%;
+  clear: none;
+}
+div.dialog form button.fullWidth {
+  width: 100%;
+}
+div.dialog form div {
+  clear: both;
+}
+div.dialog form ul {
+  background: #fff;
+  width: 99%;
+  height: 100px;
+  border: 1px solid #aaa;
+  overflow-y: auto;
+}
+div.dialog form ul li {
+  /*color: #666;*/
+  height: 20px;
+  /*padding: 6px 3px 0 3px;*/
+  font-size: 1.05em;
+  cursor: move;
+}
+div.dialog form ul li span {
+  display: inline;
+  float: none;
+}
+div.dialog form ul li button {
+  font-size: 0.7em;
+}
+div.dialog form span.helpText {
+  color: #666;
+  width: auto;
+}
+div.dialog form a.linkstyle {
+  display: inline-block;
+  padding: 0px;
+  color: blue;
+  background: none;
+  border: 0px;
+}
+div.dialog .fileLoadingPanel {
+  margin-left: 120px;
+}
+ul.rich_item_list {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  margin-bottom: -2px;
+  border: 1px solid #aaa;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+ul.rich_item_list li {
+  color: #666;
+  min-height: 20px;
+  line-height: 20px;
+  width: 100%;
+  padding: 3px 3px 3px 3px;
+  font-size: 1.05em;
+}
+ul.rich_item_list li:hover {
+  cursor: pointer;
+}
+.tickLabel {
+  overflow: hidden;
+}
+li.blockItem {
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  border-radius: 8px;
+  background-color: #5c8ab7;
+  overflow: hidden;
+  padding: 4px;
+  margin: 3px;
+  vertical-align: middle;
+}
+li.blockItem > .blockItemText {
+  margin-right: -10px;
+  width: 100%;
+  display: inline-block;
+  float: left;
+}
+li.blockItem > .blockItemEditable {
+  cursor: text;
+}
+li.blockItem > .blockItemEdit {
+  margin-right: -10px;
+  width: 97%;
+  display: inline-block;
+  float: left;
+}
+li.blockItem > .blockItemRemoveButton {
+  display: inline-block;
+  float: left;
+  width: 20px;
+  margin-left: -10px;
+  height: 100%;
+}
+#results_container table {
+  margin: 0px;
+  padding: 0px;
+}
+#results_container tr:nth-child(odd) {
+  background-color: #d4d4d4;
+}
+#results_container tr:nth-child(even) {
+  background-color: #e9e9e9;
+}
+#results_container td {
+  vertical-align: middle;
+  border-width: 0px 1px 1px 0px;
+  text-align: left;
+  padding: 7px;
+  font-size: 0.95em;
+  font-family: Arial;
+  font-weight: normal;
+  color: #323232;
+}
+#results_container tr:last-child td {
+  border-width: 0px 1px 0px 0px;
+}
+#results_container tr td:last-child {
+  border-width: 0px 0px 1px 0px;
+}
+#results_container tr:last-child td:last-child {
+  border-width: 0px 0px 0px 0px;
+}
+#results_container thead tr th {
+  background-color: #004358;
+  border: 0px solid #ffffff;
+  text-align: left;
+  padding: 7px;
+  border-width: 0px 0px 1px 1px;
+  font-size: 1em;
+  font-family: Arial;
+  font-weight: bold;
+  color: #ffffff;
+}
+#file_chooser,
+#export_file_chooser {
+  display: none;
+}
+#dropTarget {
+  background-color: black;
+  opacity: 0.35;
+  border-radius: 8px;
+  display: none;
+  position: absolute;
+  width: 50px;
+  height: 48px;
+  z-index: 1;
+  text-align: center;
+  padding-top: 4px;
+  margin: 0;
+}
+#queryDialog textarea {
+  width: 100%;
+  height: 100%;
+}
+button.removeButton {
+  position: absolute;
+  left: 8px;
+}

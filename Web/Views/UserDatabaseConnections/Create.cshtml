@@ -1,0 +1,60 @@
+﻿@model QueryTree.Models.UserDatabaseConnection
+
+@{
+    ViewBag.Title = "QueryTree - " + Model.DatabaseConnection.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="back-to-parent-nav">Back to: @Html.ActionLink(Model.DatabaseConnection.Name, "Details", "Home", new { id = Model.DatabaseConnectionID }, null)</div>
+
+<h2>Invite User</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.DatabaseConnectionID)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DatabaseConnectionID, "Database", htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.DisplayTextFor(model => model.DatabaseConnection.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+					    @Html.DropDownListFor(model => model.Type, Html.GetEnumSelectList(Model.Type.GetType()), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InviteEmail, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.InviteEmail, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.InviteEmail, "", new { @class = "text-danger" })
+                        @Html.ValidationMessage("Error", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <input type="submit" value="Invite" class="btn btn-lg btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="col-md-6">
+        @Html.Partial("_AccessTypeHelp")
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<QueryTree.ViewModels.InvitationViewModel>
+
+@{
+    ViewBag.Title = "QueryTree - Pending Invitations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Pending Invitations</h2>
+		</div>
+	</div>
+
+
+    @foreach (var item in Model)
+    {
+		<div class="row">
+			<div class="col-md-12">
+				<div class="well">
+					<p>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </p>
+
+                    @if (item.DatabasesLost.Any())
+                    {
+                        <p>You will lose access to the following databases</p>
+                        <ul>
+                            @foreach (var database in item.DatabasesLost)
+                            {
+                            <li>@database</li>
+                            }
+                        </ul>
+                    }
+
+                    @if (item.DatabasesMerged.Any())
+                    {
+                        <p>The following databases will be moved to the new organisation</p>
+                        <ul>
+                            @foreach (var database in item.DatabasesMerged)
+                            {
+                                <li>@database</li>
+                            }
+                        </ul>
+                    }
+					<div class="row">
+						<div class="col-md-6">
+							@Html.ActionLink("Accept", "Accept", new { id = item.OrganisationId }, new { @class = "btn btn-lg btn-success" })
+						</div>
+
+						<div class="col-md-6">
+							@Html.ActionLink("Reject", "Reject", new { id = item.OrganisationId }, new { @class = "btn btn-lg btn-warning rhs-delete" })
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}

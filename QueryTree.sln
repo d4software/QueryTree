@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{4687C4BB-B4D5-4549-A0E1-E2AEA17CF3CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{61DC1986-95A7-4B95-A6B6-F3DBA74CACCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryTree", "Web\QueryTree.csproj", "{D9B429A4-CF3C-446D-B884-A7E6058514FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4687C4BB-B4D5-4549-A0E1-E2AEA17CF3CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4687C4BB-B4D5-4549-A0E1-E2AEA17CF3CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4687C4BB-B4D5-4549-A0E1-E2AEA17CF3CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4687C4BB-B4D5-4549-A0E1-E2AEA17CF3CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61DC1986-95A7-4B95-A6B6-F3DBA74CACCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61DC1986-95A7-4B95-A6B6-F3DBA74CACCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61DC1986-95A7-4B95-A6B6-F3DBA74CACCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61DC1986-95A7-4B95-A6B6-F3DBA74CACCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B429A4-CF3C-446D-B884-A7E6058514FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B429A4-CF3C-446D-B884-A7E6058514FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B429A4-CF3C-446D-B884-A7E6058514FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B429A4-CF3C-446D-B884-A7E6058514FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

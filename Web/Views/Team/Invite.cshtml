@@ -1,0 +1,135 @@
+﻿@model QueryTree.ViewModels.PermissionViewModel
+
+@{
+    ViewBag.Title = "QueryTree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.OganisationHasDatabases == false)
+{
+    <div class="alert alert-info" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <Text>You haven't got any of your own databases connected yet. To invite someone who can set up a new database for you, select an access level of 'Administrator'.</Text>
+    </div>
+}
+
+<div class="back-to-parent-nav">Back to: @Html.ActionLink("My Team", "Index")</div>
+<h2>Invite Team Member</h2>
+<hr />
+
+<div class="containter">
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Email</label>
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @if (Model.DatabasePermissions.Count > 0)
+                    {
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Access Level</label>
+                            <div class="col-md-8">
+                                <div class="radio">
+                                    <label><input type="radio" name="IsOrganisationAdmin" @Html.Raw(Model.IsOrganisationAdmin ? "checked=\"checked\"" : "") value="True">Team Administrator</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="radio">
+                                    <label><input type="radio" name="IsOrganisationAdmin" @Html.Raw(!Model.IsOrganisationAdmin ? "checked=\"checked\"" : "") value="False">Only Specific Databases</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" name="IsOrganisationAdmin" value="true" />
+                    }
+                        
+                    <div id="databaseTables" @Html.Raw(Model.IsOrganisationAdmin ? "style=\"display: none;\"" : "")>
+                        @if (Model.DatabasePermissions.Count > 0)
+                        {
+                            for (int i = 0; i < Model.DatabasePermissions.Count; i++)
+                            {
+                                <div class="form-group">
+                                    <input type="hidden" name="DatabasePermissions[@i].DatabaseId" value="@(Model.DatabasePermissions[i].DatabaseId)" />
+                                    <input type="hidden" name="DatabasePermissions[@i].DatabaseName" value="@(Model.DatabasePermissions[i].DatabaseName)" />
+
+                                    <label class="control-label col-md-4">
+                                        @(Model.DatabasePermissions[i].DatabaseName)
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" data-val="true" name="DatabasePermissions[@i].AccessType">
+                                            <option selected="selected" value="None">No Access</option>
+                                            <option value="@QueryTree.Models.UserDatabaseTypes.Admin.ToString()">Admin Access</option>
+                                            <option value="@QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString()">Report Builder</option>
+                                            <option value="@QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString()">Report Viewer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-md-offset-4 col-md-8">
+                                No Databases Available
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-8">
+                            <input type="submit" value="Invite" class="btn btn-lg btn-success" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="col-md-6">
+            <div class="well adminHelp">
+                <p>This user will be invite to join the same team (@Model.OrganisationName) as you.</p>
+                @if (Model.OganisationHasDatabases)
+                {
+                    <p>Your team has @Model.OrganisationDatabaseCount databases, which this new user will have Admin access to.</p>
+                }
+                <p>Any databases created by this new user will be visible to everyone in your team.</p>
+            </div>
+            <div class="nonAdminHelp" @Html.Raw(Model.IsOrganisationAdmin ? "style=\"display: none;\"" : "")>
+                @Html.Partial("_AccessTypeHelp")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input[name=IsOrganisationAdmin]').on('change', function () {
+                if ($('input[name=IsOrganisationAdmin]:checked').val() == "True") {
+                    $('#admin').show();
+                    $('.adminHelp').show();
+                    $('#databaseTables').hide();
+                    $('.nonAdminHelp').hide();
+                } else {
+                    $('#databaseTables').show();
+                    $('.nonAdminHelp').show();
+                    $('#admin').hide();
+                    $('.adminHelp').hide();
+                }
+            });
+        });
+    </script>
+}

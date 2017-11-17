@@ -1,0 +1,61 @@
+﻿@model QueryTree.Models.UserDatabaseConnection
+
+@{
+    ViewBag.Title = "QueryTree - " + Model.DatabaseConnection.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Are you sure you want to delete this User?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatabaseConnectionID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatabaseConnection.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InviteEmail)
+        </dt>
+
+        <dd>
+            @if (Model.ApplicationUser != null)
+            {
+                @Html.DisplayFor(modelItem => modelItem.ApplicationUser.Email)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => modelItem.InviteEmail)
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-lg btn-default" })
+            <input type="submit" value="Delete" class="btn btn-lg btn-warning rhs-delete" />
+        </div>
+    }
+</div>

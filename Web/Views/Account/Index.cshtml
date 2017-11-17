@@ -1,0 +1,48 @@
+﻿@model QueryTree.ViewModels.SettingsViewModel
+
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="back-to-parent-nav">Back to: @Html.ActionLink("Home", "Index", "Home")</div>
+<h2>Your Settings</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <hr />
+    @using (Html.BeginForm("Index", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.OrganisationName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.OrganisationName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <input type="submit" value="Save" class="btn btn-lg btn-success" />
+                @Html.ActionLink("Edit Team Members", "Index", "Team", null, new { @class = "btn btn-lg btn-default" })
+                
+            </div>
+        </div>
+    }
+    
+    @Html.ActionLink("Change your password", "ChangePassword", "Manage", null, new { @class = "btn btn-lg btn-primary" })
+    @if (Model.OtherConnections.Any())
+    {
+        <hr />
+        <h4><span class="glyphicon glyphicon-link"></span>&nbsp;Other Databases</h4>
+        <p>You also have access to the following databases on another user&rsquo;s plan</p>
+        <dl class="dl-horizontal">
+            @foreach (var conn in Model.OtherConnections)
+            {
+                <dt>@conn.ConnectionName</dt>
+                <dd>@conn.ConnectionType</dd>
+            }
+        </dl>
+        <p class="small">These connections will not count towards your plan</p>
+    }        
+</div>

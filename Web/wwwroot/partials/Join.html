@@ -1,0 +1,26 @@
+<form>
+    <div>
+        <label for="Name">Name</label>
+        <input type="text" name="Name" data-bind="value: Name"/>    
+    </div>
+    <div>
+        <label for="JoinType">Join Type</label>
+        <select name="JoinType" data-bind="options: Tool.JoinType, optionsText: 'text', optionsValue: 'id', value: JoinType"></select>
+    </div>
+    <div>
+        <label>Table 1 Name:</label>
+        <span class="dataLabel" data-bind="text: Table1Name"></span>
+    </div>
+    <div>
+        <label for="Table1Column">Table 1 Column</label>
+        <select name="Table1Column" data-bind="options: Table1Columns, value: Table1Column"></select>
+    </div>
+    <div>
+        <label>Table 2 Name:</label>
+        <span class="dataLabel" data-bind="text: Table2Name"></span>
+    </div>
+    <div>
+        <label for="Table2Column">Table 2 Column</label>
+        <select name="Table2Column" data-bind="options: Table2Columns, value: Table2Column"></select>
+    </div>
+</form>

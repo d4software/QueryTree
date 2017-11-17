@@ -1,0 +1,70 @@
+﻿@model QueryTree.Models.Query
+
+@{
+    ViewBag.Title = Model.DatabaseConnection.Name + " - " + Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Are you sure you want to delete this report?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastEditedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastEditedBy.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastEditedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastEditedOn)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-lg btn-default" })
+            <input type="submit" value="Delete" class="btn btn-lg btn-warning rhs-delete" />
+        </div>
+    }
+</div>

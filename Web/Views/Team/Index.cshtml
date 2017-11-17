@@ -1,0 +1,79 @@
+﻿@model IEnumerable<QueryTree.ViewModels.PermissionViewModel>
+
+@{
+    ViewBag.Title = "QueryTree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+	<div class="row">
+        <div class="col-md-12">
+            <div class="back-to-parent-nav">Back to: @Html.ActionLink("Home", "Index", "Home")</div>
+            <h2>My Team</h2>
+            <p>
+                <a href="@Url.Action("Invite", "Team")" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Invite User</a>
+            </p>
+        </div>
+	</div>
+
+
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <h4>
+                        @Html.DisplayTextFor(modelItem => item.Email)
+                    </h4>
+
+                    @if (item.IsOrganisationAdmin)
+                    {
+                        <p>Organisation Admin</p>
+                    }
+                    else
+                    {
+                        if (item.DatabasePermissions.Count == 0)
+                        {
+                            <p>No Access</p>
+                        }
+                        else
+                        {
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>
+                                            Database
+                                        </th>
+                                        <th>
+                                            Access Level
+                                        </th>
+                                    </tr>
+                                @foreach (var permission in item.DatabasePermissions)
+                                {
+                                    <tr>
+                                        <td>
+                                            @permission.DatabaseName
+                                        </td>
+                                        <td>
+                                            @permission.AccessType
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                    <div class="row">
+                        <div class="col-md-3">
+                            @if (item.ApplicationUserID != null && item.IsOrganisationAdmin == false)
+                            {
+                                <div>@Html.ActionLink("Edit", "Edit", "Team", new { id = item.ApplicationUserID }, new { @class = "btn btn-lg btn-primary" })</div>
+                            }
+                        </div>
+                        <div class="col-md-9">
+                            @Html.ActionLink("Remove", "Remove", "Team", new { email = item.Email }, new { @class = "btn btn-lg btn-warning rhs-delete" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }

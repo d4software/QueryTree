@@ -1,0 +1,7 @@
+﻿You've been invited to join QueryTree!
+
+To accept this invitation, please sign up here:
+
+{url}
+
+You have not been subscribed to a mailing list, you've received this email because {sender} invited you.

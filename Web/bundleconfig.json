@@ -1,0 +1,108 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/css/site.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "Styles/qt-bootstrap.css",
+      "Styles/pickatime.css",
+      "Styles/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/aqb.css",
+    "inputFiles": [
+      "Styles/jquery-ui-1.8.22.custom.css",
+      "Styles/jquery.ui.timepicker.css",
+      "Styles/aqb/base.css",
+      "Styles/aqb/app.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/jquery.css",
+    "inputFiles": [
+      "Styles/jquery-ui-1.8.22.custom.css",
+      "Styles/jquery.ui.timepicker.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/connection.js",
+    "inputFiles": [
+      "Scripts/connection.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/schedule.js",
+    "inputFiles": [
+      "Scripts/lib/knockout-pickatime/knockout-pickatime.min.js",
+      "Scripts/lib/knockout-pickatime/pickatime.min.js",
+      "Scripts/backend.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/sqb.js",
+    "inputFiles": [
+      "Scripts/lib/jquery.timePicker/jquery.ui.timepicker.js",
+      "Scripts/lib/jquery.maskedinput/jquery.maskedinput.min.js",
+      "Scripts/lib/jquery.numeric/jquery.numeric.js",
+      "Scripts/utils.js",
+      "Scripts/backend.js",
+      "Scripts/nodes.js",
+      "Scripts/tools.js",
+      "Scripts/simple.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/fabric.js",
+    "inputFiles": [
+      "Scripts/lib/fabric/fabric.js",
+      "Scripts/lib/fabric/cufon.js",
+      "Scripts/lib/fabric/Delicious_500.font.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/aqb.js",
+    "inputFiles": [
+      "Scripts/lib/jquery.timePicker/jquery.ui.timepicker.js",
+      "Scripts/lib/jquery.maskedinput/jquery.maskedinput.min.js",
+      "Scripts/lib/jquery.numeric/jquery.numeric.js",
+      "Scripts/jquery.querystring.js",
+      "Scripts/polyfills.js",
+      "Scripts/utils.js",
+      "Scripts/backend.js",
+      "Scripts/nodes.js",
+      "Scripts/tools.js",
+      "Scripts/models.js",
+      "Scripts/events.js",
+      "Scripts/views.js",
+      "Scripts/main.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/base.js",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "Scripts/lib/jquery/dist/jquery.js",
+      "Scripts/lib/jquery-validation/dist/jquery.validate.js",
+      "Scripts/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "Scripts/lib/jquery-validation/dist/additional-methods.js",
+      "Scripts/lib/bootstrap/dist/js/bootstrap.js",
+      "Scripts/respond.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

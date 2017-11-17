@@ -1,0 +1,114 @@
+﻿@using Microsoft.Extensions.Options;
+@using QueryTree.Models
+@inject IOptions<CustomizationConfiguration> CustomizationConfiguration
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @CustomizationConfiguration.Value.SystemName
+        @if (string.IsNullOrEmpty(ViewBag.Title) == false)
+        {
+            <text> - @ViewBag.Title</text>
+        }
+    </title>
+    <link type="text/css" href="/css/site.min.css" rel="stylesheet" />
+    <link type="text/css" href="/css/jquery.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+    @if (string.IsNullOrEmpty(CustomizationConfiguration.Value.ExtraCSS) == false)
+    {
+        <link type="text/css" href="@CustomizationConfiguration.Value.ExtraCSS" rel="stylesheet" />
+    }
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href='@Url.Action("Index", "Home")'>
+                    <img src="@CustomizationConfiguration.Value.SystemLogo" /><span class="navbar-brand">@CustomizationConfiguration.Value.SystemName</span>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="container alert-container affix">
+        </div>
+        @RenderBody()
+        <br/>
+    </div>
+    @Html.Partial("_FooterPartial")
+    <script src="~/js/base.js"></script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        function clearAlerts() {
+            return $('.alert-container').empty();
+        }
+        function clearAlert(id) {
+            $('.alert-container div').filter('#' + id).remove();
+        }
+        function raiseAlert(id, message, alertClass, timeout) {
+            clearAlert(id);
+            var div = $('<div class="alert alert-dismissable"></div>').addClass(alertClass).attr('id', id);
+            div.append('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>');
+            div.append($('<span>').text(message));
+            $('.alert-container').append(div);
+
+            var realTimeout = timeout;
+            if (realTimeout === undefined) {
+                realTimeout = 5000;
+            }
+
+            if (realTimeout != 0) {
+                window.setTimeout(function () {
+                    div.fadeTo(500, 0).slideUp(500, function () {
+                        $(this).remove();
+                    });
+                }, realTimeout);
+            }
+        }
+        function raiseErrorAlert(id, message, timeout) {
+            raiseAlert(id, message, 'alert-danger', timeout);
+        }
+        function raiseInfoAlert(id, message, timeout) {
+            raiseAlert(id, message, 'alert-info', timeout);
+        }
+        function raiseSuccessAlert(id, message, timeout) {
+            raiseAlert(id, message, 'alert-success', timeout);
+        }
+
+        var QueryString = function () {
+            // This function is anonymous, is executed immediately and 
+            // the return value is assigned to QueryString!
+            var query_string = {};
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                // If first entry with this name
+                if (typeof query_string[pair[0]] === "undefined") {
+                    query_string[pair[0]] = decodeURIComponent(pair[1]);
+                    // If second entry with this name
+                } else if (typeof query_string[pair[0]] === "string") {
+                    var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+                    query_string[pair[0]] = arr;
+                    // If third or later entry with this name
+                } else {
+                    query_string[pair[0]].push(decodeURIComponent(pair[1]));
+                }
+            } 
+            return query_string;
+        }();
+    </script>
+</body>
+</html>

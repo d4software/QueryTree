@@ -1,0 +1,111 @@
+﻿@model QueryTree.ViewModels.PermissionViewModel
+
+@{
+    ViewBag.Title = "QueryTree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="back-to-parent-nav">Back to: @Html.ActionLink("My Team", "Index", "Team")</div>
+<h2>Edit Team Member Permissions</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DisplayTextFor(model => model.Email)
+                        @Html.HiddenFor(model => model.ApplicationUserID)
+                    </div>
+                </div>
+                
+                @if (Model.OganisationHasDatabases)
+                {
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Access Level</label>
+                        <div class="col-md-10">
+                            <div class="radio">
+                                <label><input type="radio" name="IsOrganisationAdmin" @Html.Raw(Model.IsOrganisationAdmin ? "checked=\"checked\"" : "") value="True">Administrator</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="IsOrganisationAdmin" @Html.Raw(Model.IsOrganisationAdmin ? "" : "checked=\"checked\"") value="">Select Databases</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" name="IsOrganisationAdmin" value="true" />
+                }
+
+                <div class="row" id="databaseTables" @Html.Raw(Model.IsOrganisationAdmin ? "style=\"display: none;\"" : "")>
+                    @if (Model.DatabasePermissions.Count > 0)
+                    {
+                        <div class="col-md-6">
+                            @for (int i = 0; i < Model.DatabasePermissions.Count; i++)
+                            {
+                                <div class="form-group">
+                                    <input type="hidden" name="DatabasePermissions[@i].DatabaseId" value="@(Model.DatabasePermissions[i].DatabaseId)" />
+                                    <input type="hidden" name="DatabasePermissions[@i].DatabaseName" value="@(Model.DatabasePermissions[i].DatabaseName)" />
+
+                                    <label class="control-label col-md-4">
+                                        @(Model.DatabasePermissions[i].DatabaseName)
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" data-val="true" name="DatabasePermissions[@i].AccessType">
+                                            <option @(Model.DatabasePermissions[i].AccessType == "None" ? "selected='selected'" : "") value="None">None</option>
+                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.Admin.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.Admin.ToString()">Admin</option>
+                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString()">Report Builder</option>
+                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString()">Report Viewer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            @Html.Partial("_AccessTypeHelp")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-offset-2 col-md-10">
+                            No Databases Available
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-lg btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="/js/jqueryval"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input[name=IsOrganisationAdmin]').on('change', function () {
+                if ($('input[name=IsOrganisationAdmin]:checked').val() == "True") {
+                    $('#admin').show();
+                    $('#databaseTables').hide();
+                } else {
+                    $('#databaseTables').show();
+                    $('#admin').hide();
+                }
+            });
+        });
+    </script>
+}

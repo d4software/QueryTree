@@ -1,0 +1,82 @@
+﻿@model QueryTree.ViewModels.DbModelViewModel
+
+@{
+    ViewBag.Title = "Model";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Database Model</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Table</label>
+                <div class="col-md-7">
+                    <select id="table" name="selectedTable" class="form-control">
+                        @foreach (var table in Model.Tables)
+                        {
+                            if (Model.SelectedTable != null && Model.SelectedTable == table)
+                            {
+                                <option value="@table.Name" selected>@table.Name</option>
+                            }
+                            else
+                            {
+
+                                <option value="@table.Name">@table.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" value="Show Table" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+    if (Model.SelectedTable != null)
+    {
+    <div class="form-horizontal">
+        <hr />
+    </div>
+        foreach (var column in Model.SelectedTable.Columns)
+        {
+        <div class="row">
+            <div class="col-md-3">
+                @column.Name
+            </div>
+            <div class="col-md-3">
+                @column.DataType
+            </div>
+        </div>
+
+        }
+
+        foreach (var parent in Model.SelectedTable.Parents)
+        {
+            foreach (var column in parent.Columns)
+            {
+                <div class="row">
+                    <div class="col-md-3">
+                        @parent.Name @column.Name
+                    </div>
+                    <div class="col-md-3">
+                        @column.DataType
+                    </div>
+                </div>
+
+            }
+        }
+    }
+}
+
+@section Scripts {
+}

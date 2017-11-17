@@ -1,0 +1,338 @@
+﻿@model QueryTree.Models.Query
+
+@{
+	ViewBag.Title = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}    
+<div class="row">
+    <div class="col-md-8">
+        <h3>Build your report<span class="small">, or use our @Html.ActionLink(" advanced query builder", "Create", "Queries", new { connectionId = ViewBag.DatabaseConnectionID }, new { })</span></h3>
+    </div>
+    <div class="col-md-4" style="text-align:right; margin-top:21px">
+        @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-default" })
+    </div>
+</div>
+<hr />
+
+<div class="panel panel-default" data-bind="with: dataTable">
+    <div class="panel-heading clearfix">
+        <a href="#" data-bind="click: function() { $root.section(1); }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-list-alt"></span> Select your table</h3></a>
+        <span class="label label-success pull-right" data-bind="visible: !$root.loading() && (typeof rowCount() === 'number'), text: rowCount() + ' rows'" style="display: none;"></span>
+        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: $root.loading">
+    </div>
+    <div class="panel-body collapse in toolDataTable" data-bind="css: { 'in': $root.section() == 1 }">
+        <div id="node_status_panel" class="loading_section" data-bind="visible: TablesLoading">
+            <span>Connecting to your database</span>
+            <br />
+            <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" />
+        </div>
+        <div class="form-inline" style="overflow: auto; display:none;"  data-bind="visible: !TablesLoading()">
+            <div class="form-group">
+                <label class="control-label">Table name</label>    
+                <select class="form-control margin-bottom" name="Table" data-bind="options: Tables, value: Table, event: { change: $root.changeDataSource }, visible: Tables().length > 0"></select>
+                <p data-bind="visible: Tables().length == 0">No tables found</p>
+            </div>
+        </div>
+        <div data-bind="visible: !$root.select().showColumns() && $root.dataTables().length > 0" style="display: none;">
+            <label class="control-label" style="margin-top: 10px;">Also show me data from the following related tables:</label>
+            <!--ko foreach: $root.dataTables() -->
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" data-bind="checked: checked">
+                    <!--ko text: Table--><!--/ko-->
+                </label>
+            </div>
+            <!--/ko-->
+        </div>
+        <div data-bind="visible: $root.select().showColumns()" class="row" style="display: none;">
+            <div class="col-md-4">
+                <h3 data-bind="text: Table"></h3>
+                <div data-bind="foreach: selectedColumns">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-bind="checked: checked">
+                            <!--ko text: name--><!--/ko-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!--ko foreach: $root.dataTables() -->
+            <div class="col-md-4">
+                <h3 data-bind="text: Table"></h3>
+                <div data-bind="foreach: selectedColumns">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-bind="checked: checked">
+                            <!--ko text: name--><!--/ko-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!--/ko-->
+        </div>
+    </div>
+    <div class="panel-footer clearfix collapse in toolDataTable"  data-bind="css: { 'in': $root.section() == 1 }">
+        <button class="btn btn-primary" data-bind="visible: !$root.select().showColumns(), click: function() { $root.select().showColumns(true); }"><span class="glyphicon glyphicon-plus-sign"></span> Customize Columns</button>
+        <button class="btn btn-primary" data-bind="visible: $root.select().showColumns(), click: function() { $root.select().showColumns(false); }" style="display: none;"><span class="glyphicon glyphicon-minus-sign"></span> Hide Columns</button>
+        <button class="btn btn-success" data-bind="click: apply"><span class="glyphicon glyphicon-ok"></span> Next</button>
+    </div>
+</div>
+        
+<div class="panel panel-default" id="filter">
+    <div class="panel-heading clearfix">
+        <a href="#" data-bind="click: function() { if (currentData()) { section(2); } }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-filter"></span> Filter your data</h3></a>
+        <span class="label label-success pull-right" data-bind="visible: filters().length > 0 && !loading() && typeof filteredRowCount() === 'number', text: filteredRowCount() + ' rows'" style="display: none;"></span>
+        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">
+    </div>
+    <div class="panel-body collapse toolFilterTool" data-bind="css: { 'in': $root.section() == 2 }">        
+        <!-- ko if: filters().length == 0 -->
+            <label class="control-label">Filtering focuses your data by only showing rows that meet a particular criteria.</label>
+        <!-- /ko -->
+        <!--ko foreach: filters-->
+        <!-- ko if: $index() != 0 -->
+        <hr class="visible-xs visible-sm"/>
+        <!-- /ko -->
+        <div class="form-inline">
+            <div>                
+                <!-- ko if: $index() == 0 -->
+                <label class="control-label">Only show me rows where</label>              
+                <!-- /ko -->
+                <!-- ko if: $index() != 0 -->
+                <label class="control-label" style="width: 200px;">and</label>  
+                <!-- /ko -->
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="Column" data-bind="options: AllInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: FilterColumnIndex"></select>
+            </div>
+            <div class="form-group">
+                <select id="Operator" name="Operator" class="form-control" data-bind="options: ValidOperators, optionsText: 'simpleName', optionsValue: 'type',  value: Operator"></select>
+            </div>
+            @*<div class="form-group">
+                    <select class="form-control" name="CompareColumn" data-bind="options: AllInputColumnsPlusEnteredValue, optionsText: 'Name', optionsValue: 'Index', value: FilterCompareColumnIndex, visible: ShowFilterCompareValue"></select>
+            </div>*@
+            <div class="form-group">
+                <input class="form-control" type="text" name="FilterValue" data-bind="value: FilterValue1, visible: ShowFilterCompareValue1" />
+                <input class="form-control" type="number" name="FilterValue" data-bind="numeric: FilterValue1, visible: ShowFilterCompareNumeric" />
+                <select class="form-control" name="FilterValueBool" data-bind="value: FilterBoolValue1, visible: ShowFilterCompareBool">
+                    <option value="1">true</option>
+                    <option value="0">false</option>
+                </select>
+                <input class="form-control datepicker" type="text" name="FilterValueDate" data-bind="datepicker: FilterDateValue1, datepickerOptions: { dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true }, visible: ShowFilterCompareDatetime" />
+                <input class="form-control timepicker" type="text" name="FilterValueTime" data-bind="timepicker: FilterTimeValue1, timepickerOptions: {show24Hours: true, showSeconds: true, spinnerImage: ''}, visible: ShowFilterCompareDatetime" />
+            </div>
+            <div class="form-group">
+                <a href="#" class="btn btn-default" data-bind="click: function() { $root.removeFilter($index()); }"><span class="glyphicon glyphicon-remove-sign"></span> remove</a>
+            </div>
+        </div>
+        <!--/ko-->
+        <span class="text-danger" data-bind="visible: filterError, text: filterError"></span>
+    </div>
+    <div class="panel-footer clearfix collapse toolFilterTool" data-bind="css: { 'in': $root.section() == 2 }">
+        <button class="btn btn-primary" data-bind="click: function() { addFilter(); }"><span class="glyphicon glyphicon-plus-sign"></span> Add Filter</button>
+        <button class="btn btn-success" data-bind="visible: filters().length > 0, click: applyFilters"><span class="glyphicon glyphicon-ok"></span> Next</button>
+        <button class="btn btn-secondary" data-bind="visible: filters().length == 0, click: applyFilters"><span class="glyphicon glyphicon-remove-sign"></span> Skip</button>
+    </div>
+</div>
+
+<div class="panel panel-default" id="summarize">
+    <div class="panel-heading clearfix">
+        <a href="#" data-bind="click: function() { if (currentData()) { section(3); } }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-search"></span> Summarize</h3></a>
+        <!--ko if: statistics-->
+        <!--ko with: statistics-->
+        <span class="label label-success pull-right" data-bind="visible: !$root.loading() && (typeof rowCount() === 'number'), text: rowCount() + ' rows'" style="display: none;"></span>
+        <!--/ko-->   
+        <!--/ko-->
+        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">    
+    </div>
+    <div class="panel-body collapse toolStatsTool" data-bind="css: { 'in': $root.section() == 3 }">
+        <!-- ko if: !statistics() -->
+        <label class="control-label">Summarize your data by calculating totals and averages.</label>
+        <!-- /ko -->
+        <!--ko if: statistics-->
+        <!--ko with: statistics-->
+        <label>Calculate</label>
+        <!--ko foreach: Statistics-->
+        <div class="form-inline">
+            <div class="form-group">
+                <select name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" class="form-control"></select>
+            </div>
+            <!--ko if: AggFunction() == 1-->
+            <div class="form-group">
+                <label class="control-label"> of results</label>
+            </div>
+            <!--/ko-->
+            <!--ko if: AggFunction() != 1-->
+            <div class="form-group">
+                <label for="AggColumn" class="control-label" style="width: 40px; text-align: center;"> of </label>
+                <select name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn" class="form-control"></select>
+            </div>
+            <!--/ko-->
+            <div class="form-group">
+                <!--ko if: $parent.Statistics().length == 1-->
+                <a href="#" class="btn btn-default" data-bind="click: $root.removeStatistics">remove</a>
+                <!--/ko-->
+                <!--ko if: $parent.Statistics().length > 1-->
+                <a href="#" class="btn btn-default" data-bind="click: $parent.RemoveStatistic">remove</a>
+                <!--/ko-->
+            </div>
+        </div>
+        <!--/ko-->
+
+        <!--ko if: GroupByColumns().length > 0-->
+        <label style="margin-top: 15px;">Broken down by</label>
+        <div>
+            <!--ko foreach: GroupByColumns-->
+            <div class="form-inline">
+                <div class="form-group">
+                    <select name="SplitBy" data-bind="options: $parent.GroupColumns, optionsText: 'Name', optionsValue: 'Index', value: index " class="form-control"></select>
+                </div>
+                <!--ko if: $parent.GroupByFunctions(index()).length > 0-->
+                <div class="form-group">
+                    <select name="DateFunction" data-bind="options: $parent.GroupByFunctions(index()), optionsText: 'text', optionsValue: 'id', value: groupByFunction" class="form-control"></select>
+                </div>
+                <!--/ko-->
+                <div class="form-group">
+                    <a href="#" class="btn btn-default" data-bind="click: $parent.RemoveGroupBy">remove</a>
+                </div>
+            </div>
+            <!--/ko-->
+        </div>
+        <!--/ko-->        
+        <!--/ko-->   
+        <!--/ko-->
+    </div>
+    <div class="panel-footer clearfix collapse toolStatsTool" data-bind="css: { 'in': $root.section() == 3 }">
+        <button class="btn btn-primary" data-bind="click: function() { addStatistic(); }"><span class="glyphicon glyphicon-plus-sign"></span> Add Calculation</button>
+        <button class="btn btn-primary" data-bind="visible: statistics, click: function() { statistics().AddGroupBy(); }"><span class="glyphicon glyphicon-plus-sign"></span> Add Breakdown</button>
+        <button class="btn btn-success" data-bind="visible: statistics, click: applyStatistics"><span class="glyphicon glyphicon-ok"></span> Next</button>   
+        <button class="btn btn-secondary" data-bind="visible: !statistics(), click: applyStatistics"><span class="glyphicon glyphicon-remove-sign"></span> Skip</button>
+    </div>
+</div>
+
+<div class="panel panel-default" data-bind="visible: currentData() || loading()" style="display: none;">
+    <div class="panel-heading clearfix"><a href="#"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-list-alt"></span> Results table</h3></a></div>
+    <div class="panel-body toolResultsTable">
+        <div id="node_status_panel" class="loading_section" data-bind="visible: loading">
+            <span >Connecting to your database</span>
+            <br/>
+            <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" />
+        </div>
+        <div id="node_status_panel" class="loading_section" data-bind="visible: currentData() && currentRowsTotal() == 0 && ! loading()">
+            <span>No data was returned</span>
+        </div>
+        <div id="results_container" style="overflow: auto; display:none;"  data-bind="visible: currentData() && currentRowsTotal() > 0 && ! loading()">
+            <table id="results">
+                <thead>
+                    <tr>
+                        <!-- ko foreach: $data.headerCategories -->
+                        <th data-bind="text: name, attr: { colspan: columnCount }"></th>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <!-- ko foreach: currentDataColumns() -->
+                        <th data-bind="text: $data"></th>
+                        <!-- /ko -->
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: currentData">
+                    <tr>
+                        <!-- ko foreach: $data -->
+                        <td><div data-bind="text: $root.formatColumn($index(), $data), attr: { title: $root.formatColumn($index(), $data) }" style="max-width: 500px;max-height: 40px;text-overflow: ellipsis;overflow: hidden;"></div></td>
+                        <!-- /ko -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="data-controls" style="margin-top: 10px; display:none;" data-bind="visible: currentData() && currentRowsTotal() > 0 && ! loading()">
+            <!-- ko if: currentData -->
+            <span>Rows <span data-bind="text: currentRowStartFormatted"></span> to <span data-bind="text: currentRowEndFormatted"></span> of <span data-bind="text: currentRowsTotalFormatted"></span></span>
+            <a id="PagerStart" class="btn btn-lg btn-default" data-bind="visible: isPreviousVisible, click: navigateStart" style="display: none;">&lt;&lt;</a>
+            <a id="PagerPrev" class="btn btn-lg btn-default" data-bind="visible: isPreviousVisible, click: navigatePrev" style="display: none;">&lt;</a>
+            <a id="PagerNext" class="btn btn-lg btn-default" data-bind="visible: isNextVisible, click: navigateNext">&gt;</a>
+            <a id="PagerEnd" class="btn btn-lg btn-default" data-bind="visible: isNextVisible, click: navigateEnd">&gt;&gt;</a>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div class="panel-footer clearfix toolResultsTable">
+        <a class="btn btn-primary" data-bind="visible: currentData() && currentRowsTotal() > 0 && ! loading(), attr: { href: exportUrl }"><span class="glyphicon glyphicon-download-alt"></span> Export</a>
+    </div>
+</div>
+
+<div class="panel panel-default" data-bind="visible: currentData() && !loading() && GraphTypes().length >= 1" style="display: none;">
+    <div class="panel-heading clearfix"><a href="#"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-list-alt"></span> Chart</h3></a></div>
+    <div class="panel-body toolResultsTable">
+        <div class="" data-bind="visible: HasChart">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Type</label>
+                        <select class="form-control margin-bottom" name="Table" data-bind="options: GraphTypes, value: GraphType"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" data-bind="text: HorizontalAxisLabel">Horizontal Axis</label>
+                        <select class="form-control margin-bottom" name="Table" data-bind="options: HorizontalAxisOptions, optionsText: 'Name', optionsValue: 'Index', value: XAxis"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" data-bind="text: VerticalAxisLabel">Vertical Axis</label>
+                        <select class="form-control margin-bottom" name="Table" data-bind="options: VerticalAxisOptions, optionsText: 'Name', optionsValue: 'Index', value: YAxis"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="chart"></div>
+    </div>
+    <div class="col-md-12" id="chart"></div>
+    <div class="panel-footer clearfix toolResultsTable">
+        <button class="btn btn-primary" data-bind="visible: !HasChart(), click: ShowChart"><span class="glyphicon glyphicon-plus-sign"></span> Add Chart</button>
+        <button class="btn btn-default" data-bind="visible: HasChart, click: HideChart"><span class="glyphicon glyphicon-remove-sign"></span> Remove Chart</button>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+<div class="panel panel-default" data-bind="visible: currentData" style="display: none;">
+    <div class="panel-heading clearfix">
+        <a href="#" data-toggle="collapse" data-target=".toolLineChart" class="" aria-expanded="true"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-save"></span> Save this query</h3></a>
+    </div>
+    <div class="panel-body toolLineChart collapse in" aria-expanded="true">
+
+        <div class="col-md-12">Save your query as a report you can return to any time</div>
+
+        <label class="col-md-5 control-label" for="selectbasic">Report title</label>
+        <div class="col-md-5">
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="panel-footer clearfix toolLineChart collapse in" aria-expanded="true">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.DatabaseConnectionID)
+        @Html.HiddenFor(model => model.QueryDefinition)
+        <button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Save report</button>
+    </div>
+</div>
+}
+
+@section Scripts { 
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.10.2,jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
+    <script src="/js/sqb.js"></script>
+
+    <script>
+        var viewModel = null;
+        $(document).ready(function () {
+            viewModel = new SimpleQueryBuilderViewModel();
+
+            viewModel.dataTable().loadTables();
+
+            ko.applyBindings(viewModel);
+
+            $("form").submit(function () {
+                var settings = viewModel.getSaveSettings();
+                $("input#QueryDefinition").val(JSON.stringify(settings));
+            });
+        });
+    </script>
+}

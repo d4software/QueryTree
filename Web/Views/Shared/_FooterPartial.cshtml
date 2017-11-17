@@ -1,0 +1,14 @@
+﻿@{
+    var version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
+}
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <p>Powered By <a href="http://querytreeapp.com"><img class="logo" src="~/images/querytree.ico"/> QueryTree v<span>@Html.Raw(version)</span></a></p>
+                <p>&copy; 2012-<script>document.write(new Date().getFullYear())</script> <a href="http://weared4.com">D4 Software Ltd</a> distributed under <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">LGPLv3</a> license.</p>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,5 @@
+﻿Here's your scheduled report {reportname}:
+
+Please see your latest report attached to this email.
+
+If you'd like to change your scheduled report settings, you can do this by editing the report in QueryTree.

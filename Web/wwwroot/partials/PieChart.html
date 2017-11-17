@@ -1,0 +1,10 @@
+<form>
+    <label for="Name">Name</label>
+    <input type="text" name="Name" data-bind="value: Name"/>
+    <label for="HorizontalAxis">Label</label>
+    <select name="HorizontalAxis" data-bind="options: AllInputColumns, value: HorizontalAxis"></select>
+    <label for="VerticalAxis">Value</label>
+    <select name="VerticalAxis" data-bind="options: AllNumericInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: VerticalAxis"></select>
+    <label for="LabelType">Label Type</label>
+    <select name="LabelType" data-bind="options: LabelTypes, value: LabelType"></select>
+</form>
