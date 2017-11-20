@@ -5,7 +5,7 @@ SQL Server, PostgreSQL or MySQL database. It allows users to query
 databases, build reports and schedule those reports to email distribution
 lists, without needing to write any code.
 
-For more information see the [QueryTree website](https://querytreeapp.com)
+For more information see the [QueryTree website](http://querytreeapp.com)
 
 ## Features
 
