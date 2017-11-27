@@ -226,7 +226,7 @@ namespace QueryTree.Engine
 
                         break;
                     default:
-                        if (DatabaseType == DatabaseType.PostgreSQL && !CaseSensitive && (Operator == FilterOperator.EqualTo || Operator == FilterOperator.DoesNotEqual))
+                        if (DatabaseType == DatabaseType.PostgreSQL && IsTextType(columnTypes[FilterColumnIndex.Value]) && !CaseSensitive && (Operator == FilterOperator.EqualTo || Operator == FilterOperator.DoesNotEqual))
                         {
                             sql += string.Format("LOWER({0})", filterColumnSpecifier);
                         }
@@ -290,31 +290,30 @@ namespace QueryTree.Engine
                                 compareValue = compareValue.Replace("\'", "\'\'");
 
                             if (FilterCompareColumnIndex == null)
+                            {
                                 if (IsQuotedType(columnTypes[FilterColumnIndex.Value]))
+                                {
                                     compareValue = "\'" + compareValue + "\'";
+                                }
+
+                                if (DatabaseType == DatabaseType.PostgreSQL && IsTextType(columnTypes[FilterColumnIndex.Value]) && !CaseSensitive)
+                                {
+                                    compareValue = "LOWER(" + compareValue + ")";
+                                }
+                                
+                                if (DatabaseType == DatabaseType.PostgreSQL && IsBoolType(columnTypes[FilterColumnIndex.Value]))
+                                {
+                                    compareValue = (new List<string>() { "1", "YES", "TRUE" }).Contains(compareValue.ToUpper()) ? "TRUE" : "FALSE";
+                                }
+                            }
+                                
                             switch (Operator)
                             {
                                 case FilterOperator.EqualTo:
-                                    if (DatabaseType == DatabaseType.PostgreSQL && !CaseSensitive)
-                                    {
-                                        sql += string.Format("= LOWER({0})", compareValue);
-                                    }
-                                    else
-                                    {
-                                        sql += string.Format("= {0}", compareValue);
-                                    }
-
+                                    sql += string.Format("= {0}", compareValue);
                                     break;
                                 case FilterOperator.DoesNotEqual:
-                                    if (DatabaseType == DatabaseType.PostgreSQL && !CaseSensitive)
-                                    {
-                                        sql += string.Format("<> LOWER({0})", compareValue);
-                                    }
-                                    else
-                                    {
-                                        sql += string.Format("<> {0}", compareValue);
-                                    }
-
+                                    sql += string.Format("<> {0}", compareValue);
                                     break;
                                 case FilterOperator.GreaterThanOrEqualTo:
                                     sql += string.Format(">= {0}", compareValue);

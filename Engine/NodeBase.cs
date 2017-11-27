@@ -89,9 +89,9 @@ namespace QueryTree.Engine
             return false;
         }
 
-        protected bool IsQuotedType(string colType)
+        protected bool IsTextType(string colType)
         {
-            var quotedTypes = new List<string>() { "VARCHAR", "NVARCHAR", "CHAR", "NCHAR", "DATE", "DATETIME", "ENUM", "XML", "CHARACTER VARYING", "CHARACTER", "TEXT", "TIMESTAMP WITHOUT TIME ZONE", "TIMESTAMP WITH TIME ZONE", "TIME WITHOUT TIME ZONE", "TIME WITH TIME ZONE", "INTERVAL", "USER-DEFINED" };
+            var quotedTypes = new List<string>() { "VARCHAR", "NVARCHAR", "CHAR", "NCHAR", "ENUM", "XML", "CHARACTER VARYING", "CHARACTER", "TEXT", "USER-DEFINED" };
 
             switch (DatabaseType)
             {
@@ -104,6 +104,26 @@ namespace QueryTree.Engine
             }
 
             return false;
+        }
+
+        protected bool IsBoolType(string colType)
+        {
+            var quotedTypes = new List<string>() { "BIT", "BOOL", "BOOLEAN" };
+
+            switch (DatabaseType)
+            {
+                case DatabaseType.PostgreSQL:
+                case DatabaseType.SQLServer:
+                case DatabaseType.MySQL:
+                    return quotedTypes.Contains(colType.ToUpper());
+            }
+
+            return false;
+        }
+
+        protected bool IsQuotedType(string colType)
+        {
+            return IsTextType(colType) || IsDateType(colType);
         }
 
         protected bool IsDateType(string colType)

@@ -650,7 +650,15 @@ nodes.Filter = function(properties) {
     instance.FilterColumnIsBool = ko.computed(function() {
         var colInfo = instance.AllInputColumnInfos()[instance.FilterColumnIndex()];
         if (colInfo != null && colInfo.Type != null) {
-            return colInfo.Type.toUpperCase() == "BIT";
+            switch (colInfo.Type.toUpperCase())
+            {
+                case "BIT":
+                case "BOOL":
+                case "BOOLEAN":
+                    return true;
+                default:
+                    return false;
+            }
         }
         else {
             return false;
