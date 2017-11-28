@@ -128,7 +128,7 @@ namespace QueryTree.Engine
 
         protected bool IsDateType(string colType)
         {
-			var dateTypes = new List<string>() { "DATE", "DATETIME", "TIMESTAMP WITHOUT TIME ZONE", "TIMESTAMP WITH TIME ZONE", "TIME WITHOUT TIME ZONE", "TIME WITH TIME ZONE", "INTERVAL" };
+			var dateTypes = new List<string>() { "DATE", "DATETIME", "TIMESTAMP WITHOUT TIME ZONE", "TIMESTAMP", "TIMESTAMP WITH TIME ZONE", "TIME WITHOUT TIME ZONE", "TIME WITH TIME ZONE", "INTERVAL" };
 
 			switch (DatabaseType)
 			{

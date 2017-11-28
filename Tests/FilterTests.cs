@@ -94,6 +94,28 @@ namespace QueryTree.Engine.Tests
                 ]";
 			}
 		}
+		
+		private string NodesJsonGreaterThanDate
+		{
+			get
+			{
+				return @"[
+                    {
+                        ""Id"": ""1"",
+                        ""Type"": ""Data Table"",
+                        ""Table"": ""employees""
+                    },
+                    {
+                        ""Id"": ""2"",
+                        ""Inputs"": [""1""],
+                        ""Type"": ""Filter"",
+                        ""FilterColumnIndex"": 4,
+                        ""Operator"": ""GreaterThan"",
+                        ""FilterValue1"": ""2017-01-01 00:00""
+                    }
+                ]";
+			}
+		}
 
 		private List<ITableInfo> DatabaseInfo
 		{
@@ -109,7 +131,8 @@ namespace QueryTree.Engine.Tests
 							new MockColumnInfo() { DataType = "int", Name = "ID" },
 							new MockColumnInfo() { DataType = "varchar", Name = "Name" },
 							new MockColumnInfo() { DataType = "varchar", Name = "Description" },
-							new MockColumnInfo() { DataType = "boolean", Name = "IsActive" }
+							new MockColumnInfo() { DataType = "boolean", Name = "IsActive" },
+							new MockColumnInfo() { DataType = "timestamp", Name = "CreatedAt" }
 						}
 					}
 				};
@@ -163,6 +186,19 @@ namespace QueryTree.Engine.Tests
 
 			var sql = query.GetSql("2");
 			Assert.True(sql.Contains("node_1.Column_3 <> FALSE"), "SQL Value was: " + sql);
+		}
+
+
+		[Fact]
+		public void TestTimestampGreaterThan()
+		{
+			var query = new Query(
+				DatabaseType.MySQL,
+				NodesJsonGreaterThanDate,
+				DatabaseInfo);
+
+			var sql = query.GetSql("2");
+			Assert.True(sql.Contains("node_1.Column_4 > '2017-01-01 00:00'"), "SQL Value was: " + sql);
 		}
     }
 }
