@@ -88,6 +88,8 @@ dotnet run
  
 4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application
 
+If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
+
 ### Running the Tests
 
 To run the automated tests in this project, cd into the "Tests" folder, then type:

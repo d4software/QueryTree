@@ -28,6 +28,8 @@ namespace QueryTree
             {
                 // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
+
+                builder = builder.AddJsonFile($"usersettings.json", optional: true);
             }
 
             builder.AddEnvironmentVariables();
