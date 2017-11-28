@@ -15,3 +15,5 @@ packages/*
 *.userprefs
 querytree.key
 */wwwroot/js/*
+
+**/usersettings.json
