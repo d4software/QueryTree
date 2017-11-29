@@ -360,7 +360,7 @@
                     info: true,
                     stateSave: true,
                     ajax:{
-                        "url": "/api/QueryData?queryId=" + @this.Model.QueryID,
+                        "url": "/api/queries/" + @this.Model.QueryID + "/",
                         "type": "GET",
                         "contentType": "application/json",
                     },

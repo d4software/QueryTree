@@ -88,7 +88,6 @@ $(document).ready(function() {
     $("#result_options a.button").button();
 
     $("#showConfig").click(events.ShowOptionsDialog);
-    //$("#export").click(events.ExportSelectedObject);
     $("#showQuery").click(events.ShowQueryForSelectedObject);
     $("#delete").click(events.DeleteSelectedObject);
 

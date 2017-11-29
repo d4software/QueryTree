@@ -43,8 +43,6 @@ models = {
         new tools.Summarize(),
         new tools.Select(),
         new tools.Append(),
-        new tools.Stats(),
-        new tools.Stats2(),
         new tools.Extract(),
         new tools.LineChart(),
         new tools.BarChart(),
@@ -209,7 +207,7 @@ models.Export = function () {
             return true;
         } else {
             if (models.ServerQueryKey()) {
-                models.ExportUrl("/api/export/?id=" + models.ServerQueryKey() + "&nodeId=" + node.Id);
+                models.ExportUrl("/api/cache/" + models.ServerQueryKey() + "/" + node.Id + "/export/");
                 models.ExportFileName("export.xlsx");
             } else {
                 models.ExportUrl(null);

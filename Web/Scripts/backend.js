@@ -8,14 +8,14 @@ backend = {};
 
     backend.CheckConnection = function (models, callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/connection/?databaseId=" + databaseId, function (data) {
+        $.getJSON("/api/connections/" + databaseId + "/status/", function (data) {
             callback(data);
         });
     };
 
     backend.LoadTables = function (callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/tables/?databaseId=" + databaseId, function (data) {
+        $.getJSON("/api/connections/" + databaseId + "/tables/", function (data) {
             callback(data);
         })
         .fail(function () {
@@ -25,7 +25,7 @@ backend = {};
 
     backend.GetJoins = function (tableName, callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/joins/?databaseId=" + databaseId + "&tableName=" + tableName, function (data) {
+        $.getJSON("/api/connections/" + databaseId + "/tables/" + tableName + "/joins/", function (data) {
             callback(data);
         })
         .fail(function () {
@@ -37,7 +37,7 @@ backend = {};
         callbacks = [],
         latestNodes = null;
 
-    backend.saveQuery = function (serverQueryKey, nodes, callback) {
+    backend.SaveQuery = function (serverQueryKey, nodes, callback) {
         if (callback) {
             callbacks.push(callback);
         }
@@ -48,7 +48,7 @@ backend = {};
             lock = true;
             latestNodes = null;
             $.ajax({
-                "url": '/api/Nodes',
+                "url": "/api/cache/",
                 "type": 'POST',
                 "data": {
                     id: serverQueryKey(),
@@ -64,7 +64,7 @@ backend = {};
                 if (latestNodes) {
                     var tmp = latestNodes;
                     latestNodes = null;
-                    backend.saveQuery(serverQueryKey, tmp);
+                    backend.SaveQuery(serverQueryKey, tmp);
                 } else {
                     while (callbacks.length > 0) {
                         callbacks.shift()();
@@ -80,11 +80,11 @@ backend = {};
 
     backend.LoadData = function (serverQueryKey, nodes, nodeId, startRow, rowCount, format, output, callback) {
         if (!serverQueryKey()) {
-            backend.saveQuery(serverQueryKey, nodes, function () {
+            backend.SaveQuery(serverQueryKey, nodes, function () {
                 backend.LoadData(serverQueryKey, nodes, nodeId, startRow, rowCount, format, output, callback);
             });
         } else {
-            $.getJSON("/api/data/?id=" + serverQueryKey() + "&nodeId=" + nodeId + "&startRow=" + startRow + "&rowCount=" + rowCount, function (data) {
+            $.getJSON("/api/cache/" + serverQueryKey() + "/" + nodeId + "/?startRow=" + startRow + "&rowCount=" + rowCount, function (data) {
                 if (data.query) {
                     console.log(data.query);
                 }
@@ -126,7 +126,7 @@ backend = {};
 
     backend.LoadQueryColumnsName = function (queryId) {
         return $.ajax({
-            "url": "/api/QueryColumnsName?queryId=" + queryId,
+            "url": "/api/queries/" + queryId + "/columns/",
             "type": 'GET'
         });
     };

@@ -348,7 +348,7 @@ events.OnCanvasMouseUp = function (e) {
     models.ui_state.selecting_connector = null;
 
     if (modelChanged) {
-        backend.saveQuery(models.ServerQueryKey, models.GetCoreNodeSettings());
+        backend.SaveQuery(models.ServerQueryKey, models.GetCoreNodeSettings());
     }
 }
 
@@ -399,7 +399,7 @@ events.ShowOptionsDialog = function () {
                 text: "Ok", click: function () {
                     events.UpdateSelectedNodeOptions();
                     $(this).dialog("close");
-                    backend.saveQuery(models.ServerQueryKey, models.GetCoreNodeSettings(), function () {
+                    backend.SaveQuery(models.ServerQueryKey, models.GetCoreNodeSettings(), function () {
                         events.FetchSelectedNodeData();
                     });
                 }
@@ -438,7 +438,7 @@ events.DeleteSelectedObject = function() {
         models.RemoveConnector(models.SelectedConnector().fromNodeId, models.SelectedConnector().toNodeId);
     }
 
-    backend.saveQuery(models.ServerQueryKey, models.GetCoreNodeSettings());
+    backend.SaveQuery(models.ServerQueryKey, models.GetCoreNodeSettings());
 }
 
 events.PagerStart = function() {

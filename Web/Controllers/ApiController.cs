@@ -56,113 +56,10 @@ namespace QueryTree.Controllers
             return db.DatabaseConnections.Include(d => d.SshKeyFile).SingleOrDefault(d => d.DatabaseConnectionID == databaseId);
         }
 
-        public class NodeCacheObject
-        {
-            public int DatabaseId { get; set; }
-            public string Nodes { get; set; }
-        }
+        #region Connection APIs
 
-        [HttpPost]
-        public ActionResult Nodes(int databaseId, string nodes, string id = null)
-        {
-            if (id == null)
-            {
-                id = "Query:" + Guid.NewGuid().ToString("N");
-            }
-
-            var data = new NodeCacheObject() { DatabaseId = databaseId, Nodes = nodes };
-
-            _cache.Set(id, data, DateTime.Now.AddHours(1));
-
-            return Json(new { id = id });
-        }
-
-
-        public ActionResult Connection(int DatabaseId)
-        {
-            var connection = GetConnection(DatabaseId);
-            var statusText = _dbMgr.CheckConnection(connection) ? "ok" : "error";
-
-            return Json(new { status = statusText });
-        }
-
-
-        public ActionResult Tables(int databaseId)
-        {
-            var connection = GetConnection(databaseId);
-
-            var dbModel = _dbMgr.GetDbModel(connection);
-            if (dbModel != null)
-            {
-                var tables = dbModel.Tables.Select(t => t.DisplayName).ToList();
-                return Json(tables);
-            }
-
-            return this.NotFound();
-        }
-
-        public ActionResult Joins(int DatabaseId, string tableName)
-        {
-            var connection = GetConnection(DatabaseId);
-
-            var dbModel = _dbMgr.GetDbModel(connection);
-
-            if (dbModel != null && dbModel.Tables.Any(t => t.DisplayName == tableName))
-            {
-                var table = dbModel.Tables.First(t => t.DisplayName == tableName);
-                if (table != null)
-                {
-                    var joinStructure = _dbMgr.GetJoinStructure(table);
-                    return Json(joinStructure);
-                }
-            }
-
-            return this.NotFound();
-        }
-
-        public ActionResult Data(string id, string nodeId, int? startRow = null, int? rowCount = null)
-        {
-            NodeCacheObject cacheObj = null;
-
-            if (_cache.TryGetValue(id, out cacheObj) == false)
-            {
-                return NotFound("Nodes were not found, please store the nodes by calling POST /api/Nodes");
-            }
-
-            var connection = GetConnection(cacheObj.DatabaseId);
-
-            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
-
-            return Json(data);
-        }
-
-        public ActionResult Export(string id, string nodeId, int? startRow = null, int? rowCount = null)
-        {
-			NodeCacheObject cacheObj = null;
-
-			if (_cache.TryGetValue(id, out cacheObj) == false)
-			{
-				return NotFound("Nodes were not found, please store the nodes by calling POST /api/Nodes");
-			}
-
-            var connection = GetConnection(cacheObj.DatabaseId);
-
-            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
-
-            var result = this.convertManager.ToExcel(data);
-
-            return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
-        }
-
-        private byte[] ToUTF8(string text)
-        {
-            // this adds utf byte mark. See http://stackoverflow.com/questions/4414088/how-to-getbytes-in-c-sharp-with-utf8-encoding-with-bom/4414118#4414118
-            var data = Encoding.UTF8.GetBytes(text);
-            return Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-        }
-
-        [HttpPost]
-        public ActionResult TestConn(int type, string server, int port, string username, string password, string databaseName, bool useSsh, int? sshPort, string sshUsername, string sshPassword, int? SshKeyFileID, bool UseSshKey, int? databaseConnectionId = null)
+        [HttpPost("/api/connections/test/")]
+        public ActionResult TestConnection(int type, string server, int port, string username, string password, string databaseName, bool useSsh, int? sshPort, string sshUsername, string sshPassword, int? SshKeyFileID, bool UseSshKey, int? databaseConnectionId = null)
         {
             DatabaseType dbType = (DatabaseType)type;
 
@@ -205,6 +102,115 @@ namespace QueryTree.Controllers
                 return Json(new { Message = error });
             }
         }
+
+        [HttpGet("/api/connections/{databaseId}/status/")]
+        public ActionResult GetConnectionStatus(int databaseId)
+        {
+            var connection = GetConnection(databaseId);
+            var statusText = _dbMgr.CheckConnection(connection) ? "ok" : "error";
+
+            return Json(new { status = statusText });
+        }
+
+        [HttpGet("/api/connections/{databaseId}/tables/")]
+        public ActionResult GetTables(int databaseId)
+        {
+            var connection = GetConnection(databaseId);
+
+            var dbModel = _dbMgr.GetDbModel(connection);
+            if (dbModel != null)
+            {
+                var tables = dbModel.Tables.Select(t => t.DisplayName).ToList();
+                return Json(tables);
+            }
+
+            return this.NotFound();
+        }
+
+        [HttpGet("/api/connections/{databaseId}/tables/{tableName}/joins/")]
+        public ActionResult GetJoins(int databaseId, string tableName)
+        {
+            var connection = GetConnection(databaseId);
+
+            var dbModel = _dbMgr.GetDbModel(connection);
+
+            if (dbModel != null && dbModel.Tables.Any(t => t.DisplayName == tableName))
+            {
+                var table = dbModel.Tables.First(t => t.DisplayName == tableName);
+                if (table != null)
+                {
+                    var joinStructure = _dbMgr.GetJoinStructure(table);
+                    return Json(joinStructure);
+                }
+            }
+
+            return this.NotFound();
+        }
+
+        #endregion
+
+        #region Cached Queries
+
+        private class NodeCacheObject
+        {
+            public int DatabaseId { get; set; }
+            public string Nodes { get; set; }
+        }
+
+        [HttpPost("/api/cache/")]
+        public ActionResult SaveQuery(int databaseId, string nodes, string id = null)
+        {
+            if (id == null)
+            {
+                id = Guid.NewGuid().ToString("N");
+            }
+
+            var data = new NodeCacheObject() { DatabaseId = databaseId, Nodes = nodes };
+
+            _cache.Set(id, data, DateTime.Now.AddHours(1));
+
+            return Json(new { id = id });
+        }
+
+        [HttpGet("/api/cache/{id}/{nodeId}/")]
+        public ActionResult RunQuery(string id, string nodeId, int? startRow = null, int? rowCount = null)
+        {
+            NodeCacheObject cacheObj = null;
+
+            if (_cache.TryGetValue(id, out cacheObj) == false)
+            {
+                return NotFound("Nodes were not found, please store the nodes by calling POST /api/Nodes");
+            }
+
+            var connection = GetConnection(cacheObj.DatabaseId);
+
+            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
+
+            return Json(data);
+        }
+
+        [HttpGet("/api/cache/{id}/{nodeId}/export/")]
+        public ActionResult ExportQuery(string id, string nodeId, int? startRow = null, int? rowCount = null)
+        {
+			NodeCacheObject cacheObj = null;
+
+			if (_cache.TryGetValue(id, out cacheObj) == false)
+			{
+				return NotFound("Nodes were not found, please store the nodes by calling POST /api/Nodes");
+			}
+
+            var connection = GetConnection(cacheObj.DatabaseId);
+
+            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
+
+            var result = this.convertManager.ToExcel(data);
+
+            return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+        }
+
+        #endregion
+
+        #region Scheduled Reports
 
         [HttpPost]
         public async Task<ActionResult> Schedule(ScheduledReportViewModel model)
@@ -296,7 +302,7 @@ namespace QueryTree.Controllers
             AddOrUpdateScheduleJob(scheduledReport, editUrl);
         }
 
-		public void AddOrUpdateScheduleJob(ScheduledReport schedule, string editUrl)
+		private void AddOrUpdateScheduleJob(ScheduledReport schedule, string editUrl)
 		{
 			if (schedule.FrequencyScheduled == FrequencyScheduled.Daily)
 			{
@@ -317,7 +323,7 @@ namespace QueryTree.Controllers
 			}
 		}
 
-		public void RemoveScheduleJob(string scheduleId)
+		private void RemoveScheduleJob(string scheduleId)
 		{
 			RecurringJob.RemoveIfExists(scheduleId);
 		}
@@ -327,7 +333,7 @@ namespace QueryTree.Controllers
 			RecurringJob.AddOrUpdate(schedule.ScheduleID.ToString(), () => BuildScheduledEmail(schedule.Query.Name, editUrl, schedule.Recipients, schedule.Query.QueryID), period);
 		}
 
-		public void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId)
+		private void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId)
 		{
 			if (string.IsNullOrEmpty(recipients))
 			{
@@ -424,7 +430,11 @@ namespace QueryTree.Controllers
             return this.Json(model);
         }
 
-        [HttpGet]
+        #endregion
+
+        #region Query APIs
+
+        [HttpGet("/api/queries/{queryId}/")]
         public ActionResult QueryData(int queryId, int draw, int start, int length)
         {
             var query = db.Queries
@@ -452,7 +462,7 @@ namespace QueryTree.Controllers
             return Json(dataTable);
         }
 
-        [HttpGet]
+        [HttpGet("/api/queries/{queryId}/columns/")]
         public ActionResult QueryColumnsName(int queryId)
         {
             var query = db.Queries
@@ -476,7 +486,7 @@ namespace QueryTree.Controllers
             return Json(data.Columns);
         }
 
-        [HttpGet]
+        [HttpGet("/api/queries/{id}/export/")]
         public ActionResult ExportQuery(int id)
         {
             var query = db.Queries
@@ -500,5 +510,7 @@ namespace QueryTree.Controllers
 
             return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
+
+        #endregion
     }
 }

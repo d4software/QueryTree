@@ -857,7 +857,7 @@ var SimpleQueryBuilderViewModel = function () {
 
     self.exportUrl = ko.pureComputed(function () {
         if (self.serverQueryKey()) {
-            return "/api/export/?id=" + self.serverQueryKey() + "&nodeId=" + self.selectedNode().Id
+            return "/api/cache/" + self.serverQueryKey() + "/" + self.selectedNode().Id + "/export/";
         } else {
             return null;
         }
@@ -937,8 +937,8 @@ var SimpleQueryBuilderViewModel = function () {
         }
 
         populateNodeSettings(node);
-
-        backend.saveQuery(self.serverQueryKey, nodeSettings, function () {
+        
+        backend.SaveQuery(self.serverQueryKey, nodeSettings, function () {
             backend.LoadData(self.serverQueryKey, nodeSettings, node.Id, start, self.dataPageSize(), "JSON", null, function (data) {
                 if (data.status) {
 

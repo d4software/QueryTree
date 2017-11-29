@@ -275,13 +275,16 @@ namespace QueryTree.Managers
                         result.Tables.Add(currentTable);
                     }
 
-                    currentTable.Columns.Add(new QueryTree.Models.DbColumn
+                    if (tableName == currentTable.Name) 
                     {
-                        Table = currentTable,
-                        Name = reader.IsDBNull(2) ? (string)null : reader.GetString(2),
-                        DataType = reader.IsDBNull(3) ? (string)null : reader.GetString(3),
-                        IsPrimaryKey = reader.GetBoolean(4)
-                    });
+                        currentTable.Columns.Add(new QueryTree.Models.DbColumn
+                        {
+                            Table = currentTable,
+                            Name = reader.IsDBNull(2) ? (string)null : reader.GetString(2),
+                            DataType = reader.IsDBNull(3) ? (string)null : reader.GetString(3),
+                            IsPrimaryKey = reader.GetBoolean(4)
+                        });
+                    }
                 }
             }
 
