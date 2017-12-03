@@ -153,20 +153,26 @@
 
             self._currentState = data;
             self.Frequency = ko.observableArray([
-                { value: 0, text: "None" }, { value: 1, text: "Daily" }, { value: 2, text: "Weekly" },
+                { value: 0, text: "None" }, 
+                { value: 1, text: "Daily" }, 
+                { value: 2, text: "Weekly" },
                 { value: 3, text: "Monthly" }
             ]);
             self.Days = [
-                { value: 1, text: "Monday" }, { value: 2, text: "Tuesday" }, { value: 3, text: "Wednesday" },
-                { value: 4, text: "Thursday" }, { value: 5, text: "Friday" }, { value: 6, text: "Saturday" },
+                { value: 1, text: "Monday" }, 
+                { value: 2, text: "Tuesday" }, 
+                { value: 3, text: "Wednesday" },
+                { value: 4, text: "Thursday" }, 
+                { value: 5, text: "Friday" }, 
+                { value: 6, text: "Saturday" },
                 { value: 7, text: "Sunday" }
             ];
 
-            self.SelectedFrequency = ko.observable(data.FrequencyScheduled);
-            self.SelectedDay = ko.observable(data.DayOfWeek);
-            self.Time = ko.observable(data.Time);
-            self.DayOfMonth = ko.observable(data.DayOfMonth);
-            self.Recipients = ko.observable(data.Recipients);
+            self.SelectedFrequency = ko.observable(data.frequencyScheduled);
+            self.SelectedDay = ko.observable(data.dayOfWeek);
+            self.Time = ko.observable(data.time);
+            self.DayOfMonth = ko.observable(data.dayOfMonth);
+            self.Recipients = ko.observable(data.recipients);
 
             self.QueryID = ko.observable(@this.Model.QueryID);
             self.Locked = ko.observable(false);
@@ -240,7 +246,7 @@
             });
             self.Time.subscribe(function(newValue) {
                 var message = "Wrong 'Time' format";
-                if (!newValue.match(/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)) {
+                if (newValue != null && !newValue.match(/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)) {
                     self._cleanValidationErrors(message);
                     self.ValidationErrors.push(message);
                     return;
