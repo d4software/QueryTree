@@ -213,7 +213,7 @@ namespace QueryTree.Controllers
         #region Scheduled Reports
 
         [HttpPost]
-        public async Task<ActionResult> Schedule(ScheduledReportViewModel model)
+        public async Task<ActionResult> Schedule([FromBody]ScheduledReportViewModel model)
         {
             var query = await this.db.Queries.FindAsync(model.QueryID);
             if (query == null)
@@ -244,7 +244,7 @@ namespace QueryTree.Controllers
             }
 
             DateTime dateValue;
-            if (!DateTime.TryParseExact(model.Time, "hh:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+            if (!DateTime.TryParseExact(model.Time, "h:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
             {
                 return BadRequest("Select the correct Time");
             }
@@ -333,7 +333,7 @@ namespace QueryTree.Controllers
 			RecurringJob.AddOrUpdate(schedule.ScheduleID.ToString(), () => BuildScheduledEmail(schedule.Query.Name, editUrl, schedule.Recipients, schedule.Query.QueryID), period);
 		}
 
-		private void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId)
+		public void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId)
 		{
 			if (string.IsNullOrEmpty(recipients))
 			{

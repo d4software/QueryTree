@@ -82,18 +82,16 @@
                         </div>
                     </div>
                     <br/>
-                    <!-- ko if: SelectedFrequency() != 0-->
-                    <div class="row">
+                    <div class="row" data-bind="visible: SelectedFrequency() != 0">
                         <div class="col-sm-3">
                             <label>Time</label>
                         </div>
 
                         <div class="col-sm-9">
-                            <input type='text' class="form-control" data-bind='pickatime: Time, disable: Locked'>
+                            <input id="scheduleTime" type='text' class="form-control" data-bind='pickatime: Time, disable: Locked'>
                         </div>
                     </div>
                     <br/>
-                    <!-- /ko -->
                     <!-- ko if: SelectedFrequency() != 0 && SelectedFrequency() == 2-->
                     <div class="row">
                         <div class="col-sm-3">
@@ -151,13 +149,13 @@
         var ModalViewModel = function(data) {
             var self = this;
 
-            self._currentState = data;
             self.Frequency = ko.observableArray([
                 { value: 0, text: "None" }, 
                 { value: 1, text: "Daily" }, 
                 { value: 2, text: "Weekly" },
                 { value: 3, text: "Monthly" }
             ]);
+
             self.Days = [
                 { value: 1, text: "Monday" }, 
                 { value: 2, text: "Tuesday" }, 
@@ -173,12 +171,10 @@
             self.Time = ko.observable(data.time);
             self.DayOfMonth = ko.observable(data.dayOfMonth);
             self.Recipients = ko.observable(data.recipients);
-
             self.QueryID = ko.observable(@this.Model.QueryID);
             self.Locked = ko.observable(false);
 
-            self.Submit = function() {
-                self.Locked(true);
+            self.saveCurrentState = function() {
                 var recipients = self._validateRecipients();
                 self._currentState = {
                     FrequencyScheduled: self.SelectedFrequency(),
@@ -188,7 +184,11 @@
                     Recipients: recipients,
                     QueryID: self.QueryID()
                 };
+            }
 
+            self.Submit = function() {
+                self.Locked(true);
+                self.saveCurrentState();
                 if (self.ValidationErrors().length == 0) {
                     backend.SaveSchedule(self._currentState, function(data) {
                         self.Locked(false);
@@ -268,33 +268,38 @@
             }
             self._validateRecipients = function() {
                 var message = "Enter an email address, or multiple addresses separated by a comma";
-                var tmp = self.Recipients().replace(/\s/g, '');
-                tmp = tmp.split(',');
                 var isValid = true;
-                for (i = 0; i < tmp.length; i++) {
-                    if (!self._validateEmail(tmp[i])) {
-                        self._cleanValidationErrors(message);
-                        self.ValidationErrors.push(message);
-                        isValid = false;
-                        break;
+                var tmp = self.Recipients().replace(/\s/g, '');
+                if (tmp.length > 0) {
+                    tmp = tmp.split(',');
+                    for (i = 0; i < tmp.length; i++) {
+                        if (!self._validateEmail(tmp[i])) {
+                            self._cleanValidationErrors(message);
+                            self.ValidationErrors.push(message);
+                            isValid = false;
+                            break;
+                        }
                     }
+                    tmp = tmp.join(",")
                 }
 
                 if (isValid) {
                     self._cleanValidationErrors(message);
-                    return tmp.join(",");
+                    return tmp;
                 }
 
                 return null;
             }
             self._cleanUnsavedChanges = function () {
 
-                self.SelectedFrequency(self._currentState.FrequencyScheduled);
-                self.SelectedDay(self._currentState.DayOfWeek);
-                self.Time(self._currentState.Time);
-                self.DayOfMonth(self._currentState.DayOfMonth);
-                self.Recipients(self._currentState.Recipients);
+                self.SelectedFrequency(self._currentState.frequencyScheduled);
+                self.SelectedDay(self._currentState.dayOfWeek);
+                self.Time(self._currentState.time);
+                self.DayOfMonth(self._currentState.dayOfMonth);
+                self.Recipients(self._currentState.recipients);
             }
+
+            self.saveCurrentState();
 
             return self;
         };
@@ -304,6 +309,9 @@
         backend.GetSchedule(@this.Model.QueryID).done(function(data) {
             modalViewModel = new ModalViewModel(data);
             ko.applyBindings(modalViewModel, $("#scheduledReportsModal")[0]);
+            $("#scheduleTime").click(function() { 
+                $(this).pickatime("open");
+            });
         });
 
 
@@ -311,7 +319,6 @@
             modalViewModel._cleanUnsavedChanges();
             $('.alert').remove();
         });
-
 
     </script>
 
