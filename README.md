@@ -34,7 +34,7 @@ for more information.
 ### Running from Binaries
 
 QueryTree is built using .NET Core. To run QueryTree on your server
-you will need to install the .NET Core 1.1.x runtime. You can download
+you will need to install the .NET Core 2.0.x runtime. You can download
 the installer [here](https://www.microsoft.com/net/download/core#/runtime).
 
 To verify that you have the .NET runtime installed, open a terminal/cmd
