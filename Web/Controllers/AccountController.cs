@@ -11,6 +11,7 @@ using QueryTree.Models;
 using QueryTree.Managers;
 using QueryTree.ViewModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
 
 
 namespace QueryTree.Controllers
@@ -22,7 +23,6 @@ namespace QueryTree.Controllers
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
-        private readonly string _externalCookieScheme;
 
         public AccountController(
             ApplicationDbContext dbContext,
@@ -30,13 +30,11 @@ namespace QueryTree.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             IConfiguration config,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
             ILoggerFactory loggerFactory) : base(userManager, dbContext)
         {
             _config = config;
             _emailSender = emailSender;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -47,7 +45,7 @@ namespace QueryTree.Controllers
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+            await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();

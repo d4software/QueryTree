@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hangfire;
+using Hangfire.SQLite;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +37,6 @@ namespace QueryTree
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
-            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -52,6 +53,15 @@ namespace QueryTree
 
             services.AddMvc();
 
+            services.AddAuthentication()
+                .AddCookie(options => 
+                {                
+                    // Cookie settings
+                    options.ExpireTimeSpan = TimeSpan.FromDays(150);
+                    options.LoginPath = "/Account/LogIn";
+                    options.LogoutPath = "/Account/LogOut";                    
+                });
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
@@ -65,11 +75,6 @@ namespace QueryTree
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
 
-                // Cookie settings
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOut";
-
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
@@ -82,6 +87,10 @@ namespace QueryTree
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
+
+            services.AddHangfire(x => 
+                x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,7 +112,9 @@ namespace QueryTree
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseAuthentication();
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
             app.UseMvc(routes =>
             {
