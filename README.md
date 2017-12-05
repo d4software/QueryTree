@@ -26,7 +26,7 @@ web servers in a load balancing scenario.
 Users may choose to build their own plugins to store database/SSH 
 passwords in an external key vault. This is achieved by implementing 
 a .NET interface and registering the class in the appSettings.config 
-file. See [Building a password manager](#)
+file. See [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
 for more information.
 
 ## Running QueryTree
@@ -142,7 +142,7 @@ that "Orders" have a link to "Customers" so it offers to join the tables.
 (TODO: Screenshot of SQB, selecting Orders table)
 
 For more information on how to help QueryTree automatically join between tables
-in your database see [QueryTree's Auto Join feature](#)
+in your database see [QueryTree's Auto Join feature](https://github.com/d4software/QueryTree/wiki/Auto-Join)
 
 8. Having selected a starting table, and any relevant related tables, click Next.
 The filter panel will open and you will be prompted to add one or more Filters.
@@ -167,13 +167,13 @@ will be returned to the list of reports for this connection.
 
 ## Other Guides
 
- * [Scheduling Reports](#)
- * [Sharing Individual Reports](#)
- * [Team Management](#)
- * [The Advanced Query Builder](#)
- * [Auto Join](#)
- * [Customising QueryTree](#)
- * [Building a password manager](#)
+ * [Scheduling Reports](https://github.com/d4software/QueryTree/wiki/Scheduling-Reports)
+ * [Sharing Individual Reports](https://github.com/d4software/QueryTree/wiki/Sharing-Individual-Reports)
+ * [Team Management](https://github.com/d4software/QueryTree/wiki/Team-Management)
+ * [The Advanced Query Builder](https://github.com/d4software/QueryTree/wiki/The-Advanced-Query-Builder)
+ * [Auto Join](https://github.com/d4software/QueryTree/wiki/Auto-Join)
+ * [Customising QueryTree](https://github.com/d4software/QueryTree/wiki/Customising-QueryTree)
+ * [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
 
 ## License
 
