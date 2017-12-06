@@ -82,6 +82,7 @@ namespace QueryTree
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
+            services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 			services.AddMemoryCache();
 
             services.AddSingleton<IConfiguration>(Configuration);
