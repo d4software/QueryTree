@@ -103,43 +103,43 @@ dotnet test
 1. When first run, QueryTree will have no users and no database connections. Visiting
 app, you will be presented with a login page:
 
-(TODO: screenshot, the login page)
+![The QueryTree login page](http://querytreeapp.com/img/screenshots/querytree-login.png "The QueryTree login page")
 
 2. Click the "Sign up as a new user" button, and enter your details to create a new account.
 
-(TODO: Screenshot, the sign up page)
+![The QueryTree signup page](http://querytreeapp.com/img/screenshots/querytree-signup.png "The QueryTree signup page")
 
 3. Having signed in, you won't have any database connections configured. The system
 will ask you whether you want to set up a connection yourself, or invite another user
 who might be able to do it for you.
 
-(TODO: Screenshot, the onboarding page)
+![The QueryTree onboard page](http://querytreeapp.com/img/screenshots/querytree-onboarding.png "The QueryTree onboarding page")
 
 4. Assuming you have a database that you can connect to, select the "+ Connect Database" 
 option. You will see the Create Connection page:
 
-(TODO: Create connection page)
+![The QueryTree create connection page](http://querytreeapp.com/img/screenshots/querytree-create-connection.png "The QueryTree create connection page")
 
 Once all the information is entered, you can check the connection by pressing the
 "Test Connection" button. If the system reports that the conneciton is working,
 press "Save".
 
-5. You will be taken to the reports list for this connection, but there won't be
-any reports yet:
+![The QueryTree test connection feature](http://querytreeapp.com/img/screenshots/querytree-test-connection.png "The QueryTree test connection feature")
 
-(TODO: Screenshot of the empty reports list)
+5. You will be taken to the reports list for this connection, but there won't be
+any reports yet.
+
+![The QueryTree reports page](http://querytreeapp.com/img/screenshots/querytree-reports-empty.png "The QueryTree reports page")
 
 6. Click on "+ Create Report". You will be taken to the defualt report builder
 
-(TODO: Screenshot of the simple query builder)
-
 7. All reports start by picking a datbase table to start from. From there
 the report builder will prompt you to select any related tables that it can
-join to. For example, in this screenshot, I have selected the "Orders" table
-and QueryTree is prompting me to join the "Customers" table. QueryTree can see
-that "Orders" have a link to "Customers" so it offers to join the tables.
+join to. For example, in this screenshot, I have selected the "orders" table
+and QueryTree is prompting me to join the "users" table. QueryTree can see
+that "orders" has a link to "users" so it offers to join the tables.
 
-(TODO: Screenshot of SQB, selecting Orders table)
+![The QueryTree create report page](http://querytreeapp.com/img/screenshots/querytree-create-report-orders.png "The QueryTree create report page")
 
 For more information on how to help QueryTree automatically join between tables
 in your database see [QueryTree's Auto Join feature](https://github.com/d4software/QueryTree/wiki/Auto-Join)
@@ -147,7 +147,7 @@ in your database see [QueryTree's Auto Join feature](https://github.com/d4softwa
 8. Having selected a starting table, and any relevant related tables, click Next.
 The filter panel will open and you will be prompted to add one or more Filters.
 
-(TODO: Screenshot of the SQB filter panel)
+![The QueryTree report filter panel](http://querytreeapp.com/img/screenshots/querytree-report-filter.png "The QueryTree report filter panel")
 
 9. Once you are happy with the filters, you have the option to summarize the data
 that is being shown in the results panel. Summerizing the data can mean totaling, 
@@ -155,12 +155,12 @@ averaging, counting or finding the minimum/maximum values, for one or more colum
 You can do this for all the data, or for different groups of values. For example, 
 you could find the average value of the orders, for each country.
 
-(TODO: Screenshot of SQB summerize panel)
+![The QueryTree report summerize panel](http://querytreeapp.com/img/screenshots/querytree-report-summerize.png "The QueryTree report summerize panel")
 
 10. Finally, you have the option of generating a chart from the data in the results
 panel.
 
-(TODO: Screenshot of SQB chart)
+![The QueryTree report chart panel](http://querytreeapp.com/img/screenshots/querytree-report-chart.png "The QueryTree report chart panel")
 
 11. Once you are happy with your report, save it by clicking the Save button. You
 will be returned to the list of reports for this connection.
