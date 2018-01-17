@@ -76,17 +76,15 @@ Once the .NET Core SDK is installed, follow these steps:
 
 1. Clone this repo into a folder
 
-2. At the comment prompt, cd int the folder, then into the "Web" folder.
+2. At the command prompt, cd into the folder, then into the "Web" folder.
 
 3. Type:
  
-```
-dotnet restore
-dotnet build
+```sh
 dotnet run
 ```
  
-4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application
+4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
 
 If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
 
