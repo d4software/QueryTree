@@ -61,10 +61,10 @@
                                     </label>
                                     <div class="col-md-8">
                                         <select class="form-control" data-val="true" name="DatabasePermissions[@i].AccessType">
-                                            <option @(Model.DatabasePermissions[i].AccessType == "None" ? "selected='selected'" : "") value="None">None</option>
-                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.Admin.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.Admin.ToString()">Admin</option>
-                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString()">Report Builder</option>
-                                            <option @(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString() ? "selected='selected'" : "") value="@QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString()">Report Viewer</option>
+                                            <option selected="@(Model.DatabasePermissions[i].AccessType == "None")" value="None">None</option>
+                                            <option selected="@(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.Admin.ToString())" value="@QueryTree.Models.UserDatabaseTypes.Admin.ToString()">Admin</option>
+                                            <option selected="@(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString())" value="@QueryTree.Models.UserDatabaseTypes.ReportBuilder.ToString()">Report Builder</option>
+                                            <option selected="@(Model.DatabasePermissions[i].AccessType == QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString())" value="@QueryTree.Models.UserDatabaseTypes.ReportViewer.ToString()">Report Viewer</option>
                                         </select>
                                     </div>
                                 </div>

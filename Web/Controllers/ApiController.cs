@@ -30,22 +30,22 @@ namespace QueryTree.Controllers
         private IPasswordManager _passwordManager;
         private DbManager _dbMgr;
         private IConfiguration _config;
-        private IEmailSender _emailSender;
         private IHostingEnvironment _env;
+        private IScheduledEmailManager _scheduledEmailManager;
 
         public ApiController(
             ApplicationDbContext dbContext,
             IMemoryCache cache, 
             IPasswordManager passwordManager, 
             IConfiguration config, 
-            IEmailSender emailSender,
+            IScheduledEmailManager scheduledEmailManager,
             IHostingEnvironment env)
         {
             db = dbContext;
             _passwordManager = passwordManager;
             _cache = cache;
             _config = config;
-            _emailSender = emailSender;
+            _scheduledEmailManager = scheduledEmailManager;
             _env = env;
             _dbMgr = new DbManager(passwordManager, cache, config);
             this.convertManager = new ConvertManager();
@@ -330,69 +330,8 @@ namespace QueryTree.Controllers
 
 		private void AddOrUpdateJob(ScheduledReport schedule, string editUrl, string period)
 		{
-			RecurringJob.AddOrUpdate(schedule.ScheduleID.ToString(), () => BuildScheduledEmail(schedule.Query.Name, editUrl, schedule.Recipients, schedule.Query.QueryID), period);
+			RecurringJob.AddOrUpdate(schedule.ScheduleID.ToString(), () => _scheduledEmailManager.BuildScheduledEmail(schedule.Query.Name, editUrl, schedule.Recipients, schedule.Query.QueryID), period);
 		}
-
-		public void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId)
-		{
-			if (string.IsNullOrEmpty(recipients))
-			{
-				return;
-			}
-            using (var _db = (ApplicationDbContext)HttpContext.RequestServices.GetService(typeof(ApplicationDbContext)))
-            {
-                var query = _db.Queries.Find(queryId);
-                var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
-                var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
-                var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
-
-                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, null, null);
-
-                var attachment = convertManager.ToExcel(data);
-
-                var message = new MimeKit.MimeMessage();
-
-                foreach (var email in recipients.Split(','))
-                    message.To.Add(new MailboxAddress(email));
-
-                message.From.Add(new MailboxAddress("QueryTree", _config.GetValue<string>("Email:SenderAddress")));
-                message.Subject = string.Format("Here's your scheduled report {0}", queryName);
-
-                // load template
-                string text = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"/EmailTemplates/ScheduledReport.txt"));
-                string html = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"/EmailTemplates/ScheduledReport.html"));
-
-                // set up replacements
-                var replacements = new Dictionary<string, string>
-                {
-                    { "{reportname}", queryName },
-                    { "{editurl}", editUrl }
-                };
-
-                // do replacement
-                foreach (var key in replacements.Keys)
-                {
-                    text = text.Replace(key, replacements[key]);
-                    html = html.Replace(key, replacements[key]);
-                }
-
-                var builder = new BodyBuilder();
-
-                builder.TextBody = text;
-                builder.HtmlBody = html;
-
-                using (var stream = new MemoryStream(attachment))
-                {
-                    var fileName = queryName == null || queryName.Length == 0 ? "report" : queryName;
-                    builder.Attachments.Add(string.Format("{0}.xlsx", fileName), stream);
-                }
-
-                message.Body = builder.ToMessageBody();
-
-                _emailSender.SendMail(message);
-            }
-		}
-
         private string RecipientsValidation(string recipients)
         {
             recipients = recipients.Replace(" ", String.Empty);
