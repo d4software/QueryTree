@@ -23,7 +23,7 @@ namespace QueryTree.Engine.Tests
                         ""Type"": ""Filter"",
                         ""FilterColumnIndex"": 0,
                         ""Operator"": ""GreaterThan"",
-                        ""FilterValue1"": ""5""
+                        ""FilterValue1"": 5
                     }
                 ]";
 			}

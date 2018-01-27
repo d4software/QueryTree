@@ -50,7 +50,7 @@ namespace QueryTree.Engine
                 FilterCompareColumnIndex = Convert.ToInt32(settings["FilterCompareColumnIndex"]);
 
             if (settings.ContainsKey("FilterValue1"))
-                FilterValue1 = (string)settings["FilterValue1"];
+                FilterValue1 = settings["FilterValue1"].ToString();
             else
                 FilterValue1 = null;
 
