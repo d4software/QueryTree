@@ -274,84 +274,87 @@ namespace QueryTree.Controllers
         [HttpPost]
         public async Task<ActionResult> Schedule([FromBody]ScheduledReportViewModel model)
         {
-            var query = await this.db.Queries.FindAsync(model.QueryID);
-            if (query == null)
-            {
-                return BadRequest("Select the Report");
-            }
+            var query = this.db.Queries
+                .Include(q => q.DatabaseConnection)
+                .FirstOrDefault(q => q.QueryID == model.QueryID);
 
-            if (model.FrequencyScheduled == FrequencyScheduled.None)
+            if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
-                // Remove schedule
-                var schedule = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
-                if (schedule != null)
+                if (model.FrequencyScheduled == FrequencyScheduled.None)
                 {
-                    this.db.ScheduledReports.Remove(schedule);
-                    await this.db.SaveChangesAsync();
+                    // Remove schedule
+                    var schedule = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
+                    if (schedule != null)
+                    {
+                        this.db.ScheduledReports.Remove(schedule);
+                        await this.db.SaveChangesAsync();
+                    }
+
+                    // Remove schedule job
+                    this.RemoveScheduleJob(model.QueryID.ToString());
+
+                    return StatusCode((int)HttpStatusCode.OK);
                 }
 
-                // Remove schedule job
-                this.RemoveScheduleJob(model.QueryID.ToString());
+                if (model.FrequencyScheduled == FrequencyScheduled.Monthly &&
+                    (!model.DayOfMonth.HasValue || model.DayOfMonth < 1 || model.DayOfMonth > 32))
+                {
+                    return BadRequest("Select the correct Day of the Month");
+                }
+
+                DateTime dateValue;
+                if (!DateTime.TryParseExact(model.Time, "h:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    return BadRequest("Select the correct Time");
+                }
+
+                Regex regex = new Regex(@"^(?!.*<[^>]+>).*");
+                if (!regex.IsMatch(model.Recipients))
+                {
+                    return BadRequest("No html tags allowed");
+                }
+
+                var recipients = this.RecipientsValidation(model.Recipients);
+                if(string.IsNullOrEmpty(recipients))
+                {
+                    return BadRequest("Wrong 'Recipients' format. Only e-mails are separated by comma");
+                }
+
+                ScheduledReport scheduleReport = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
+
+                if (scheduleReport == null)
+                {
+                    scheduleReport = new ScheduledReport
+                    {
+                        FrequencyScheduled = model.FrequencyScheduled,
+                        Time = dateValue.TimeOfDay,
+                        DayOfWeek = model.DayOfWeek,
+                        DayOfMonth = model.DayOfMonth,
+                        Recipients = recipients,
+                        Query = query
+                    };
+
+                    this.db.ScheduledReports.Add(scheduleReport);
+                }
+                else
+                {
+                    scheduleReport.FrequencyScheduled = model.FrequencyScheduled;
+                    scheduleReport.Time = dateValue.TimeOfDay;
+                    scheduleReport.DayOfWeek = model.DayOfWeek;
+                    scheduleReport.DayOfMonth = model.DayOfMonth;
+                    scheduleReport.Recipients = recipients;
+
+                    this.db.Entry(scheduleReport).State = EntityState.Modified;
+                }
+
+                await this.db.SaveChangesAsync();
+
+                this.AddOrUpdateScheduleTask(scheduleReport);
 
                 return StatusCode((int)HttpStatusCode.OK);
             }
 
-            if (model.FrequencyScheduled == FrequencyScheduled.Monthly &&
-                (!model.DayOfMonth.HasValue || model.DayOfMonth < 1 || model.DayOfMonth > 32))
-            {
-                return BadRequest("Select the correct Day of the Month");
-            }
-
-            DateTime dateValue;
-            if (!DateTime.TryParseExact(model.Time, "h:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
-            {
-                return BadRequest("Select the correct Time");
-            }
-
-            Regex regex = new Regex(@"^(?!.*<[^>]+>).*");
-            if (!regex.IsMatch(model.Recipients))
-            {
-                return BadRequest("No html tags allowed");
-            }
-
-            var recipients = this.RecipientsValidation(model.Recipients);
-            if(string.IsNullOrEmpty(recipients))
-            {
-                return BadRequest("Wrong 'Recipients' format. Only e-mails are separated by comma");
-            }
-
-            ScheduledReport scheduleReport = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
-
-            if (scheduleReport == null)
-            {
-                scheduleReport = new ScheduledReport
-                {
-                    FrequencyScheduled = model.FrequencyScheduled,
-                    Time = dateValue.TimeOfDay,
-                    DayOfWeek = model.DayOfWeek,
-                    DayOfMonth = model.DayOfMonth,
-                    Recipients = recipients,
-                    Query = query
-                };
-
-                this.db.ScheduledReports.Add(scheduleReport);
-            }
-            else
-            {
-                scheduleReport.FrequencyScheduled = model.FrequencyScheduled;
-                scheduleReport.Time = dateValue.TimeOfDay;
-                scheduleReport.DayOfWeek = model.DayOfWeek;
-                scheduleReport.DayOfMonth = model.DayOfMonth;
-                scheduleReport.Recipients = recipients;
-
-                this.db.Entry(scheduleReport).State = EntityState.Modified;
-            }
-
-            await this.db.SaveChangesAsync();
-
-            this.AddOrUpdateScheduleTask(scheduleReport);
-
-            return StatusCode((int)HttpStatusCode.OK);
+            return NotFound();
         }
 
         private void AddOrUpdateScheduleTask(ScheduledReport scheduledReport)
@@ -411,21 +414,30 @@ namespace QueryTree.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> Schedule(int id)
+        public async Task<ActionResult> Schedule(int id)
         {
-            var result = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == id);
-            ScheduledReportViewModel model = null;
-
-            if (result == null)
+            var result = await this.db.ScheduledReports
+                .Include(s => s.Query)
+                .Include(s => s.Query.DatabaseConnection)
+                .FirstOrDefaultAsync(m => m.ScheduleID == id);
+            
+            if (CanUserAccessDatabase(result.Query.DatabaseConnection))
             {
-                model = new ScheduledReportViewModel();
-            }
-            else
-            {
-                model = new ScheduledReportViewModel(result);
-            }
+                ScheduledReportViewModel model = null;
 
-            return this.Json(model);
+                if (result == null)
+                {
+                    model = new ScheduledReportViewModel();
+                }
+                else
+                {
+                    model = new ScheduledReportViewModel(result);
+                }
+
+                return this.Json(model);
+            }
+            
+            return NotFound();
         }
 
         #endregion
