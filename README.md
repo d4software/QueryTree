@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/d4software/QueryTree.svg?style=svg)](https://circleci.com/gh/d4software/QueryTree)
+
 # QueryTree
 
 QueryTree is an ad-hoc reporting tool that works with any Microsoft 
