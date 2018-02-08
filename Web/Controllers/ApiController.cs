@@ -421,20 +421,16 @@ namespace QueryTree.Controllers
                 .Include(s => s.Query.DatabaseConnection)
                 .FirstOrDefaultAsync(m => m.ScheduleID == id);
             
-            if (CanUserAccessDatabase(result.Query.DatabaseConnection))
+            ScheduledReportViewModel model = null;
+
+            if (result == null)
             {
-                ScheduledReportViewModel model = null;
-
-                if (result == null)
-                {
-                    model = new ScheduledReportViewModel();
-                }
-                else
-                {
-                    model = new ScheduledReportViewModel(result);
-                }
-
-                return this.Json(model);
+                return Json(new ScheduledReportViewModel());
+            }
+            else if (CanUserAccessDatabase(result.Query.DatabaseConnection))
+            {
+                model = new ScheduledReportViewModel(result);
+                return Json(model);
             }
             
             return NotFound();
