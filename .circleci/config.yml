@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  test:
+    build:
+      docker:
+        - image: microsoft/dotnet:2.0-sdk-stretch
+      steps:
+        - checkout
+        - run: dotnet test ./Tests/Tests.csproj -v n
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
