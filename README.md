@@ -98,6 +98,10 @@ To run the automated tests in this project, cd into the "Tests" folder, then typ
 dotnet test
 ```
 
+### Running with docker
+
+See the full docker guide: [docs/docker.md](/docs/docker.md)
+
 ## Getting Started
 
 1. When first run, QueryTree will have no users and no database connections. Visiting
