@@ -324,6 +324,7 @@ tools.IsNumericType = function (theType) {
         case "SERIAL": 
         case "BIGSERIAL":
         case "INT4":
+        case "INT8":
             return true;
         default:
             return false;
