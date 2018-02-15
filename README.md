@@ -182,7 +182,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-QueryTree is licensed under the LGPLv3 license. See the LICENSE.md 
+QueryTree is licensed under the LGPLv3 license. See the [LICENSE](/LICENSE)
 file for more information.
 
 QueryTree is distributed in the hope that it will be useful,
