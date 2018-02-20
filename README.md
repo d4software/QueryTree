@@ -28,7 +28,7 @@ web servers in a load balancing scenario.
 Users may choose to build their own plugins to store database/SSH 
 passwords in an external key vault. This is achieved by implementing 
 a .NET interface and registering the class in the appSettings.config 
-file. See [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
+file. See [Building a password manager](/docs/password-manager.md)
 for more information.
 
 ## Running QueryTree
@@ -146,7 +146,7 @@ that "orders" has a link to "users" so it offers to join the tables.
 ![The QueryTree create report page](http://querytreeapp.com/img/screenshots/querytree-create-report-orders.png "The QueryTree create report page")
 
 For more information on how to help QueryTree automatically join between tables
-in your database see [QueryTree's Auto Join feature](https://github.com/d4software/QueryTree/wiki/Auto-Join)
+in your database see [QueryTree's Auto Join feature](/docs/autojoin.md)
 
 8. Having selected a starting table, and any relevant related tables, click Next.
 The filter panel will open and you will be prompted to add one or more Filters.
@@ -171,13 +171,13 @@ will be returned to the list of reports for this connection.
 
 ## Other Guides
 
- * [Scheduling Reports](https://github.com/d4software/QueryTree/wiki/Scheduling-Reports)
- * [Sharing Individual Reports](https://github.com/d4software/QueryTree/wiki/Sharing-Individual-Reports)
- * [Team Management](https://github.com/d4software/QueryTree/wiki/Team-Management)
- * [The Advanced Query Builder](https://github.com/d4software/QueryTree/wiki/The-Advanced-Query-Builder)
- * [Auto Join](https://github.com/d4software/QueryTree/wiki/Auto-Join)
- * [Customising QueryTree](https://github.com/d4software/QueryTree/wiki/Customising-QueryTree)
- * [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
+ * [Scheduling Reports](/docs/scheduling.md)
+ * [Sharing Individual Reports](/docs/sharing.md)
+ * [Team Management](/docs/teams.md)
+ * [The Advanced Query Builder](/docs/advanced.md)
+ * [Auto Join](/docs/autojoin.md)
+ * [Customizing QueryTree](/docs/customizing.md)
+ * [Building a password manager](/docs/password-manager.md)
 
 ## License
 
@@ -186,7 +186,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-QueryTree is licensed under the LGPLv3 license. See the LICENSE.md 
+QueryTree is licensed under the LGPLv3 license. See the [LICENSE](/LICENSE)
 file for more information.
 
 QueryTree is distributed in the hope that it will be useful,

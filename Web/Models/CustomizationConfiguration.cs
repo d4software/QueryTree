@@ -10,5 +10,6 @@ namespace QueryTree.Models
         public string SystemName { get; set; }
         public string SystemLogo { get; set; }
         public string ExtraCSS { get; set; }
+        public bool AllowAdvancedQuery { get; set; }
     }
 }

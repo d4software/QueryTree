@@ -88,6 +88,7 @@ namespace QueryTree
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
+            services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
 
             services.AddHangfire(x => 
                 x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))

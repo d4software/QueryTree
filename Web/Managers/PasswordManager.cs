@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using QueryTree.Models;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace QueryTree.Managers
 {
@@ -21,14 +23,17 @@ namespace QueryTree.Managers
     {
 		private ApplicationDbContext _db;
 		private IHostingEnvironment _env;
+        private IOptions<PasswordsConfiguration> _config;
 
 		public PasswordManager(
             ApplicationDbContext dbContext,
-            IHostingEnvironment environment
+            IHostingEnvironment environment,
+            IOptions<PasswordsConfiguration> config
         )
         {
             _db = dbContext;
             _env = environment;
+            _config = config;
         }
 
         private byte[] GetRandomBytes(int len)
@@ -104,9 +109,9 @@ namespace QueryTree.Managers
 
         private byte[] GetKey()
         {
-			var keyFilePath = _env.ContentRootPath
-               + Path.DirectorySeparatorChar.ToString()
-               + "querytree.key";
+			var keyFilePath = Path.IsPathRooted(_config.Value.Keyfile) ?
+                _config.Value.Keyfile :
+                Path.Combine(_env.ContentRootPath, _config.Value.Keyfile);
             
             if (File.Exists(keyFilePath))
             {
