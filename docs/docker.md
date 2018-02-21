@@ -97,7 +97,7 @@ The Dockerfile uses multistage builds. It builds and runs QueryTree in two steps
 To build a local container image using this method you can run the following command in the project root:
 
 ```sh
-docker build -t QueryTree .
+docker build -t querytree .
 ```
 
 ## Skipping the build step
