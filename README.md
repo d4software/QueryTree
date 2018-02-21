@@ -64,10 +64,10 @@ dotnet QueryTree.dll
 
 4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application.
 
-5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction?tabs=aspnetcore1x
+5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
 
 You can also host QueryTree using IIS. For information on running .NET Core apps
-in IIS see: https://docs.microsoft.com/en-us/aspnet/core/publishing/iis?tabs=aspnetcore1x
+in IIS see: https://docs.microsoft.com/en-us/aspnet/core/publishing/iis
 
 ### Running from Source
 
