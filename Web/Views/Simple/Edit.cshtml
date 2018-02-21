@@ -1,4 +1,7 @@
 ﻿@model QueryTree.Models.Query
+@using Microsoft.Extensions.Options;
+@using QueryTree.Models
+@inject IOptions<CustomizationConfiguration> CustomizationConfiguration
 
 @{
 	ViewBag.Title = "Edit";
@@ -6,7 +9,11 @@
 }    
 <div class="row">
     <div class="col-md-8">
-        <h3>Edit your report<span class="small"> or <a href="#" data-toggle="modal" data-target="#myModal">convert to an advanced query</a>.</span></h3>
+        <h3>Edit your report<span class="small">
+        @if (CustomizationConfiguration.Value.AllowAdvancedQuery)
+        {
+            @:, or <a href="#" data-toggle="modal" data-target="#myModal">convert to an advanced query</a>.</span></h3>
+        } 
     </div>
     <div class="col-md-4" style="text-align:right; margin-top:21px">
         @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-default" })

@@ -10,6 +10,7 @@ using QueryTree.Models;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 using MimeKit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -54,7 +55,10 @@ namespace QueryTree.Managers
 				return;
 			}
             
-            var query = _db.Queries.Find(queryId);
+            var query = _db.Queries
+                .Include(q => q.DatabaseConnection)
+                .First(q => q.QueryID == queryId);
+                
             var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
             var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
             var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
@@ -72,8 +76,8 @@ namespace QueryTree.Managers
             message.Subject = string.Format("Here's your scheduled report {0}", queryName);
 
             // load template
-            string text = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"/EmailTemplates/ScheduledReport.txt"));
-            string html = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"/EmailTemplates/ScheduledReport.html"));
+            string text = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"../EmailTemplates/ScheduledReport.txt"));
+            string html = System.IO.File.ReadAllText(Path.Combine(_env.WebRootPath, @"../EmailTemplates/ScheduledReport.html"));
 
             // set up replacements
             var replacements = new Dictionary<string, string>

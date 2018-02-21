@@ -292,11 +292,11 @@
             }
             self._cleanUnsavedChanges = function () {
 
-                self.SelectedFrequency(self._currentState.frequencyScheduled);
-                self.SelectedDay(self._currentState.dayOfWeek);
-                self.Time(self._currentState.time);
-                self.DayOfMonth(self._currentState.dayOfMonth);
-                self.Recipients(self._currentState.recipients);
+                self.SelectedFrequency(self._currentState.FrequencyScheduled);
+                self.SelectedDay(self._currentState.DayOfWeek);
+                self.Time(self._currentState.Time);
+                self.DayOfMonth(self._currentState.DayOfMonth);
+                self.Recipients(self._currentState.Recipients);
             }
 
             self.saveCurrentState();

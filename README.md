@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/d4software/QueryTree.svg?style=svg)](https://circleci.com/gh/d4software/QueryTree)
+
 # QueryTree
 
 QueryTree is an ad-hoc reporting tool that works with any Microsoft 
@@ -26,7 +28,7 @@ web servers in a load balancing scenario.
 Users may choose to build their own plugins to store database/SSH 
 passwords in an external key vault. This is achieved by implementing 
 a .NET interface and registering the class in the appSettings.config 
-file. See [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
+file. See [Building a password manager](/docs/password-manager.md)
 for more information.
 
 ## Running QueryTree
@@ -76,17 +78,15 @@ Once the .NET Core SDK is installed, follow these steps:
 
 1. Clone this repo into a folder
 
-2. At the comment prompt, cd int the folder, then into the "Web" folder.
+2. At the command prompt, cd into the folder, then into the "Web" folder.
 
 3. Type:
  
-```
-dotnet restore
-dotnet build
+```sh
 dotnet run
 ```
  
-4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application
+4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
 
 If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
 
@@ -142,7 +142,7 @@ that "orders" has a link to "users" so it offers to join the tables.
 ![The QueryTree create report page](http://querytreeapp.com/img/screenshots/querytree-create-report-orders.png "The QueryTree create report page")
 
 For more information on how to help QueryTree automatically join between tables
-in your database see [QueryTree's Auto Join feature](https://github.com/d4software/QueryTree/wiki/Auto-Join)
+in your database see [QueryTree's Auto Join feature](/docs/autojoin.md)
 
 8. Having selected a starting table, and any relevant related tables, click Next.
 The filter panel will open and you will be prompted to add one or more Filters.
@@ -167,13 +167,13 @@ will be returned to the list of reports for this connection.
 
 ## Other Guides
 
- * [Scheduling Reports](https://github.com/d4software/QueryTree/wiki/Scheduling-Reports)
- * [Sharing Individual Reports](https://github.com/d4software/QueryTree/wiki/Sharing-Individual-Reports)
- * [Team Management](https://github.com/d4software/QueryTree/wiki/Team-Management)
- * [The Advanced Query Builder](https://github.com/d4software/QueryTree/wiki/The-Advanced-Query-Builder)
- * [Auto Join](https://github.com/d4software/QueryTree/wiki/Auto-Join)
- * [Customising QueryTree](https://github.com/d4software/QueryTree/wiki/Customising-QueryTree)
- * [Building a password manager](https://github.com/d4software/QueryTree/wiki/Building-a-password-manager)
+ * [Scheduling Reports](/docs/scheduling.md)
+ * [Sharing Individual Reports](/docs/sharing.md)
+ * [Team Management](/docs/teams.md)
+ * [The Advanced Query Builder](/docs/advanced.md)
+ * [Auto Join](/docs/autojoin.md)
+ * [Customizing QueryTree](/docs/customizing.md)
+ * [Building a password manager](/docs/password-manager.md)
 
 ## License
 
@@ -182,7 +182,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-QueryTree is licensed under the LGPLv3 license. See the LICENSE.md 
+QueryTree is licensed under the LGPLv3 license. See the [LICENSE](/LICENSE)
 file for more information.
 
 QueryTree is distributed in the hope that it will be useful,

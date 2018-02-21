@@ -15,13 +15,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using Microsoft.AspNetCore.Identity;
 
 namespace QueryTree.Controllers
 {
+    [Authorize]
     public class ApiController : Controller
     {
         protected ApplicationDbContext db;
@@ -32,8 +35,11 @@ namespace QueryTree.Controllers
         private IConfiguration _config;
         private IHostingEnvironment _env;
         private IScheduledEmailManager _scheduledEmailManager;
+        private ApplicationUser _currentUser;
 
-        public ApiController(
+        protected UserManager<ApplicationUser> _userManager;
+
+        public ApiController(UserManager<ApplicationUser> userManager, 
             ApplicationDbContext dbContext,
             IMemoryCache cache, 
             IPasswordManager passwordManager, 
@@ -41,6 +47,7 @@ namespace QueryTree.Controllers
             IScheduledEmailManager scheduledEmailManager,
             IHostingEnvironment env)
         {
+            _userManager = userManager;
             db = dbContext;
             _passwordManager = passwordManager;
             _cache = cache;
@@ -50,6 +57,20 @@ namespace QueryTree.Controllers
             _dbMgr = new DbManager(passwordManager, cache, config);
             this.convertManager = new ConvertManager();
         }
+
+		public ApplicationUser CurrentUser
+		{
+			get
+			{
+                if (_currentUser == null)
+                {
+					string userId = _userManager.GetUserId(User);
+					_currentUser = db.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
+                }
+
+                return _currentUser;
+			}
+		}
 
         private DatabaseConnection GetConnection(int databaseId)
         {
@@ -103,13 +124,33 @@ namespace QueryTree.Controllers
             }
         }
 
+        private bool CanUserAccessDatabase(DatabaseConnection connection)
+        {
+            var userPermissions = db.UserDatabaseConnections
+                .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
+                .ToList();
+
+            if (PermissionMgr.UserCanViewDatabase(userPermissions, connection) == false && connection.OrganisationId != CurrentUser.OrganisationId)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         [HttpGet("/api/connections/{databaseId}/status/")]
         public ActionResult GetConnectionStatus(int databaseId)
         {
             var connection = GetConnection(databaseId);
-            var statusText = _dbMgr.CheckConnection(connection) ? "ok" : "error";
 
-            return Json(new { status = statusText });
+            if (CanUserAccessDatabase(connection))
+            {            
+                var statusText = _dbMgr.CheckConnection(connection) ? "ok" : "error";
+
+                return Json(new { status = statusText });
+            }
+            
+            return NotFound();
         }
 
         [HttpGet("/api/connections/{databaseId}/tables/")]
@@ -117,11 +158,14 @@ namespace QueryTree.Controllers
         {
             var connection = GetConnection(databaseId);
 
-            var dbModel = _dbMgr.GetDbModel(connection);
-            if (dbModel != null)
+            if (CanUserAccessDatabase(connection))
             {
-                var tables = dbModel.Tables.Select(t => t.DisplayName).ToList();
-                return Json(tables);
+                var dbModel = _dbMgr.GetDbModel(connection);
+                if (dbModel != null)
+                {
+                    var tables = dbModel.Tables.Select(t => t.DisplayName).ToList();
+                    return Json(tables);
+                }
             }
 
             return this.NotFound();
@@ -132,19 +176,22 @@ namespace QueryTree.Controllers
         {
             var connection = GetConnection(databaseId);
 
-            var dbModel = _dbMgr.GetDbModel(connection);
-
-            if (dbModel != null && dbModel.Tables.Any(t => t.DisplayName == tableName))
+            if (CanUserAccessDatabase(connection))
             {
-                var table = dbModel.Tables.First(t => t.DisplayName == tableName);
-                if (table != null)
+                var dbModel = _dbMgr.GetDbModel(connection);
+
+                if (dbModel != null && dbModel.Tables.Any(t => t.DisplayName == tableName))
                 {
-                    var joinStructure = _dbMgr.GetJoinStructure(table);
-                    return Json(joinStructure);
+                    var table = dbModel.Tables.First(t => t.DisplayName == tableName);
+                    if (table != null)
+                    {
+                        var joinStructure = _dbMgr.GetJoinStructure(table);
+                        return Json(joinStructure);
+                    }
                 }
             }
 
-            return this.NotFound();
+            return NotFound();
         }
 
         #endregion
@@ -184,9 +231,16 @@ namespace QueryTree.Controllers
 
             var connection = GetConnection(cacheObj.DatabaseId);
 
-            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
+            if (CanUserAccessDatabase(connection))
+            {
+                var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
 
-            return Json(data);
+                return Json(data);
+            }
+            else 
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("/api/cache/{id}/{nodeId}/export/")]
@@ -201,11 +255,16 @@ namespace QueryTree.Controllers
 
             var connection = GetConnection(cacheObj.DatabaseId);
 
-            var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
+            if (CanUserAccessDatabase(connection))
+            {
+                var data = _dbMgr.GetData(connection, cacheObj.Nodes, nodeId, startRow, rowCount);
 
-            var result = this.convertManager.ToExcel(data);
+                var result = this.convertManager.ToExcel(data);
 
-            return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+                return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+            }
+            
+            return NotFound();
         }
 
         #endregion
@@ -215,84 +274,87 @@ namespace QueryTree.Controllers
         [HttpPost]
         public async Task<ActionResult> Schedule([FromBody]ScheduledReportViewModel model)
         {
-            var query = await this.db.Queries.FindAsync(model.QueryID);
-            if (query == null)
-            {
-                return BadRequest("Select the Report");
-            }
+            var query = this.db.Queries
+                .Include(q => q.DatabaseConnection)
+                .FirstOrDefault(q => q.QueryID == model.QueryID);
 
-            if (model.FrequencyScheduled == FrequencyScheduled.None)
+            if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
-                // Remove schedule
-                var schedule = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
-                if (schedule != null)
+                if (model.FrequencyScheduled == FrequencyScheduled.None)
                 {
-                    this.db.ScheduledReports.Remove(schedule);
-                    await this.db.SaveChangesAsync();
+                    // Remove schedule
+                    var schedule = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
+                    if (schedule != null)
+                    {
+                        this.db.ScheduledReports.Remove(schedule);
+                        await this.db.SaveChangesAsync();
+                    }
+
+                    // Remove schedule job
+                    this.RemoveScheduleJob(model.QueryID.ToString());
+
+                    return StatusCode((int)HttpStatusCode.OK);
                 }
 
-                // Remove schedule job
-                this.RemoveScheduleJob(model.QueryID.ToString());
+                if (model.FrequencyScheduled == FrequencyScheduled.Monthly &&
+                    (!model.DayOfMonth.HasValue || model.DayOfMonth < 1 || model.DayOfMonth > 32))
+                {
+                    return BadRequest("Select the correct Day of the Month");
+                }
+
+                DateTime dateValue;
+                if (!DateTime.TryParseExact(model.Time, "h:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    return BadRequest("Select the correct Time");
+                }
+
+                Regex regex = new Regex(@"^(?!.*<[^>]+>).*");
+                if (!regex.IsMatch(model.Recipients))
+                {
+                    return BadRequest("No html tags allowed");
+                }
+
+                var recipients = this.RecipientsValidation(model.Recipients);
+                if(string.IsNullOrEmpty(recipients))
+                {
+                    return BadRequest("Wrong 'Recipients' format. Only e-mails are separated by comma");
+                }
+
+                ScheduledReport scheduleReport = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
+
+                if (scheduleReport == null)
+                {
+                    scheduleReport = new ScheduledReport
+                    {
+                        FrequencyScheduled = model.FrequencyScheduled,
+                        Time = dateValue.TimeOfDay,
+                        DayOfWeek = model.DayOfWeek,
+                        DayOfMonth = model.DayOfMonth,
+                        Recipients = recipients,
+                        Query = query
+                    };
+
+                    this.db.ScheduledReports.Add(scheduleReport);
+                }
+                else
+                {
+                    scheduleReport.FrequencyScheduled = model.FrequencyScheduled;
+                    scheduleReport.Time = dateValue.TimeOfDay;
+                    scheduleReport.DayOfWeek = model.DayOfWeek;
+                    scheduleReport.DayOfMonth = model.DayOfMonth;
+                    scheduleReport.Recipients = recipients;
+
+                    this.db.Entry(scheduleReport).State = EntityState.Modified;
+                }
+
+                await this.db.SaveChangesAsync();
+
+                this.AddOrUpdateScheduleTask(scheduleReport);
 
                 return StatusCode((int)HttpStatusCode.OK);
             }
 
-            if (model.FrequencyScheduled == FrequencyScheduled.Monthly &&
-                (!model.DayOfMonth.HasValue || model.DayOfMonth < 1 || model.DayOfMonth > 32))
-            {
-                return BadRequest("Select the correct Day of the Month");
-            }
-
-            DateTime dateValue;
-            if (!DateTime.TryParseExact(model.Time, "h:mm tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
-            {
-                return BadRequest("Select the correct Time");
-            }
-
-            Regex regex = new Regex(@"^(?!.*<[^>]+>).*");
-            if (!regex.IsMatch(model.Recipients))
-            {
-                return BadRequest("No html tags allowed");
-            }
-
-            var recipients = this.RecipientsValidation(model.Recipients);
-            if(string.IsNullOrEmpty(recipients))
-            {
-                return BadRequest("Wrong 'Recipients' format. Only e-mails are separated by comma");
-            }
-
-            ScheduledReport scheduleReport = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == model.QueryID);
-
-            if (scheduleReport == null)
-            {
-                scheduleReport = new ScheduledReport
-                {
-                    FrequencyScheduled = model.FrequencyScheduled,
-                    Time = dateValue.TimeOfDay,
-                    DayOfWeek = model.DayOfWeek,
-                    DayOfMonth = model.DayOfMonth,
-                    Recipients = recipients,
-                    Query = query
-                };
-
-                this.db.ScheduledReports.Add(scheduleReport);
-            }
-            else
-            {
-                scheduleReport.FrequencyScheduled = model.FrequencyScheduled;
-                scheduleReport.Time = dateValue.TimeOfDay;
-                scheduleReport.DayOfWeek = model.DayOfWeek;
-                scheduleReport.DayOfMonth = model.DayOfMonth;
-                scheduleReport.Recipients = recipients;
-
-                this.db.Entry(scheduleReport).State = EntityState.Modified;
-            }
-
-            await this.db.SaveChangesAsync();
-
-            this.AddOrUpdateScheduleTask(scheduleReport);
-
-            return StatusCode((int)HttpStatusCode.OK);
+            return NotFound();
         }
 
         private void AddOrUpdateScheduleTask(ScheduledReport scheduledReport)
@@ -352,21 +414,26 @@ namespace QueryTree.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> Schedule(int id)
+        public async Task<ActionResult> Schedule(int id)
         {
-            var result = await this.db.ScheduledReports.FirstOrDefaultAsync(m => m.ScheduleID == id);
+            var result = await this.db.ScheduledReports
+                .Include(s => s.Query)
+                .Include(s => s.Query.DatabaseConnection)
+                .FirstOrDefaultAsync(m => m.ScheduleID == id);
+            
             ScheduledReportViewModel model = null;
 
             if (result == null)
             {
-                model = new ScheduledReportViewModel();
+                return Json(new ScheduledReportViewModel());
             }
-            else
+            else if (CanUserAccessDatabase(result.Query.DatabaseConnection))
             {
                 model = new ScheduledReportViewModel(result);
+                return Json(model);
             }
-
-            return this.Json(model);
+            
+            return NotFound();
         }
 
         #endregion
@@ -381,24 +448,22 @@ namespace QueryTree.Controllers
                 .ThenInclude(c => c.SshKeyFile)
                 .FirstOrDefault(q => q.QueryID == queryId);
 
-            // TODO: Check user has access to this query
-
-            if (query == null)
+            if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
-                return BadRequest("Select the Report");
+                var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
+                var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
+                var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
+
+                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, start, length);
+                var rows = data.Rows;
+                var totalCount = data.RowCount;
+
+                var dataTable = new {draw = draw, recordsTotal = totalCount, recordsFiltered = totalCount, data = rows};
+
+                return Json(dataTable);
             }
-
-            var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
-            var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
-            var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
-
-            var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, start, length);
-            var rows = data.Rows;
-            var totalCount = data.RowCount;
-
-            var dataTable = new {draw = draw, recordsTotal = totalCount, recordsFiltered = totalCount, data = rows};
-
-            return Json(dataTable);
+            
+            return NotFound();
         }
 
         [HttpGet("/api/queries/{queryId}/columns/")]
@@ -409,20 +474,18 @@ namespace QueryTree.Controllers
                 .ThenInclude(c => c.SshKeyFile)
                 .FirstOrDefault(q => q.QueryID == queryId);
             
-            // TODO: Check user has access to this query
-
-            if (query == null)
+            if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
-                return BadRequest("Select the Report");
+                var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
+                var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
+                var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
+
+                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, 0, 0);
+
+                return Json(data.Columns);
             }
-
-            var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
-            var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
-            var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
-
-            var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, 0, 0);
-
-            return Json(data.Columns);
+            
+            return NotFound();
         }
 
         [HttpGet("/api/queries/{id}/export/")]
@@ -433,21 +496,20 @@ namespace QueryTree.Controllers
                 .ThenInclude(c => c.SshKeyFile)
                 .FirstOrDefault(q => q.QueryID == id);
 
-            // TODO: Check the user has access to this query
-
-            if (query == null)
+            if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
-                return NotFound("Data were not found");
+                var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
+                var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
+                var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
+
+                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, null, null);
+
+                var result = this.convertManager.ToExcel(data);
+
+                return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
             }
-            var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
-            var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
-            var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
 
-            var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, null, null);
-
-            var result = this.convertManager.ToExcel(data);
-
-            return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+            return NotFound();
         }
 
         #endregion

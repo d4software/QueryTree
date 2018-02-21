@@ -32,6 +32,7 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet">
       <Version>2.0.0-*</Version>
     </DotNetCliToolReference>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.7.2" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="Respond" Version="1.4.2" />
