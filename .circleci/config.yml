@@ -1,13 +1,45 @@
 version: 2
 jobs:
+  build:
+    docker:
+      - image: microsoft/dotnet:2.0-sdk-stretch
+    steps:
+      - checkout
+      - run: dotnet build ./Web/QueryTree.csproj -v n
   test:
     docker:
       - image: microsoft/dotnet:2.0-sdk-stretch
     steps:
       - checkout
       - run: dotnet test ./Tests/Tests.csproj -v n
+  docker-publish:
+   machine: true
+   steps:
+     - checkout
+     - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+     - run:
+        name: Build image
+        command: |
+          if [ $CIRCLE_BRANCH = 'master' ]; then
+            docker build -t d4software/querytree:latest -t d4software/querytree:$CIRCLE_BRANCH -t d4software/querytree:$(echo $CIRCLE_SHA1 | cut -c -7) .
+            docker push d4software/querytree:latest
+          else
+            docker build -t d4software/querytree:$CIRCLE_BRANCH -t d4software/querytree:$(echo $CIRCLE_SHA1 | cut -c -7) .
+          fi
+     # deploy the image
+     - run: docker push d4software/querytree:$CIRCLE_BRANCH
+     - run: docker push d4software/querytree:$(echo $CIRCLE_SHA1 | cut -c -7)
+
 workflows:
   version: 2
   test:
     jobs:
-      - test
+        - test
+  docker-publish:
+    jobs:
+        - build
+        - test
+        - docker-publish:
+            requires:
+              - test
+              - build
