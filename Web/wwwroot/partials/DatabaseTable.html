@@ -5,6 +5,6 @@
     <select name="Table" data-bind="options: Tables, value: Table, visible: TablesLoading() === false && Tables().length > 0">
     </select>
     <p data-bind="visible: TablesLoading() === false && Tables().length == 0">No tables found</p>
-    <img src="https://querytree.blob.core.windows.net/img/loading-dark.gif" data-bind="visible: TablesLoading "/>
+    <img src="/images/loading.gif" data-bind="visible: TablesLoading "/>
     <a class="refreshData">Refresh Tables</a>
 </form>

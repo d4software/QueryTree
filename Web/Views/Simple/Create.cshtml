@@ -25,13 +25,13 @@
     <div class="panel-heading clearfix">
         <a href="#" data-bind="click: function() { $root.section(1); }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-list-alt"></span> Select your table</h3></a>
         <span class="label label-success pull-right" data-bind="visible: !$root.loading() && (typeof rowCount() === 'number'), text: rowCount() + ' rows'" style="display: none;"></span>
-        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: $root.loading">
+        <img src="/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: $root.loading">
     </div>
     <div class="panel-body collapse in toolDataTable" data-bind="css: { 'in': $root.section() == 1 }">
         <div id="node_status_panel" class="loading_section" data-bind="visible: TablesLoading">
             <span>Connecting to your database</span>
             <br />
-            <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" />
+            <img src="/images/loading.gif" />
         </div>
         <div class="form-inline" style="overflow: auto; display:none;"  data-bind="visible: !TablesLoading()">
             <div class="form-group">
@@ -89,7 +89,7 @@
     <div class="panel-heading clearfix">
         <a href="#" data-bind="click: function() { if (currentData()) { section(2); } }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-filter"></span> Filter your data</h3></a>
         <span class="label label-success pull-right" data-bind="visible: filters().length > 0 && !loading() && typeof filteredRowCount() === 'number', text: filteredRowCount() + ' rows'" style="display: none;"></span>
-        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">
+        <img src="/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">
     </div>
     <div class="panel-body collapse toolFilterTool" data-bind="css: { 'in': $root.section() == 2 }">        
         <!-- ko if: filters().length == 0 -->
@@ -149,7 +149,7 @@
         <span class="label label-success pull-right" data-bind="visible: !$root.loading() && (typeof rowCount() === 'number'), text: rowCount() + ' rows'" style="display: none;"></span>
         <!--/ko-->   
         <!--/ko-->
-        <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">    
+        <img src="/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">    
     </div>
     <div class="panel-body collapse toolStatsTool" data-bind="css: { 'in': $root.section() == 3 }">
         <!-- ko if: !statistics() -->
@@ -222,7 +222,7 @@
         <div id="node_status_panel" class="loading_section" data-bind="visible: loading">
             <span >Connecting to your database</span>
             <br/>
-            <img src="https://querytree.blob.core.windows.net/img/loading-icon.gif" />
+            <img src="/images/loading.gif" />
         </div>
         <div id="node_status_panel" class="loading_section" data-bind="visible: currentData() && currentRowsTotal() == 0 && ! loading()">
             <span>No data was returned</span>
