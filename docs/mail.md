@@ -1,6 +1,6 @@
 # Use Gmail as your mail sender
 
-You can configure QueryTree to send emails through your Gmail account. You'll need to update the [appsettings.json](Web/appsettings.json)
+You can configure QueryTree to send emails through your Gmail account. You'll need to update the [appsettings.json](/Web/appsettings.json)
 with your Gmail credentials.
 
 Example:
