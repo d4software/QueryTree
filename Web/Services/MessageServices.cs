@@ -31,7 +31,7 @@ namespace QueryTree
 				// For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
 				client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 				
-                client.Connect(_config.GetValue<string>("Email:SmtpHost"), 587, false);
+                client.Connect(_config.GetValue<string>("Email:SmtpHost"), _config.GetValue<int>("Email:SmtpPort"), false);
 
 				// Note: only needed if the SMTP server requires authentication
                 client.Authenticate(_config.GetValue<string>("Email:SmtpUser"), _config.GetValue<string>("Email:SmtpPassword"));
