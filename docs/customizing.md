@@ -6,9 +6,9 @@ QueryTree also comes with a number of configuration settings that allow you to c
 
 So, for example, QueryTree has options for customisation where you can:
 
-Replace the QueryTree logo and system name with your own image and name, and add your own CSS stylesheet to alter the appearance of the QueryTree UI.
-Set QueryTree up in a virtual folder or subdomain (e.g. “reports/” or “reporting.”). This enables a seamless integration between QueryTree’s interface and your own app. 
-Link to our QueryTree.Engine DLL library in your app without open sourcing your app. Our engine DLL converts JSON data query definitions created by the QueryTree UI and stored in the QueryTree “Queries” table, into SQL queries that can be run by your app.
+ * Replace the QueryTree logo and system name with your own image and name, and add your own CSS stylesheet to alter the appearance of the QueryTree UI.
+ * Set QueryTree up in a virtual folder or subdomain (e.g. “reports/” or “reporting.”). This enables a seamless integration between QueryTree’s interface and your own app. 
+ * Link to our QueryTree.Engine DLL library in your app without open sourcing your app. Our engine DLL converts JSON data query definitions created by the QueryTree UI and stored in the QueryTree “Queries” table, into SQL queries that can be run by your app.
 
 ## Single Sign On
 
