@@ -90,14 +90,14 @@
   },
   {
     "outputFileName": "wwwroot/js/base.js",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "Scripts/lib/jquery/dist/jquery.js",
       "Scripts/lib/jquery-validation/dist/jquery.validate.js",
       "Scripts/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "Scripts/lib/jquery-validation/dist/additional-methods.js",
       "Scripts/lib/bootstrap/dist/js/bootstrap.js",
-      "Scripts/respond.js"
+      "Scripts/respond.js",
+      "Scripts/ui-utils.js"
     ],
     "minify": {
       "enabled": true,
