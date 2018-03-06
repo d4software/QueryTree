@@ -54,7 +54,7 @@ namespace QueryTree.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction("Details", "Account", new { Message = ManageMessageId.ChangePasswordSuccess, id = ViewBag.OrganisationId });
+                    return RedirectToAction("Index", "Account", new { message = "Your password has been changed", id = ViewBag.OrganisationId });
                 }
                 AddErrors(result);
             }
@@ -70,18 +70,6 @@ namespace QueryTree.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

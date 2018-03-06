@@ -263,7 +263,7 @@ namespace QueryTree.Controllers
         }
 
         // GET: Account/
-        public ActionResult Index()
+        public ActionResult Index(string message = null)
         {
             db.Entry(CurrentUser).Reference(u => u.Organisation).Load();
 
@@ -285,6 +285,8 @@ namespace QueryTree.Controllers
             }
 
             vm.OtherConnections = otherConnections;
+            
+            ViewBag.InfoAlert = message;
 
             return View(vm);
         }
