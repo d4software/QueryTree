@@ -538,10 +538,10 @@ namespace QueryTree.Managers
             SshProxyCredentials credentials = null;
             if (connection.UseSsh)
                 credentials = new SshProxyCredentials(_passwordManager, connection);
-            return TryUseDbConnection(connection.Type, connection.Server, connection.Port, connection.UseSsh, connection.SshPort, credentials, connection.Username, password, connection.DatabaseName, action, out error);
+            return TryUseDbConnection(connection.Type, connection.Server, connection.Port, connection.UseSsh, connection.SshServer, connection.SshPort, credentials, connection.Username, password, connection.DatabaseName, action, out error);
         }
 
-        public bool TryUseDbConnection(DatabaseType type, string server, int port, bool useSsh, int? sshPort, SshProxyCredentials credentials, string username, string password, string databaseName, Action<DbConnection> action, out string error)
+        public bool TryUseDbConnection(DatabaseType type, string server, int port, bool useSsh, string sshServer, int? sshPort, SshProxyCredentials credentials, string username, string password, string databaseName, Action<DbConnection> action, out string error)
         {
             error = null;
             bool databaseAccessDenied = false;
@@ -549,7 +549,7 @@ namespace QueryTree.Managers
             {
                 if (useSsh)
                 {
-                    return SSHProxyManager.TryUseProxy(server, port, sshPort.GetValueOrDefault(22), credentials,
+                    return SSHProxyManager.TryUseProxy(server, port, sshServer, sshPort.GetValueOrDefault(22), credentials,
                         proxy =>
                         {
                             using (var conn = GetDbConnection(type, proxy.ProxyServer, proxy.ProxyPort, username, password, databaseName))
@@ -594,9 +594,9 @@ namespace QueryTree.Managers
             return error == null;
         }
 
-        public bool TryUseDbConnection(DatabaseType type, string server, int port, bool useSsh, int? sshPort,  SshProxyCredentials credentials, string username, string password, string databaseName, out string error)
+        public bool TryUseDbConnection(DatabaseType type, string server, int port, bool useSsh, string sshServer, int? sshPort,  SshProxyCredentials credentials, string username, string password, string databaseName, out string error)
         {
-            return TryUseDbConnection(type, server, port, useSsh, sshPort, credentials, username, password, databaseName, conn => { return; }, out error);
+            return TryUseDbConnection(type, server, port, useSsh, sshServer, sshPort, credentials, username, password, databaseName, conn => { return; }, out error);
         }
 
         private static DbConnection GetDbConnection(DatabaseType type, string server, int port, string username, string password, string databaseName)

@@ -80,7 +80,7 @@ namespace QueryTree.Controllers
         #region Connection APIs
 
         [HttpPost("/api/connections/test/")]
-        public ActionResult TestConnection(int type, string server, int port, string username, string password, string databaseName, bool useSsh, int? sshPort, string sshUsername, string sshPassword, int? SshKeyFileID, bool UseSshKey, int? databaseConnectionId = null)
+        public ActionResult TestConnection(int type, string server, int port, string username, string password, string databaseName, bool useSsh, string sshServer, int? sshPort, string sshUsername, string sshPassword, int? SshKeyFileID, bool UseSshKey, int? databaseConnectionId = null)
         {
             DatabaseType dbType = (DatabaseType)type;
 
@@ -113,7 +113,7 @@ namespace QueryTree.Controllers
             }
             
             string error = null;
-            if (_dbMgr.TryUseDbConnection(dbType, server, port, useSsh, sshPort, credentials, username, password, databaseName, out error))
+            if (_dbMgr.TryUseDbConnection(dbType, server, port, useSsh, sshServer, sshPort, credentials, username, password, databaseName, out error))
             {
                 return Json(new { Message = "Success" });
             }

@@ -66,6 +66,14 @@
                 </div>
 
                 <div class="form-group ssh">
+                    @Html.LabelFor(model => model.SshServer, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.SshServer, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshServerDescription" } } })
+                        @Html.ValidationMessageFor(model => model.SshServer, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ssh">
                     @Html.LabelFor(model => model.SshPort, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
                         @Html.EditorFor(model => model.SshPort, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshPortDescription" } } })

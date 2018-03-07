@@ -21,6 +21,7 @@ namespace QueryTree.ViewModels
             this.Username = connection.Username;
             this.UseSsh = connection.UseSsh;
             this.UseSshKey = connection.UseSshKey;
+            this.SshServer = connection.SshServer;
             this.SshPort = connection.SshPort;
             this.SshUsername = connection.SshUsername;
             this.SshKeyFileID = connection.SshKeyFileID;
@@ -54,6 +55,9 @@ namespace QueryTree.ViewModels
 
         [Display(Name = "Use SSH Key")]
         public bool UseSshKey { get; set; }
+
+        [Display(Name = "SSH Server")]
+        public string SshServer { get; set; }
 
         [Display(Name = "SSH Port")]
         public int? SshPort { get; set; }

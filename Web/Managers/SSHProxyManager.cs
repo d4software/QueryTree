@@ -68,18 +68,18 @@ namespace QueryTree.Managers
             return false;
         }
         
-        public static bool TryUseProxy(string server, int port, int sshPort, SshProxyCredentials credentials, DatabaseConnection connection, Action<SSHProxy> action, out string error)
+        public static bool TryUseProxy(string server, int port, string sshServer, int sshPort, SshProxyCredentials credentials, DatabaseConnection connection, Action<SSHProxy> action, out string error)
         {
-            return TryUseProxy(server, port, sshPort, credentials, action, out error);
+            return TryUseProxy(server, port, sshServer, sshPort, credentials, action, out error);
         }
 
         public static bool TryUseProxy(IPasswordManager passwordManager, DatabaseConnection connection, Action<SSHProxy> action, out string error)
         {
             SshProxyCredentials credentials = new SshProxyCredentials(passwordManager, connection);
-            return TryUseProxy(connection.Server, connection.Port, connection.SshPort.GetValueOrDefault(22), credentials, action, out error);
+            return TryUseProxy(connection.Server, connection.Port, connection.SshServer, connection.SshPort.GetValueOrDefault(22), credentials, action, out error);
         }
 
-        public static bool TryUseProxy(string server, int port, int sshPort, SshProxyCredentials credentials, Action<SSHProxy> action, out string error)
+        public static bool TryUseProxy(string server, int port, string sshServer, int sshPort, SshProxyCredentials credentials, Action<SSHProxy> action, out string error)
         {
             error = null;
 
@@ -94,7 +94,7 @@ namespace QueryTree.Managers
             }
             else 
             {
-                proxy = new SSHProxy(server, port, sshPort, credentials);
+                proxy = new SSHProxy(server, port, sshServer, sshPort, credentials);
 
                 lock (_lock)
                 {

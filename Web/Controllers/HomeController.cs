@@ -124,6 +124,7 @@ namespace QueryTree.Controllers
                 DatabaseName = database.DatabaseName,
                 Description = database.Description,
                 UseSsh = database.UseSsh,
+                SshServer = database.SshServer,
                 SshPort = database.SshPort,
                 SshUsername = database.SshUsername,
                 AccessUsers = new List<UserDatabaseConnection>()
@@ -300,6 +301,7 @@ namespace QueryTree.Controllers
 
             if (connection.UseSsh)
             {
+                connection.SshServer = viewModel.SshServer;
                 connection.SshPort = viewModel.SshPort;
                 connection.SshUsername = viewModel.SshUsername;
                 connection.UseSshKey = viewModel.UseSshKey;
@@ -333,6 +335,7 @@ namespace QueryTree.Controllers
             else
             {
                 connection.SshUsername = null;
+                connection.SshServer = null;
                 connection.SshPort = null;
             }
 
