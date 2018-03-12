@@ -8,9 +8,12 @@ Example:
 ```json
  "Email": {
     "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": 465,
     "SmtpUser": "youremail@gmail.com",
     "SmtpPassword": "yourgmailpassword",
-    "SenderAddress": "Sender Name <youremail@gmail.com>"
+    "SenderAddress": "Sender Name <youremail@gmail.com>",
+    "UseSSL": true
 }
 ```
 
+You may need to [create an App Password](https://myaccount.google.com/apppasswords) for QueryTree if you're using 2 Factor Authentication.
