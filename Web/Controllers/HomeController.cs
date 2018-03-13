@@ -131,9 +131,12 @@ namespace QueryTree.Controllers
             };
             List<DatabaseConnectionQueriesDetailsViewModel> viewQueries = new List<DatabaseConnectionQueriesDetailsViewModel>();
             
-            var queries = db.Queries.Where(q => q.DatabaseConnectionID == database.DatabaseConnectionID).ToList();
+            var queries = db.Queries
+                .Include(q => q.CreatedBy)
+                .Include(q => q.LastEditedBy)
+                .Where(q => q.DatabaseConnectionID == database.DatabaseConnectionID);
            
-            foreach(var query in queries )
+            foreach(var query in queries)
             {
                 DatabaseConnectionQueriesDetailsViewModel queryView = new DatabaseConnectionQueriesDetailsViewModel();
                 queryView.QueryID = query.QueryID;
@@ -146,6 +149,7 @@ namespace QueryTree.Controllers
                 queryView.LastEditedOn = query.LastEditedOn;
                 viewQueries.Add(queryView);
             }
+
             viewModel.SavedQueries = viewQueries.OrderByDescending(q => q.LastEditedOn);
             
             if (database.Organisation != null)
