@@ -69,16 +69,16 @@ namespace QueryTree.Controllers
                 });
             }
 
-            var conns = db.UserDatabaseConnections
-                .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
-                .Join(db.DatabaseConnections, uc => uc.DatabaseConnectionID, db => db.DatabaseConnectionID, (uc, db) => new { Type = uc.Type, Db = db })
-                .ToList();
+            var conns = db.DatabaseConnections
+                .Include(uc => uc.Organisation)
+                .Join(db.UserDatabaseConnections, db => db.DatabaseConnectionID, uc => uc.DatabaseConnectionID, (db, uc) => new { Uc = uc, Db = db })
+                .Where(uc => uc.Uc.ApplicationUserID == CurrentUser.Id);
 
             foreach (var conn in conns)
             {
                 dbConnView.Add(new DatabaseConnectionIndexViewModel
                 {
-                    type = conn.Type,
+                    type = conn.Uc.Type,
                     myConnection = conn.Db,
                     DbOwner = conn.Db.Organisation.OrganisationName,
                     ReportsCount = db.Queries.Count(q => q.DatabaseConnectionID == conn.Db.DatabaseConnectionID)
