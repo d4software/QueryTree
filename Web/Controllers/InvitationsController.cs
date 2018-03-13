@@ -7,6 +7,7 @@ using QueryTree.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace QueryTree.Controllers
 {
@@ -46,7 +47,7 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var invites = db.OrganisationInvites.Where(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null).ToList();
+            var invites = db.OrganisationInvites.Where(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null);
 
             if (invites.Any() == false)
             {
@@ -56,7 +57,9 @@ namespace QueryTree.Controllers
 
             List<InvitationViewModel> viewModels = new List<InvitationViewModel>();
 
-            foreach(var orgGrp in invites.GroupBy(c => c.OrganisationId))
+            foreach(var orgGrp in invites
+                .Include(c => c.CreatedBy)
+                .GroupBy(c => c.OrganisationId))
             {
                 InvitationViewModel viewModel = new InvitationViewModel();
                 
