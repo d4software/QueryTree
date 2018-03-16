@@ -9,6 +9,7 @@ App_Data/
 packages/*
 .vs/
 .DS_Store
+*/dist/
 
 **/*.pubxml
 .vscode

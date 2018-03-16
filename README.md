@@ -33,6 +33,48 @@ for more information.
 
 ## Running QueryTree
 
+*Skip to section*:
+
+- [Running from Source](#running-from-source)
+- [Building Binaries](#building-binaries)
+- [Running from Binaries](#running-from-binaries)
+- [Running the Tests](#running-the-tests)
+- [Running with Docker](/docs/docker.md)
+
+### Running from Source
+
+To run QueryTree from it's source code, you will need to install the .NET Core SDK. You can download
+the SDK for your platform here: [https://www.microsoft.com/net/download/core](https://www.microsoft.com/net/download/core)
+
+Once the .NET Core SDK is installed, follow these steps:
+
+1. Clone this repo into a folder
+
+2. At the command prompt, cd into the folder, then into the "Web" folder.
+
+3. Type:
+ 
+```sh
+dotnet run
+```
+ 
+4. Visit [http://localhost:5000/](http://localhost:5000/) in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
+
+If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
+
+### Building Binaries
+
+You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK.
+
+To build a release binary from the project root execute:
+
+```
+dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
+```
+
+This will create a release folder in `dist` of all the unpacked QueryTree binaries and its dependencies.
+
+
 ### Running from Binaries
 
 QueryTree is built using .NET Core. To run QueryTree on your server
@@ -47,7 +89,7 @@ dotnet --version
 ```
 
 If the command returns a version number, you're ready to run QueryTree.
-If not, please visit [https://www.microsoft.com/net/download/core#/runtime]()
+If not, please visit [https://www.microsoft.com/net/download/core#/runtime](https://www.microsoft.com/net/download/core#/runtime)
 and follow the instructions for your platform.
 
 Once the dotnet runtime is installed, follow these steps:
@@ -62,33 +104,12 @@ Once the dotnet runtime is installed, follow these steps:
 dotnet QueryTree.dll
 ```
 
-4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application.
+4. Visit [http://localhost:5000/](http://localhost:5000/) in your browser. You should see the QueryTree application.
 
 5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
 
 You can also host QueryTree using IIS. For information on running .NET Core apps
 in IIS see: https://docs.microsoft.com/en-us/aspnet/core/publishing/iis
-
-### Running from Source
-
-To run QueryTree from it's source code, you will need to install the .NET Core SDK. You can download
-the SDK for your platform here: [https://www.microsoft.com/net/download/core]()
-
-Once the .NET Core SDK is installed, follow these steps:
-
-1. Clone this repo into a folder
-
-2. At the command prompt, cd into the folder, then into the "Web" folder.
-
-3. Type:
- 
-```sh
-dotnet run
-```
- 
-4. Visit [http://localhost:5000/]() in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
-
-If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
 
 ### Running the Tests
 
@@ -98,9 +119,9 @@ To run the automated tests in this project, cd into the "Tests" folder, then typ
 dotnet test
 ```
 
-### Running with docker
+### Running with Docker
 
-See the full docker guide: [docs/docker.md](/docs/docker.md)
+See the full Docker guide: [docs/docker.md](/docs/docker.md)
 
 ## Getting Started
 
