@@ -64,7 +64,7 @@ If you would like to run QueryTree with your own local development settings, you
 
 ### Building Binaries
 
-You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK.
+You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK. To build the initial binaries you need the .NET Core SDK installed.
 
 To build a release binary from the project root execute:
 
@@ -79,7 +79,7 @@ This will create a release folder in `dist` of all the unpacked QueryTree binari
 
 QueryTree is built using .NET Core. To run QueryTree on your server
 you will need to install the .NET Core 2.0.x runtime. You can download
-the installer [here](https://www.microsoft.com/net/download/core#/runtime).
+the installer [here](https://www.microsoft.com/net/download/core#/run).
 
 To verify that you have the .NET runtime installed, open a terminal/cmd
 window and type
