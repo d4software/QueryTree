@@ -279,6 +279,7 @@ namespace QueryTree.Controllers
             {
                 ApplicationUserID = user.Id,
                 Email = user.Email,
+                OrganisationName = CurrentUser.Organisation.OrganisationName,
                 IsOrganisationAdmin = user.OrganisationId == CurrentUser.OrganisationId,
                 DatabasePermissions = new List<PermissionViewModel.DatabasePermission>()
             };
@@ -301,7 +302,6 @@ namespace QueryTree.Controllers
                 viewModel.DatabasePermissions.Add(viewPermission);
             }
 
-            viewModel.OrganisationName = CurrentUser.Organisation.OrganisationName;
             viewModel.OrganisationDatabaseCount = db.DatabaseConnections.Count(dc => dc.OrganisationId == CurrentUser.OrganisationId);
 
             return View(viewModel);
