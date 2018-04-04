@@ -12,6 +12,7 @@ using QueryTree.Managers;
 using QueryTree.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace QueryTree.Controllers
@@ -278,7 +279,7 @@ namespace QueryTree.Controllers
 
             string userId = CurrentUser.Id;
 
-            foreach (var conn in db.UserDatabaseConnections.Where(dbc => dbc.ApplicationUserID == userId).ToList())
+            foreach (var conn in db.UserDatabaseConnections.Include(dbc => dbc.DatabaseConnection).Where(dbc => dbc.ApplicationUserID == userId).ToList())
             {
                 var connType = EnumHelper<UserDatabaseTypes>.GetEnumDisplayValue(conn.Type);
                 otherConnections.Add(new SettingsDatabaseConnectionViewModel() { ConnectionName = conn.DatabaseConnection.Name, ConnectionType = connType });
