@@ -695,7 +695,8 @@ namespace QueryTree.Managers
 
                 using (var cmd = DbManager.CreateCommand(connection.Type, dbCon, engine.GetRowCountSql(nodeId)))
                 {
-                    data.RowCount = (long)cmd.ExecuteScalar();
+                    // we don't know if the scalar will be an int/long/other so we have to convert to avoid an unboxing error
+                    data.RowCount = (long)Convert.ChangeType(cmd.ExecuteScalar(), typeof(long));
                 }
 
             }, out error);
