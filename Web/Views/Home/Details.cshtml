@@ -137,6 +137,14 @@
                 @if (Model.UseSsh)
                 {
                     <dt>
+                        @Html.DisplayNameFor(model => model.SshServer)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.SshServer)
+                    </dd>
+                    
+                    <dt>
                         @Html.DisplayNameFor(model => model.SshPort)
                     </dt>
 

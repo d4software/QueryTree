@@ -383,6 +383,12 @@ var SimpleQueryBuilderViewModel = function () {
     var joinSeed = 1;
     
     self.filters = ko.observableArray();
+
+    self.filters.subscribe(function(changes) {
+        if(changes[0].status === 'deleted' && self.filters().length === 0) {
+            self.applyFilters();
+        }
+    }, null, "arrayChange");
     
     var filterSeed = 1;
 

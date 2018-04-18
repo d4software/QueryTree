@@ -34,6 +34,9 @@ namespace QueryTree.Models
         [Display(Name = "Use SSH Key")]
         public bool UseSshKey { get; set; }
 
+        [Display(Name = "SSH Server")]
+        public string SshServer { get; set; }
+
         [Display(Name = "SSH Port")]
         public int? SshPort { get; set; }
 

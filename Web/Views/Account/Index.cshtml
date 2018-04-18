@@ -46,3 +46,12 @@
         <p class="small">These connections will not count towards your plan</p>
     }        
 </div>
+
+@section Scripts {
+    @if (String.IsNullOrEmpty(ViewBag.InfoAlert) == false)
+    {
+    <script>
+        raiseInfoAlert("info-msg", "@ViewBag.InfoAlert");
+    </script>
+    }
+}

@@ -6,6 +6,7 @@ using QueryTree.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace QueryTree.Controllers
 {
@@ -26,7 +27,11 @@ namespace QueryTree.Controllers
             {
                 return BadRequest();
             }
-            Query query = db.Queries.Find(id);
+
+            Query query = db.Queries
+                .Include(q => q.CreatedBy)
+                .Include(q => q.LastEditedBy)
+                .First(q => q.QueryID == id);
 
             var database = db.DatabaseConnections.FirstOrDefault(dc => dc.DatabaseConnectionID == query.DatabaseConnectionID);
 

@@ -206,6 +206,7 @@ $(document).ready(function () {
 		var password = $("[name='DbPssword']").val();
 		var type = $("[name='Type']").val();
 		var useSsh = $("[name='UseSsh']").is(':checked');
+		var sshServer = $("[name='SshServer']").val();
 		var sshPort = $("[name='SshPort']").val();
 		var sshUsername = $("[name='SshUsername']").val();
 		var sshPassword = $("[name='SshPassword']").val();
@@ -223,7 +224,8 @@ $(document).ready(function () {
                 'username': username, 
                 'password': password, 
                 'type': type, 
-                'useSsh': useSsh, 
+				'useSsh': useSsh,
+				'sshServer': sshServer, 
                 'sshPort': sshPort, 
                 'sshUsername': sshUsername, 
                 'sshPassword': sshPassword, 

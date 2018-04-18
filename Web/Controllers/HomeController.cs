@@ -69,16 +69,16 @@ namespace QueryTree.Controllers
                 });
             }
 
-            var conns = db.UserDatabaseConnections
-                .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
-                .Join(db.DatabaseConnections, uc => uc.DatabaseConnectionID, db => db.DatabaseConnectionID, (uc, db) => new { Type = uc.Type, Db = db })
-                .ToList();
+            var conns = db.DatabaseConnections
+                .Include(uc => uc.Organisation)
+                .Join(db.UserDatabaseConnections, db => db.DatabaseConnectionID, uc => uc.DatabaseConnectionID, (db, uc) => new { Uc = uc, Db = db })
+                .Where(uc => uc.Uc.ApplicationUserID == CurrentUser.Id);
 
             foreach (var conn in conns)
             {
                 dbConnView.Add(new DatabaseConnectionIndexViewModel
                 {
-                    type = conn.Type,
+                    type = conn.Uc.Type,
                     myConnection = conn.Db,
                     DbOwner = conn.Db.Organisation.OrganisationName,
                     ReportsCount = db.Queries.Count(q => q.DatabaseConnectionID == conn.Db.DatabaseConnectionID)
@@ -124,15 +124,19 @@ namespace QueryTree.Controllers
                 DatabaseName = database.DatabaseName,
                 Description = database.Description,
                 UseSsh = database.UseSsh,
+                SshServer = database.SshServer,
                 SshPort = database.SshPort,
                 SshUsername = database.SshUsername,
                 AccessUsers = new List<UserDatabaseConnection>()
             };
             List<DatabaseConnectionQueriesDetailsViewModel> viewQueries = new List<DatabaseConnectionQueriesDetailsViewModel>();
             
-            var queries = db.Queries.Where(q => q.DatabaseConnectionID == database.DatabaseConnectionID).ToList();
+            var queries = db.Queries
+                .Include(q => q.CreatedBy)
+                .Include(q => q.LastEditedBy)
+                .Where(q => q.DatabaseConnectionID == database.DatabaseConnectionID);
            
-            foreach(var query in queries )
+            foreach(var query in queries)
             {
                 DatabaseConnectionQueriesDetailsViewModel queryView = new DatabaseConnectionQueriesDetailsViewModel();
                 queryView.QueryID = query.QueryID;
@@ -145,6 +149,7 @@ namespace QueryTree.Controllers
                 queryView.LastEditedOn = query.LastEditedOn;
                 viewQueries.Add(queryView);
             }
+
             viewModel.SavedQueries = viewQueries.OrderByDescending(q => q.LastEditedOn);
             
             if (database.Organisation != null)
@@ -300,6 +305,7 @@ namespace QueryTree.Controllers
 
             if (connection.UseSsh)
             {
+                connection.SshServer = viewModel.SshServer;
                 connection.SshPort = viewModel.SshPort;
                 connection.SshUsername = viewModel.SshUsername;
                 connection.UseSshKey = viewModel.UseSshKey;
@@ -333,6 +339,7 @@ namespace QueryTree.Controllers
             else
             {
                 connection.SshUsername = null;
+                connection.SshServer = null;
                 connection.SshPort = null;
             }
 

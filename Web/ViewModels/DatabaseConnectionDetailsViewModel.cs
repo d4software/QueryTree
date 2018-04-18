@@ -17,6 +17,8 @@ namespace QueryTree.ViewModels
         public string Username { get; set; }
         [Display(Name = "Use SSH")]
         public bool UseSsh { get; set; }
+        [Display(Name = "SSH Server")]
+        public string SshServer { get; set; }
         [Display(Name = "SSH Port")]
         public int? SshPort { get; set; }
         [Display(Name = "SSH Username")]

@@ -14,16 +14,19 @@ namespace QueryTree.Managers
 
         public readonly int Port;
 
+        public readonly string SshServer;
+
         public readonly int SshPort;
 
         public int ProxyPort { get; private set; }
 
         public string Error { get; set; }
 
-        public SSHProxy(string server, int port, int sshPort, SshProxyCredentials sshCredentials)
+        public SSHProxy(string server, int port, string sshServer, int sshPort, SshProxyCredentials sshCredentials)
         {
             this.Server = server;
             this.Port = port;
+            this.SshServer = sshServer;
             this.SshPort = sshPort;
             this.SshCredentials = sshCredentials;
 
@@ -75,11 +78,11 @@ namespace QueryTree.Managers
         {
             if (SshCredentials.UseSshKey)
             {
-                return new SshClient(Server, SshPort, SshCredentials.Username, SshCredentials.PrivateKeyFile);
+                return new SshClient(SshServer, SshPort, SshCredentials.Username, SshCredentials.PrivateKeyFile);
             }
             else 
             {
-                return new SshClient(Server, SshPort, SshCredentials.Username, SshCredentials.Password);
+                return new SshClient(SshServer, SshPort, SshCredentials.Username, SshCredentials.Password);
             }
         }
 
@@ -103,7 +106,7 @@ namespace QueryTree.Managers
                             triesLeft--;
                             try
                             {
-                                using (var forwardedPortLocal = new ForwardedPortLocal(ProxyServer, (uint)ProxyPort, "localhost", (uint)Port))
+                                using (var forwardedPortLocal = new ForwardedPortLocal(ProxyServer, (uint)ProxyPort, this.Server, (uint)Port))
                                 {
                                     sshClient.AddForwardedPort(forwardedPortLocal);
                                     try

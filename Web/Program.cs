@@ -9,21 +9,55 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using QueryTree.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace QueryTree
 {
 	public class Program
 	{
 		public static void Main(string[] args)
-		{
-			var host = new WebHostBuilder()
-				.UseKestrel()
-				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseIISIntegration()
-				.UseStartup<Startup>()
-				.Build();
+        {
+            var host = GetBuilder(args, true)
+                .Build();
+            
+            using (var scope = host.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                context.Database.EnsureCreated();
+                context.Database.Migrate();
+            }
 
-			host.Run();
-		}
+            host.Run();
+        }
+		
+		public static IWebHost BuildWebHost(string[] args)
+        {
+            return GetBuilder(args, false).Build();
+        }
+
+		public static IWebHostBuilder GetBuilder(string[] args, bool runHangfire)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+
+            if (runHangfire)
+            {
+                builder = builder.UseSetting("RunHangfire", "true");
+            }
+            else
+            {
+                builder = builder.UseSetting("RunHangfire", "false");
+            }
+
+            return builder.ConfigureAppConfiguration((hostContext, config) =>
+                {
+                    if (hostContext.HostingEnvironment.IsDevelopment())
+                    {
+                        config.AddJsonFile($"usersettings.json", optional: true);
+                    }
+                });
+        }
 	}
 }
