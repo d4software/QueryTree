@@ -62,6 +62,12 @@
     <Folder Include="Scripts\" />
     <Folder Include="Scripts\lib\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
   </Target>
   
