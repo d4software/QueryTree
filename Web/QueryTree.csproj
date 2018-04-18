@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <preserveCompilationContext>false</preserveCompilationContext>
     <UserSecretsId>aspnet-QueryTree-46E61BB7-4239-4527-BA0C-1B66D664CC58</UserSecretsId>
     <Version>2.0.0</Version>
     <Authors>D4 Software Ltd</Authors>
