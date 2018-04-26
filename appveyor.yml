@@ -1,0 +1,18 @@
+version: 3.0.{build}-beta
+branches:
+  only:
+  - master
+image: Visual Studio 2017
+configuration: Release
+platform: Any CPU
+before_build:
+  - cmd: dotnet --version
+- cmd: dotnet restore ./src/src.csproj --verbosity m
+build_script:
+- cmd: dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
+after_build:
+- cmd: 7z c QueryTree.zip dist/
+artifacts:
+- path: QueryTree.zip
+  name: QueryTree
+deploy: off
