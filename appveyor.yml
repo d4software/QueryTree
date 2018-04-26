@@ -3,8 +3,6 @@ branches:
   only:
   - master
 image: Visual Studio 2017
-configuration: Release
-platform: Any CPU
 before_build:
 - cmd: dotnet --version
 - cmd: dotnet restore ./Web/QueryTree.csproj --verbosity m
