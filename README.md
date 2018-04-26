@@ -69,7 +69,7 @@ You may need to build a release binary to be run with the [.NET Core 2.0.x runti
 To build a release binary from the project root execute:
 
 ```
-dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
+dotnet publish -c Release ./Web/QueryTree.csproj -o ./dist
 ```
 
 This will create a release folder in `dist` of all the unpacked QueryTree binaries and its dependencies.
