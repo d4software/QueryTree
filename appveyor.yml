@@ -4,10 +4,9 @@ branches:
   - master
 image: Visual Studio 2017
 before_build:
-- cmd: dotnet --version
 - cmd: dotnet restore ./Web/QueryTree.csproj --verbosity m
 build_script:
-- cmd: dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
+- cmd: dotnet publish -c Release ./Web/QueryTree.csproj -o ./dist
 after_build:
 - cmd: 7z c QueryTree.zip dist/
 artifacts:
