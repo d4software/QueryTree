@@ -7,7 +7,7 @@ configuration: Release
 platform: Any CPU
 before_build:
 - cmd: dotnet --version
-- cmd: dotnet restore ./src/src.csproj --verbosity m
+- cmd: dotnet restore ./Web/QueryTree.csproj --verbosity m
 build_script:
 - cmd: dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
 after_build:
