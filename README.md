@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/d4software/QueryTree.svg?style=svg)](https://circleci.com/gh/d4software/QueryTree)
+
 [![AppVeyor]https://ci.appveyor.com/api/projects/status/github/d4software/QueryTree/branch/master?svg=true](https://ci.appveyor.com/api/projects/status/github/d4software/QueryTree/branch/master?svg=true)
 
 # QueryTree
