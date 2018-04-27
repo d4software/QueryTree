@@ -12,4 +12,7 @@ after_build:
 artifacts:
 - path: QueryTree.zip
   name: QueryTree
-deploy: off
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: TwTT7LP37047Az4Qg5p2q55EL+z8q07MFuEJjtbPqSxUO30oTehwa+dYmacIZXl4gtWHlrlnHT+sZl1kB/5GTh5SB0ObngnsrzrX08GPGyw=
