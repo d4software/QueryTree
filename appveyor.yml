@@ -8,7 +8,9 @@ before_build:
 build_script:
 - cmd: dotnet publish --framework netcoreapp2.0 -c Release ./Web/QueryTree.csproj -o ./dist
 after_build:
-- cmd: 7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/Web/dist/*
+- cmd: 
+    7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/Web/dist/*
+    7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/README.md
 artifacts:
 - path: QueryTree.zip
   name: QueryTree
