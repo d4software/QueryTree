@@ -15,7 +15,7 @@ before_test:
 test:
   assemblies:
     only:
-      - ./Tests/**.dll
+      - ./Tests/**/*.dll
 artifacts:
 - path: QueryTree.zip
   name: QueryTree
