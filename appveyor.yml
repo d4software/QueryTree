@@ -11,11 +11,7 @@ after_build:
 - cmd: 7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/Web/dist/*
 - cmd: 7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/README.md
 before_test:
-- cmd: dotnet build ./Tests/Tests.csproj
-test:
-  assemblies:
-    only:
-      - ./Tests/**/*.dll
+- cmd: dotnet test ./Tests/Tests.csproj
 artifacts:
 - path: QueryTree.zip
   name: QueryTree
