@@ -1,4 +1,4 @@
-#Auto-Join
+# Auto-Join
 
 When a table is selected in the query builder, QueryTree checks for other tables that it can automatically join onto and prompts the user to select those related tables, thereby including the columns from the related table in the results that are returned. 
 
