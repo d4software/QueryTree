@@ -14,7 +14,7 @@ The most robust way to tell QueryTree how to join between tables is to create a 
 
 For example, given the following two tables, QueryTree will prompt to join from "orders" to "users".
 
-```
+```sql
 create table users
 (
   id         int not null primary key,
@@ -46,7 +46,7 @@ In addition to looking for foreign keys, QueryTree will look for columns on the 
 
 For example, given the following two tables, QueryTree will prompt to join from "orders" to "users". Despite the fact that there are no foreign keys.
 
-```
+```sql
 create table users
 (
   id         int not null primary key,
