@@ -8,4 +8,4 @@
  * [Customizing QueryTree](/docs/customizing.md)
  * [Building a password manager](/docs/password-manager.md)
  * [Using with Docker](/docs/docker.md)
- * [Configuring Email](/docs/email.md)
+ * [Configuring Email](/docs/mail.md)
