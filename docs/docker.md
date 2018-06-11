@@ -33,6 +33,38 @@ docker stop querytree
 docker start querytree
 ```
 
+# Override configuration defaults
+
+Query tree uses an appsettings.json file to store advanced configuration settings. You may need to change some of these settings when deploying QueryTree or when you need an advanced feature that is disabled by default.
+
+To override these settings in docker you can provide an enviroment variable that matches the configuration name in [appsettings.json](/Web/appsettings.json).
+
+The format for these enviroment variables match the JSON structure of the file but instead of using dot notation you need to replace the DOT (.) with two underscores(__).
+
+Take the `Customization.SystemName` configuration as an example. 
+
+```json
+{
+    "Customization": {
+        "SystemName": "QueryTree"
+     }
+}
+```
+
+To override this setting in docker you need to supply an enviroment variable called `Customization__SystemName`
+
+You can then pass this into docker as
+
+```sh
+docker run -p 8080:80 --name querytree -d d4software/querytree:latest -e Customization__SystemName="Acme Reporting"
+```
+
+If you need a more permanent solution consider building a custom docker image with the appropriate appsettings.json file in [/Web/appsettings.json](/Web/appsettings.json)
+
+Read more about:
+- [Enviroment variables in docker](https://docs.docker.com/engine/reference/run/#env-environment-variables)
+- [appsettings.json in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.1&tabs=basicconfiguration)
+
 # Use QueryTree to query a DB inside a docker network
 
 You may want to run queries on a database that is not exposed to the host machine and exists soley withina a [docker network](https://docs.docker.com/network/).
