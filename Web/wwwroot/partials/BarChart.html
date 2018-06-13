@@ -1,12 +1,20 @@
-<form>
-    <label for="Name">Name</label>
-    <input type="text" name="Name" data-bind="value: Name"/>
-    <label for="VerticalAxisLabel">Vertical Axis Title</label>
-    <input type="text" name="VerticalAxisLabel" data-bind="value: VerticalAxisLabel"/>
-    <label for="HorizontalAxisLabel">Horizontal Axis Title</label>
-    <input type="text" name="HorizontalAxisLabel" data-bind="value: HorizontalAxisLabel"/>
-    <label for="HorizontalAxis">Axis Values</label>
-    <select name="HorizontalAxis" data-bind="options: AllInputColumns, value: HorizontalAxis"></select>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
+    <div class="form-group">
+        <label for="VerticalAxisLabel">Vertical Axis Title</label>
+        <input class="form-control" type="text" name="VerticalAxisLabel" data-bind="value: VerticalAxisLabel"/>
+    </div>
+    <div class="form-group">
+        <label for="HorizontalAxisLabel">Horizontal Axis Title</label>
+        <input class="form-control" type="text" name="HorizontalAxisLabel" data-bind="value: HorizontalAxisLabel"/>
+    </div>
+    <div class="form-group">
+        <label for="HorizontalAxis">Axis Values</label>
+        <select class="form-control" name="HorizontalAxis" data-bind="options: AllInputColumns, value: HorizontalAxis"></select>
+    </div>
     <h3>Plot the following columns:</h3>
     <span class="helpText">Drag columns into the list on the right and re-order as required. Click the 'x' button to remove columns from the list.</span>
     <div class="leftSettingsColumn expandingHeight">

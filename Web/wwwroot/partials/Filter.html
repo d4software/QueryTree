@@ -1,21 +1,31 @@
-<form>
-    <label for="Name">Name</label>
-    <input type="text" name="Name" data-bind="value: Name"/>
-    <label for="Column">Column</label>
-    <select name="Column" data-bind="options: AllInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: FilterColumnIndex"></select>
-    <label for="Operator">Compare Type</label>
-    <select name="Operator" data-bind="options: ValidOperators, optionsText: 'simpleName', optionsValue: 'type', value: Operator"></select>
-    <label for="FilterValue" data-bind="visible: ShowFilterCompareValue">Compare Value</label>
-    <select name="CompareColumn" data-bind="options: AllInputColumnsPlusEnteredValue, optionsText: 'Name', optionsValue: 'Index', value: FilterCompareColumnIndex, visible: ShowFilterCompareValue"></select>
-    <label data-bind="visible: ShowFilterCompareValue">&nbsp;</label>
-    <input type="text" name="FilterValue" data-bind="value: FilterValue1, visible: ShowFilterCompareValue1"/>
-    <input type="number" name="FilterValue" data-bind="numeric: FilterValue1, visible: ShowFilterCompareNumeric"/>
-    <select name="FilterValueBool" data-bind="value: FilterBoolValue1, visible: ShowFilterCompareBool">
-        <option value="1">true</option>
-        <option value="0">false</option>
-    </select>
-    <input type="text" name="FilterValueDate" class="datepicker" data-bind="datepicker: FilterDateValue1, datepickerOptions: { dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true }, visible: ShowFilterCompareDatetime"/>
-    <input type="text" name="FilterValueTime" class="timepicker" data-bind="timepicker: FilterTimeValue1, timepickerOptions: {show24Hours: true, showSeconds: true, spinnerImage: ''}, visible: ShowFilterCompareDatetime" />
-    <label for="CaseSensitive" data-bind="visible: ShowCaseSensitive">Case Sensitive</label>
-    <input type="checkbox" name="CaseSensitive" data-bind="checked: CaseSensitive, visible: ShowCaseSensitive"/>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
+    <div class="form-group">
+        <label for="Column">Column</label>
+        <select class="form-control" name="Column" data-bind="options: AllInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: FilterColumnIndex"></select>
+    </div>
+    <div class="form-group">
+        <label for="Operator">Compare Type</label>
+        <select class="form-control" name="Operator" data-bind="options: ValidOperators, optionsText: 'simpleName', optionsValue: 'type', value: Operator"></select>
+    </div>
+    <div class="form-group">
+        <label for="FilterValue" data-bind="visible: ShowFilterCompareValue">Compare Value</label>
+        <select class="form-control" name="CompareColumn" data-bind="options: AllInputColumnsPlusEnteredValue, optionsText: 'Name', optionsValue: 'Index', value: FilterCompareColumnIndex, visible: ShowFilterCompareValue"></select>
+        <label data-bind="visible: ShowFilterCompareValue">&nbsp;</label>
+        <input class="form-control" type="text" name="FilterValue" data-bind="value: FilterValue1, visible: ShowFilterCompareValue1"/>
+        <input class="form-control" type="number" name="FilterValue" data-bind="numeric: FilterValue1, visible: ShowFilterCompareNumeric"/>
+        <select class="form-control" name="FilterValueBool" data-bind="value: FilterBoolValue1, visible: ShowFilterCompareBool">
+            <option value="1">true</option>
+            <option value="0">false</option>
+        </select>
+        <input class="form-control" type="text" name="FilterValueDate" class="datepicker" data-bind="datepicker: FilterDateValue1, datepickerOptions: { dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true }, visible: ShowFilterCompareDatetime"/>
+        <input class="form-control" type="text" name="FilterValueTime" class="timepicker" data-bind="timepicker: FilterTimeValue1, timepickerOptions: {show24Hours: true, showSeconds: true, spinnerImage: ''}, visible: ShowFilterCompareDatetime" />
+    </div>
+    <div class="form-group">
+        <label for="CaseSensitive" data-bind="visible: ShowCaseSensitive">Case Sensitive</label>
+        <input type="checkbox" name="CaseSensitive" data-bind="checked: CaseSensitive, visible: ShowCaseSensitive"/>
+    </div>
 </form>

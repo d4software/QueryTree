@@ -253,7 +253,7 @@ events.FetchSelectedNodeData = function(startRow, rowCount, callback) {
             		if (data.status && models.SelectedNode() && models.SelectedNode().Id === requestedNodeId) {
             		    models.SelectedNodeStatus(data.status)
 
-            		    models.SelectedNode().SetColumns(data.columns, data.column_types);
+            		    models.SelectedNode().SetColumns(data.columns, data.columnTypes);
 
             			if (data.status === "ok") {
             				models.CurrentData(data.rows);

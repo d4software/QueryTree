@@ -351,7 +351,7 @@
 
             var serverQueryKey = ko.observable();
             backend.LoadData(serverQueryKey, query.Nodes, query.SelectedNodeId, 0, num,"JSON", null, function(data) {
-                utils.RenderChart('#chart', data.rows, selectedNode.Type, 0, data.column_types[0], 1, data.column_types[1]);
+                utils.RenderChart('#chart', data.rows, selectedNode.Type, 0, data.columnTypes[0], 1, data.columnTypes[1]);
                 $('#spinner').remove();
             });
         } else {

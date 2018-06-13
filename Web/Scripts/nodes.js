@@ -1116,7 +1116,7 @@ nodes.LineChart = function (properties) {
 
 
                     var xScale, xAxis, xSelector;
-                    if (tools.IsDatetimeType(data.column_types[0])) {
+                    if (tools.IsDatetimeType(data.columnTypes[0])) {
                         xSelector = function (d) { return new Date(d[0]); };
 
                         xScale = d3.time.scale()
