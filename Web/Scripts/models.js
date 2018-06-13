@@ -171,7 +171,6 @@ models.ExportFileName = ko.observable();
 models.ExportUrl = ko.observable();
         
 models.Export = function () {
-    var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
     var node = models.SelectedNode();
     if (node != null) {
         if (models.ShowExportImage()) {
@@ -592,7 +591,7 @@ models.GetCoreNodeSettings = function () {
     var nodes = []
     $.each(models.current_nodes(), function (i, node) {
         // Only get the 'core' settings, not the full 'save' settings because 
-        // qt.exe doesn't need to know about all the visual aspects of the tree
+        // the backend doesn't need to know about all the visual aspects of the tree
         nodes.push(node.GetCoreSettings());
     });
 
