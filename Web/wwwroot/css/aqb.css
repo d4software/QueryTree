@@ -1010,7 +1010,6 @@ a.button-link {
   border: solid 1px #fff;
 }
 #qt-container {
-  height: 100%;
   font-family: sans-serif;
   font-size: 12px;
   overflow: hidden;
@@ -1062,9 +1061,11 @@ div#bottom_panel ul#result_options {
   margin-left: -160px;
   background: #eeeeee;
   border-left: solid 1px #aaaaaa;
+  padding-left: 0;
 }
 div#bottom_panel ul#result_options li {
   margin: 6px 8px 6px 8px;
+  list-style: none;
 }
 div#bottom_panel ul#result_options li a.wide {
   width: 139px;
@@ -1113,8 +1114,6 @@ div.dialog a.refreshData,
 div.dialog a.textButton {
   display: block;
   margin-top: 10px;
-  float: left;
-  clear: both;
 }
 div.dialog a.rowAction {
   display: block;
@@ -1126,9 +1125,6 @@ div.dialog a.rowAction {
 div.dialog a.rowAction.onOwnRow {
   margin-left: 120px;
   clear: both;
-}
-div.dialog a.refreshData {
-  margin-left: 120px;
 }
 div.dialog a.button {
   display: inline-block;

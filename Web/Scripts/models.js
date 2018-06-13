@@ -95,15 +95,7 @@ models.CurrentRowsTotalFormatted = ko.computed(function() {
     return formatNumber(models.CurrentRowsTotal());
 });
 models.DataPageSize = ko.observable(10);
-
-models.CurrentDataColumns = ko.computed(function() {
-    if (models.SelectedNode() != null) {
-        return models.SelectedNode().Columns();
-    }
-    else {
-        return null;
-    }
-});
+models.CurrentDataColumns = ko.observableArray();
 
 models.IsPreviousVisible = ko.computed(function() {
     if (models.CurrentRowStart() != null) {

@@ -20,7 +20,7 @@ events = {};
         
 events.OnBottomPanelResize = function(event, ui) {
 
-    events.OnResultsPanelResize(ui.offset.top);
+    events.OnResultsPanelResize(ui.offset.top - $("#qt-container").offset().top);
 }
 
 events.SetBottomPanelSize = function() {
@@ -29,8 +29,8 @@ events.SetBottomPanelSize = function() {
 }
 
 events.OnResultsPanelResize = function(resizerPosition) {
-    var topPanelHeight = resizerPosition - $("div#navbar").height();
-    var bottomPanelHeight = $(window).height() - resizerPosition;
+    var topPanelHeight = resizerPosition;
+    var bottomPanelHeight = $("div#qt-container").height() - resizerPosition;
 
     $("div#top_panel").css("height", topPanelHeight + "px");
     $("div#bottom_panel").css("height", bottomPanelHeight + "px");
@@ -137,11 +137,8 @@ events.LoadNodeOptionsTemplate = function(newNode, callback) {
         ko.applyBindings(newNode, optionsContainer[0]);
         $('.node_options a').button();
         if (newNode.Tool.HelpUrl) {
-            optionsContainer.append("<a class='toolHelpLink' href='#'>How does this tool work?</a>");
-            optionsContainer.find(".toolHelpLink")
-                .click(function() {
-                    platformSpecific.OpenLink(newNode.Tool.HelpUrl);
-                });
+            optionsContainer.append("<a class='toolHelpLink' target='_blank'>How does this tool work?</a>");
+            optionsContainer.find(".toolHelpLink").attr("href", newNode.Tool.HelpUrl)
         }
 
         if (callback) {
@@ -151,7 +148,7 @@ events.LoadNodeOptionsTemplate = function(newNode, callback) {
 }
 
 events.OnWindowResize = function() {
-    events.OnResultsPanelResize($("#resize_bar").offset().top);
+    events.OnResultsPanelResize($("#resize_bar").offset().top - $("#qt-container").offset().top);
 }
 
 var snapToNode = function(staticNode, snappingNode, rightToLeft) {
@@ -262,7 +259,8 @@ events.FetchSelectedNodeData = function(startRow, rowCount, callback) {
             				models.CurrentData(data.rows);
             				models.CurrentRowStart(startRow + 1);
             				models.CurrentRowEnd(startRow + data.rows.length);
-            				models.CurrentRowsTotal(data.row_count);
+                            models.CurrentRowsTotal(data.rowCount);
+                            models.CurrentDataColumns(data.columns);
             			}
 
             			if (data.status === "error") {
@@ -275,7 +273,8 @@ events.FetchSelectedNodeData = function(startRow, rowCount, callback) {
             	models.CurrentData(null);
             	models.CurrentRowStart(null);
             	models.CurrentRowEnd(null);
-            	models.CurrentRowsTotal(null);
+                models.CurrentRowsTotal(null);
+                models.CurrentDataColumns(null);
 
             	// This node wants to render it's own results, so tell it to do so now
             	models.SelectedNode().RenderResults($("#nonTabularResultsContainer > div[data-results-node-id='" + models.SelectedNode().Id + "']"), models);

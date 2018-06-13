@@ -18,103 +18,107 @@
         </div>
     </div>
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left;" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="form-horizontal col-md-12">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left;" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left;" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <input type="hidden" name="QueryDefinition" id="QueryDefinition" />
-        <input type="hidden" name="DatabaseConnectionID" id="DatabaseConnectionID" value="@ViewBag.DatabaseConnectionID" />
+            <input type="hidden" name="QueryDefinition" id="QueryDefinition" />
+            <input type="hidden" name="DatabaseConnectionID" id="DatabaseConnectionID" value="@ViewBag.DatabaseConnectionID" />
+        </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12" id="qt-container">
-            <div id="binding-root" style="display: none;" data-bind="visible: true">
-                <div id="top_panel" class="row" data-bind="visible: ResultsOnly() === false">
-                    <div id="data_tools" class="toolbar">
-                        <ul class="icon_list" data-bind="foreach: Tools">
-                            <!-- ko if: $data.Visible-->
-                            <li data-bind="attr: { title: Description }, draggable_tool: $data">
-                                <canvas width="32" height="32" data-bind="canvas_symbol: $data"></canvas>
-                                <span data-bind="text: Title"></span>
-                            </li>
-                            <!--/ko-->
-                        </ul>
-                        <div id="dropTarget"></div>
-                    </div>
-                    <div id="workspace" data-bind="droppable_area: $data, draw_nodes: current_nodes">
-                        <canvas id="workspace_canvas"></canvas>
-                    </div>
-                </div>
-                <div data-bind="visible: ResultsOnly() && ResultsOnlyLoaded() && ObjectSelected() == false" style="display: none;">
-                    <p>No Tool Selected, please edit this report and ensure a tool is selected.</p>
-                </div>
-                <div id="bottom_panel" class="row">
-                    <div id="resize_bar" data-bind="visible: ResultsOnly() === false"></div>
-                    <div id="bottom_left_panel">
-                        <div id="results_container" class="flexibleHeight" data-bind="visible: ObjectSelected, style: { 'margin-right': ResultsOnly() ? '0' : '155px' }">
-                            <div id="nonTabularResultsContainer" class="flexibleHeight" data-bind="visible: SelectedNodeHasRenderAndNotError, render_results: SelectedNode">
-                            </div>
-                            <div id="node_status_panel" class="status_text" data-bind="visible: SelectedNodeHasError">
-                                <span data-bind="visible: SelectedNodeStatus() == 'not_ready'">Connecting to your database</span>
-                                <br data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
-                                <img src="/images/loading.gif" data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
-                                <span data-bind="visible: SelectedNodeStatus() == 'not_configured'">This tool is not set up yet, please click options to edit its settings</span>
-                                <span data-bind="visible: SelectedNodeStatus() == 'no_data'">No data was returned</span>
-                                <span data-bind="visible: SelectedNodeStatus() == 'error', html: SelectedNodeErrorText()"></span>
-                            </div>
-                            <table id="results" data-bind="visible: IsDataVisible">
-                                <thead>
-                                    <tr>
-                                        <!-- ko foreach: CurrentDataColumns() -->
-                                        <th data-bind="text: $data"></th>
-                                        <!-- /ko -->
-                                    </tr>
-                                </thead>
-                                <tbody data-bind="foreach: CurrentData">
-                                    <tr>
-                                        <!-- ko foreach: $data -->
-                                        <td data-bind="text: $root.FormatColumn($index(), $data)"></td>
-                                        <!-- /ko -->
-                                    </tr>
-                                </tbody>
-                            </table>
+        <div class="col-md-12">
+            <div  id="qt-container">
+                <div id="binding-root" style="display: none;" data-bind="visible: true">
+                    <div id="top_panel" data-bind="visible: ResultsOnly() === false">
+                        <div id="data_tools" class="toolbar">
+                            <ul class="icon_list" data-bind="foreach: Tools">
+                                <!-- ko if: $data.Visible-->
+                                <li data-bind="attr: { title: Description }, draggable_tool: $data">
+                                    <canvas width="32" height="32" data-bind="canvas_symbol: $data"></canvas>
+                                    <span data-bind="text: Title"></span>
+                                </li>
+                                <!--/ko-->
+                            </ul>
+                            <div id="dropTarget"></div>
+                        </div>
+                        <div id="workspace" data-bind="droppable_area: $data, draw_nodes: current_nodes">
+                            <canvas id="workspace_canvas"></canvas>
                         </div>
                     </div>
-                    <div id="no_selected_node_panel" class="status_text flexibleHeight" data-bind="visible: ResultsOnly() == false && ObjectSelected() == false" style="display: none;">
-                        <p>No Tool Selected, click on a tool to see its data and options.</p>
+                    <div data-bind="visible: ResultsOnly() && ResultsOnlyLoaded() && ObjectSelected() == false" style="display: none;">
+                        <p>No Tool Selected, please edit this report and ensure a tool is selected.</p>
                     </div>
-                    <ul id="result_options" class="flexibleHeight" data-bind="visible: ObjectSelected && ResultsOnly() === false">
-                        <li><a id="showConfig" class="open-dialog wide" data-bind="visible: ShowOptions && ResultsOnly() === false">Options</a></li>
-                        <li><a id="export" target="_blank" href="#" download="export.csv" class="button wide" data-bind="visible: ShowExport, click: Export, attr: { href: ExportUrl, download: ExportFileName }">Export</a></li>
-                        <li class="pager" data-bind="visible: IsDataVisible">
-                            Rows <span data-bind="text: CurrentRowStartFormatted"></span> to <span data-bind="text: CurrentRowEndFormatted"></span> of <span data-bind="text: CurrentRowsTotalFormatted"></span>
-                        </li>
-                        <li data-bind="visible: IsDataVisible">
-                            <a id="PagerStart" href="#" class="button small" data-bind="visible: IsPreviousVisible">&lt;&lt;</a>
-                            <a id="PagerPrev" href="#" class="button small" data-bind="visible: IsPreviousVisible">&lt;</a>
-                            <a id="PagerNext" href="#" class="button small" data-bind="visible: IsNextVisible">&gt;</a>
-                            <a id="PagerEnd" href="#" class="button small" data-bind="visible: IsNextVisible">&gt;&gt;</a>
-                        </li>
-                    </ul>
+                    <div id="bottom_panel">
+                        <div id="resize_bar" data-bind="visible: ResultsOnly() === false"></div>
+                        <div id="bottom_left_panel">
+                            <div id="results_container" class="flexibleHeight" data-bind="visible: ObjectSelected, style: { 'margin-right': ResultsOnly() ? '0' : '155px' }">
+                                <div id="nonTabularResultsContainer" class="flexibleHeight" data-bind="visible: SelectedNodeHasRenderAndNotError, render_results: SelectedNode">
+                                </div>
+                                <div id="node_status_panel" class="status_text" data-bind="visible: SelectedNodeHasError">
+                                    <span data-bind="visible: SelectedNodeStatus() == 'not_ready'">Connecting to your database</span>
+                                    <br data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
+                                    <img src="/images/loading.gif" data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
+                                    <span data-bind="visible: SelectedNodeStatus() == 'not_configured'">This tool is not set up yet, please click options to edit its settings</span>
+                                    <span data-bind="visible: SelectedNodeStatus() == 'no_data'">No data was returned</span>
+                                    <span data-bind="visible: SelectedNodeStatus() == 'error', html: SelectedNodeErrorText()"></span>
+                                </div>
+                                <table id="results" data-bind="visible: IsDataVisible">
+                                    <thead>
+                                        <tr>
+                                            <!-- ko foreach: CurrentDataColumns() -->
+                                            <th data-bind="text: $data"></th>
+                                            <!-- /ko -->
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: CurrentData">
+                                        <tr>
+                                            <!-- ko foreach: $data -->
+                                            <td data-bind="text: $root.FormatColumn($index(), $data)"></td>
+                                            <!-- /ko -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="no_selected_node_panel" class="status_text flexibleHeight" data-bind="visible: ResultsOnly() == false && ObjectSelected() == false" style="display: none;">
+                            <p>No Tool Selected, click on a tool to see its data and options.</p>
+                        </div>
+                        <ul id="result_options" class="flexibleHeight" data-bind="visible: ObjectSelected && ResultsOnly() === false">
+                            <li><a id="showConfig" class="open-dialog wide" data-bind="visible: ShowOptions && ResultsOnly() === false">Options</a></li>
+                            <li><a id="export" target="_blank" href="#" download="export.csv" class="button wide" data-bind="visible: ShowExport, click: Export, attr: { href: ExportUrl, download: ExportFileName }">Export</a></li>
+                            <li class="pager" data-bind="visible: IsDataVisible">
+                                Rows <span data-bind="text: CurrentRowStartFormatted"></span> to <span data-bind="text: CurrentRowEndFormatted"></span> of <span data-bind="text: CurrentRowsTotalFormatted"></span>
+                            </li>
+                            <li data-bind="visible: IsDataVisible">
+                                <a id="PagerStart" class="button small" data-bind="visible: IsPreviousVisible">&lt;&lt;</a>
+                                <a id="PagerPrev" class="button small" data-bind="visible: IsPreviousVisible">&lt;</a>
+                                <a id="PagerNext" class="button small" data-bind="visible: IsNextVisible">&gt;</a>
+                                <a id="PagerEnd" class="button small" data-bind="visible: IsNextVisible">&gt;&gt;</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <div id="node_options_container"></div>
             </div>
-            <div id="node_options_container"></div>
         </div>
     </div>
 

@@ -1,5 +1,4 @@
 #qt-container {
-  height: 100%;
   font-family: sans-serif;
   font-size: 12px;
   overflow: hidden;
@@ -61,10 +60,12 @@ div#bottom_panel {
     margin-left: -160px;
     background: #eeeeee;
     border-left: solid 1px #aaaaaa;
+    padding-left: 0;
 
     li {
       margin: 6px 8px 6px 8px;
-
+      list-style: none;
+      
       a.wide {
         width: 139px;
       }
@@ -131,9 +132,6 @@ div.dialog {
   a.rowAction.onOwnRow {
     margin-left: 120px;
     clear: both;
-  }
-  a.refreshData {
-      margin-left: 120px;
   }
   a.button {
     display: inline-block;
