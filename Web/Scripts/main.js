@@ -80,11 +80,6 @@ $(document).ready(function() {
     models.SelectedNode.subscribe(views.UpdateSelectedNode);
     models.SelectedConnector.subscribe(views.UpdateSelectedConnector);
 
-    $("#result_options a.open-dialog").button({
-        icons: { primary: "ui-icon-newwin" }
-    });
-    $("#result_options a.button").button();
-
     $("#showConfig").click(events.ShowOptionsDialog);
     $("#showQuery").click(events.ShowQueryForSelectedObject);
     $("#delete").click(events.DeleteSelectedObject);

@@ -21,16 +21,12 @@
         </div>
     </div>
     <!--ko if: $index() > 0-->
-    <div class="form-group ui-dialog-buttonset">
-        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $parent.RemoveSort">
-            <span class="ui-button-text">Remove</span>
-        </button>
+    <div class="form-group">
+        <button class="btn btn-primary" data-bind="click: $parent.RemoveSort">Remove</button>
     </div>
     <!--/ko-->
     <!--/ko-->
-    <div class="form-group ui-dialog-buttonset">
-        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: AddSort">
-            <span class="ui-button-text">Add Another</span>
-        </button>
+    <div class="form-group">
+        <button class="btn btn-primary" data-bind="click: AddSort">Add Another</button>
     </div>
 </form>

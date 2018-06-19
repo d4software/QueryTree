@@ -75,43 +75,27 @@ div#bottom_panel ul#result_options li a.small span {
 .status_text a {
   color: #888888;
 }
-div.dialog {
+div.modal {
   display: none;
-  overflow: hidden;
-  min-width: 324px;
-  max-height: 300px;
   overflow-y: auto;
 }
-div.dialog h1 {
-  font-size: 1.8em;
-  padding: 4px 0 4px;
-}
-div.dialog h2 {
-  font-size: 1.6em;
-}
-div.dialog h3 {
-  font-size: 1.4em;
-}
-div.dialog h4 {
-  font-size: 1.2em;
-}
-div.dialog a {
+div.modal a {
   color: #5c8ab7;
 }
-div.dialog a.toolHelpLink,
-div.dialog a.refreshData,
-div.dialog a.textButton {
+div.modal a.toolHelpLink,
+div.modal a.refreshData,
+div.modal a.textButton {
   display: block;
   margin-top: 10px;
 }
-div.dialog a.rowAction {
+div.modal a.rowAction {
   display: block;
   float: left;
   width: 41px;
   line-height: 18px;
   padding-left: 4px;
 }
-div.dialog a.button {
+div.modal a.button {
   display: inline-block;
   text-align: center;
   background: #5c8ab7;
@@ -124,20 +108,20 @@ div.dialog a.button {
   margin-bottom: 5px;
   cursor: pointer;
 }
-div.dialog p {
+div.modal p {
   display: inline-block;
   margin: 8px 0 5px 0;
 }
-div.dialog form {
+div.modal form {
   height: 100%;
 }
-div.dialog form h3 {
+div.modal form h3 {
   float: left;
   clear: left;
   padding-top: 10px;
   padding-bottom: 3px;
 }
-div.dialog form label {
+div.modal form label {
   float: left;
   width: 120px;
   display: block;
@@ -145,14 +129,14 @@ div.dialog form label {
   line-height: 22px;
   vertical-align: middle;
 }
-div.dialog form label.fullWidth {
+div.modal form label.fullWidth {
   float: none;
   width: auto;
 }
-div.dialog form label.columnTitle {
+div.modal form label.columnTitle {
   width: auto;
 }
-div.dialog form span {
+div.modal form span {
   display: block;
   float: left;
   clear: left;
@@ -160,81 +144,81 @@ div.dialog form span {
   line-height: 22px;
   vertical-align: middle;
 }
-div.dialog form span.dataLabel {
+div.modal form span.dataLabel {
   display: inline-block;
   float: none;
 }
-div.dialog form fieldset {
+div.modal form fieldset {
   margin-top: 4px;
   float: left;
 }
-div.dialog form input[type=text],
-div.dialog form input[type=number],
-div.dialog form input[type=file] {
+div.modal form input[type=text],
+div.modal form input[type=number],
+div.modal form input[type=file] {
   float: left;
   width: 195px;
 }
-div.dialog form select {
+div.modal form select {
   float: left;
   width: 199px;
 }
-div.dialog form input.datepicker,
-div.dialog form input.timepicker {
+div.modal form input.datepicker,
+div.modal form input.timepicker {
   width: 80px;
   margin-right: 10px;
 }
-div.dialog form input[type=checkbox] {
+div.modal form input[type=checkbox] {
   float: left;
 }
-div.dialog form .leftSettingsColumn {
+div.modal form .leftSettingsColumn {
   float: left;
   width: 48%;
   clear: left;
 }
-div.dialog form .rightSettingsColumn {
+div.modal form .rightSettingsColumn {
   float: right;
   width: 48%;
   clear: none;
 }
-div.dialog form button.fullWidth {
+div.modal form button.fullWidth {
   width: 100%;
 }
-div.dialog form div {
+div.modal form div {
   clear: both;
 }
-div.dialog form ul {
+div.modal form ul {
   background: #fff;
   width: 99%;
   height: 100px;
   border: 1px solid #aaa;
   overflow-y: auto;
 }
-div.dialog form ul li {
+div.modal form ul li {
   /*color: #666;*/
   height: 20px;
   /*padding: 6px 3px 0 3px;*/
   font-size: 1.05em;
   cursor: move;
 }
-div.dialog form ul li span {
+div.modal form ul li span {
   display: inline;
   float: none;
 }
-div.dialog form ul li button {
+div.modal form ul li button {
   font-size: 0.7em;
 }
-div.dialog form span.helpText {
+div.modal form span.helpText {
   color: #666;
   width: auto;
 }
-div.dialog form a.linkstyle {
+div.modal form a.linkstyle {
   display: inline-block;
   padding: 0px;
   color: blue;
   background: none;
   border: 0px;
 }
-div.dialog .fileLoadingPanel {
+div.modal .fileLoadingPanel {
   margin-left: 120px;
 }
 ul.rich_item_list {

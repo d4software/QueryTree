@@ -13,7 +13,6 @@
   {
     "outputFileName": "wwwroot/css/aqb.css",
     "inputFiles": [
-      "Styles/jquery-ui-1.8.22.custom.css",
       "Styles/jquery.ui.timepicker.css",
       "Styles/aqb/base.css",
       "Styles/aqb/app.css"
@@ -22,7 +21,6 @@
   {
     "outputFileName": "wwwroot/css/jquery.css",
     "inputFiles": [
-      "Styles/jquery-ui-1.8.22.custom.css",
       "Styles/jquery.ui.timepicker.css"
     ]
   },

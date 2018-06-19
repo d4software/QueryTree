@@ -250,7 +250,7 @@ nodes.DatabaseTable = function(properties) {
         // Load the tables if they are empty
         instance.loadTables();
 
-        var optionsDiv = $(".dialog[data-node-id='" + models.SelectedNode().Id + "']");
+        var optionsDiv = $(".modal[data-node-id='" + models.SelectedNode().Id + "']");
         optionsDiv.find("a.refreshData").click(function() { 
             instance.Tables.removeAll();
             instance.loadTables();
