@@ -617,7 +617,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 
 
 
-
 #binding-root {
   height: 100%;
   font-family: sans-serif;
@@ -1009,6 +1008,7 @@ a.button-link {
   margin: -2px 10px -2px;
   border: solid 1px #fff;
 }
+/*# sourceMappingURL=base.css.map */
 #qt-container {
   font-family: sans-serif;
   font-size: 12px;
@@ -1121,10 +1121,6 @@ div.dialog a.rowAction {
   width: 41px;
   line-height: 18px;
   padding-left: 4px;
-}
-div.dialog a.rowAction.onOwnRow {
-  margin-left: 120px;
-  clear: both;
 }
 div.dialog a.button {
   display: inline-block;
@@ -1374,3 +1370,8 @@ button.removeButton {
   position: absolute;
   left: 8px;
 }
+.move-left {
+  width: auto;
+  box-shadow: none;
+}
+/*# sourceMappingURL=app.css.map */

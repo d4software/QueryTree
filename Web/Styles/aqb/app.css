@@ -1,4 +1,4 @@
-﻿#qt-container {
+#qt-container {
   font-family: sans-serif;
   font-size: 12px;
   overflow: hidden;
@@ -110,10 +110,6 @@ div.dialog a.rowAction {
   width: 41px;
   line-height: 18px;
   padding-left: 4px;
-}
-div.dialog a.rowAction.onOwnRow {
-  margin-left: 120px;
-  clear: both;
 }
 div.dialog a.button {
   display: inline-block;
@@ -363,3 +359,8 @@ button.removeButton {
   position: absolute;
   left: 8px;
 }
+.move-left {
+  width: auto;
+  box-shadow: none;
+}
+/*# sourceMappingURL=app.css.map */

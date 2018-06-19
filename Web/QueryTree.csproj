@@ -70,5 +70,11 @@
   </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
   </Target>
+
+  <Target Name="LessBuild" BeforeTargets="BeforeBuild">
+    <Message Text="Building .less files..."/>
+    <Exec Command="lessc --source-map=Styles/aqb/app.css.map Styles/aqb/app.less Styles/aqb/app.css"/>
+    <Exec Command="lessc --source-map=Styles/aqb/base.css.map Styles/aqb/base.less Styles/aqb/base.css"/>
+  </Target>
   
 </Project>
