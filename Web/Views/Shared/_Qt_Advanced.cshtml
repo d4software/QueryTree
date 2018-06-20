@@ -55,16 +55,16 @@
                 <p>No Tool Selected, click on a tool to see its data and options.</p>
             </div>
             <ul id="result_options" class="flexibleHeight" data-bind="visible: ObjectSelected && ResultsOnly() === false">
-                <li><a id="showConfig" class="open-dialog wide" data-bind="visible: ShowOptions && ResultsOnly() === false">Options</a></li>
-                <li><a id="export" target="_blank" href="#" download="export.csv" class="button wide" data-bind="visible: ShowExport, click: Export, attr: { href: ExportUrl, download: ExportFileName }">Export</a></li>
+                <li><a id="showConfig" class="btn btn-primary btn-block" data-bind="visible: ShowOptions && ResultsOnly() === false">Options</a></li>
+                <li><a id="export" target="_blank" download="export.csv" class="btn btn-success btn-block" data-bind="visible: ShowExport, click: Export, attr: { href: ExportUrl, download: ExportFileName }">Export</a></li>
                 <li class="pager" data-bind="visible: IsDataVisible">
                     Rows <span data-bind="text: CurrentRowStartFormatted"></span> to <span data-bind="text: CurrentRowEndFormatted"></span> of <span data-bind="text: CurrentRowsTotalFormatted"></span>
                 </li>
                 <li data-bind="visible: IsDataVisible">
-                    <a id="PagerStart" class="button small" data-bind="visible: IsPreviousVisible">&lt;&lt;</a>
-                    <a id="PagerPrev" class="button small" data-bind="visible: IsPreviousVisible">&lt;</a>
-                    <a id="PagerNext" class="button small" data-bind="visible: IsNextVisible">&gt;</a>
-                    <a id="PagerEnd" class="button small" data-bind="visible: IsNextVisible">&gt;&gt;</a>
+                    <a id="PagerStart" class="btn btn-sm btn-default" data-bind="visible: IsPreviousVisible">&lt;&lt;</a>
+                    <a id="PagerPrev" class="btn btn-sm btn-default" data-bind="visible: IsPreviousVisible">&lt;</a>
+                    <a id="PagerNext" class="btn btn-sm btn-default" data-bind="visible: IsNextVisible">&gt;</a>
+                    <a id="PagerEnd" class="btn btn-sm btn-default" data-bind="visible: IsNextVisible">&gt;&gt;</a>
                 </li>
             </ul>
         </div>
