@@ -6,22 +6,26 @@
     <!--ko foreach: Statistics-->
     <div class="form-group">
         <label>Calculate the</label>
-        <select class="form-control" name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" style="width:135px;"></select>
+        <select class="form-control" name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
         <!--ko if: AggFunction() == 1-->
-        <label style="clear: none; width: 135px; text-align: left;"> of results</label>
-        <!--/ko-->
-        <!--ko if: AggFunction() != 1-->
-        <label for="AggColumn">Of column</label>
-        <select class="form-control" name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn" style="width:135px;"></select>
-        <!--/ko-->
-        <!--ko if: $parent.Statistics().length > 1-->
-        <a href="#" class="rowAction" data-bind="click: $parent.RemoveStatistic">remove</a>
+        <label> of results</label>
         <!--/ko-->
     </div>
+    <!--ko if: AggFunction() != 1-->
+    <div class="form-group">
+        <label for="AggColumn">Of column</label>
+        <select class="form-control" name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn"></select>
+    </div>
     <!--/ko-->
-    <a href="#" class="rowAction onOwnRow" data-bind="click: AddStatistic">add</a>
+    <!--ko if: $parent.Statistics().length > 1-->
+    <div class="form-group">
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveStatistic">remove</a>
+    </div>
+    <!--/ko-->
+    <!--/ko-->
+    <a class="btn btn-default" data-bind="click: AddStatistic">add</a>
     <!--ko if: GroupByColumns().length == 0-->
-    <a class="textButton" href="#" data-bind="click: AddGroupBy">Breakdown Statistics</a>
+    <a class="btn btn-primary" data-bind="click: AddGroupBy">Breakdown Statistics</a>
     <!--/ko-->
     <!--ko if: GroupByColumns().length > 0-->
     <!--ko foreach: GroupByColumns-->
@@ -32,13 +36,15 @@
         <!--ko if: $index() > 0-->
         <label for="SplitBy">Then by</label>
         <!--/ko-->
-        <select class="form-control" name="SplitBy" data-bind="options: $parent.GroupColumns, optionsText: 'Name', optionsValue: 'Index', value: index, style: { width: $parent.GroupByFunctions(index()).length > 0 ? '100px' : '154px' } "></select>
+        <select class="form-control" name="SplitBy" data-bind="options: $parent.GroupColumns, optionsText: 'Name', optionsValue: 'Index', value: index"></select>
         <!--ko if: $parent.GroupByFunctions(index()).length > 0-->
-        <select class="form-control" name="DateFunction" data-bind="options: $parent.GroupByFunctions(index()), optionsText: 'text', optionsValue: 'id', value: groupByFunction" style="width:50px; margin-left:4px;"></select>
+        <select class="form-control" name="DateFunction" data-bind="options: $parent.GroupByFunctions(index()), optionsText: 'text', optionsValue: 'id', value: groupByFunction"></select>
         <!--/ko-->
-        <a href="#" class="rowAction" data-bind="click: $parent.RemoveGroupBy">remove</a>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveGroupBy">remove</a>
     </div>
     <!--/ko-->
-    <a href="#" class="rowAction onOwnRow" data-bind="click: AddGroupBy">add</a>
+    <a class="btn btn-primary" data-bind="click: AddGroupBy">add</a>
     <!--/ko-->
 </form>

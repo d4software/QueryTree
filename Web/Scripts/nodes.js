@@ -249,12 +249,11 @@ nodes.DatabaseTable = function(properties) {
     instance.OnSelected = function(models) {
         // Load the tables if they are empty
         instance.loadTables();
+    }
 
-        var optionsDiv = $(".modal[data-node-id='" + models.SelectedNode().Id + "']");
-        optionsDiv.find("a.refreshData").click(function() { 
-            instance.Tables.removeAll();
-            instance.loadTables();
-        });
+    instance.RefreshTables = function() { 
+        instance.Tables.removeAll();
+        instance.loadTables();
     }
 
     return instance;

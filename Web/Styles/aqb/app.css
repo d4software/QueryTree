@@ -79,9 +79,6 @@ div.modal {
   display: none;
   overflow-y: auto;
 }
-div.modal a {
-  color: #5c8ab7;
-}
 div.modal a.toolHelpLink,
 div.modal a.refreshData,
 div.modal a.textButton {

@@ -3,12 +3,11 @@
         <label for="datatable-name">Name</label>
         <input type="text" class="form-control" id="datatable-name" data-bind="value: Name" />
     </div>
-    <div class="form-group">
+    <div class="form-group" data-bind="visible: TablesLoading() === false && Tables().length > 0">
         <label for="datatable-table">Table</label>
-        <select id="datatable-table" class="form-control" data-bind="options: Tables, value: Table, visible: TablesLoading() === false && Tables().length > 0">
-        </select>
+        <select id="datatable-table" class="form-control" data-bind="options: Tables, value: Table"></select>
     </div>
     <p data-bind="visible: TablesLoading() === false && Tables().length == 0">No tables found</p>
     <img src="/images/loading.gif" data-bind="visible: TablesLoading"/>
-    <a class="refreshData" data-bind="visible: !TablesLoading()">Refresh Tables</a>
+    <a class="btn btn-primary" data-bind="visible: !TablesLoading(), click: RefreshTables">Refresh Tables</a>
 </form>

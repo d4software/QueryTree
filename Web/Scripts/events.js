@@ -141,7 +141,7 @@ events.LoadNodeOptionsTemplate = function(newNode, callback) {
                     <div class='modal-body'>
                     </div>
                     <div class="modal-footer">
-                        <button type='button' class='btn btn-default remove'>Remove Tool</button>
+                        <button type='button' class='btn btn-danger remove'>Remove Tool</button>
                         <button type='button' class='btn btn-primary ok'>OK</button>
                     </div>
                 </div>
