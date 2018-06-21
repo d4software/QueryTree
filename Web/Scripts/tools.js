@@ -252,7 +252,7 @@ tools.Summarize = function () {
     });
 
     instance.AggFunctions = ko.observableArray([
-        { id: 1, text: "Number" },
+        { id: 1, text: "Number of Rows" },
         { id: 2, text: "Total" },
         { id: 3, text: "Minimum" },
         { id: 4, text: "Maximum" },

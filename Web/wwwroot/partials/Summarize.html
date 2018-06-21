@@ -7,9 +7,6 @@
     <div class="form-group">
         <label>Calculate the</label>
         <select class="form-control" name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
-        <!--ko if: AggFunction() == 1-->
-        <label> of results</label>
-        <!--/ko-->
     </div>
     <!--ko if: AggFunction() != 1-->
     <div class="form-group">
@@ -19,11 +16,11 @@
     <!--/ko-->
     <!--ko if: $parent.Statistics().length > 1-->
     <div class="form-group">
-        <a class="btn btn-warning" data-bind="click: $parent.RemoveStatistic">remove</a>
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveStatistic">Remove</a>
     </div>
     <!--/ko-->
     <!--/ko-->
-    <a class="btn btn-default" data-bind="click: AddStatistic">add</a>
+    <a class="btn btn-default" data-bind="click: AddStatistic">Add</a>
     <!--ko if: GroupByColumns().length == 0-->
     <a class="btn btn-primary" data-bind="click: AddGroupBy">Breakdown Statistics</a>
     <!--/ko-->
@@ -42,9 +39,9 @@
         <!--/ko-->
     </div>
     <div class="form-group">
-        <a class="btn btn-warning" data-bind="click: $parent.RemoveGroupBy">remove</a>
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveGroupBy">Remove</a>
     </div>
     <!--/ko-->
-    <a class="btn btn-primary" data-bind="click: AddGroupBy">add</a>
+    <a class="btn btn-primary" data-bind="click: AddGroupBy">Add</a>
     <!--/ko-->
 </form>

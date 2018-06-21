@@ -165,11 +165,6 @@
             <div class="form-group">
                 <select name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" class="form-control"></select>
             </div>
-            <!--ko if: AggFunction() == 1-->
-            <div class="form-group">
-                <label class="control-label"> of results</label>
-            </div>
-            <!--/ko-->
             <!--ko if: AggFunction() != 1-->
             <div class="form-group">
                 <label for="AggColumn" class="control-label" style="width: 40px; text-align: center;"> of </label>
