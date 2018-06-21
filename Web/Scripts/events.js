@@ -154,8 +154,7 @@ events.LoadNodeOptionsTemplate = function(newNode, callback) {
         var optionsContainer = $("#node_options_container > div[data-node-id='" + newNode.Id + "'] div.modal-body");
         ko.applyBindings(newNode, optionsContainer[0]);
         if (newNode.Tool.HelpUrl) {
-            optionsContainer.append("<a class='toolHelpLink' target='_blank'>How does this tool work?</a>");
-            optionsContainer.find(".toolHelpLink").attr("href", newNode.Tool.HelpUrl)
+            optionsContainer.append("<div class='form-group toolHelpLink'><a href='" + newNode.Tool.HelpUrl + "' target='_blank'>How does this tool work?</a>");
         }
 
         $("#node_options_container > div[data-node-id='" + newNode.Id + "'] button.remove").click(events.ActiveOptionsModalRemove);

@@ -526,10 +526,7 @@ div.modal {
   display: none;
   overflow-y: auto;
 }
-div.modal a.toolHelpLink,
-div.modal a.refreshData,
-div.modal a.textButton {
-  display: block;
+div.modal .toolHelpLink {
   margin-top: 10px;
 }
 div.modal a.rowAction {
@@ -554,116 +551,31 @@ div.modal a.button {
 }
 div.modal p {
   display: inline-block;
-  margin: 8px 0 5px 0;
 }
-div.modal form {
-  height: 100%;
-}
-div.modal form h3 {
-  float: left;
-  clear: left;
-  padding-top: 10px;
-  padding-bottom: 3px;
-}
-div.modal form label {
-  float: left;
-  width: 120px;
-  display: block;
-  clear: left;
-  line-height: 22px;
-  vertical-align: middle;
-}
-div.modal form label.fullWidth {
-  float: none;
-  width: auto;
-}
-div.modal form label.columnTitle {
-  width: auto;
-}
-div.modal form span {
-  display: block;
-  float: left;
-  clear: left;
-  width: 200px;
-  line-height: 22px;
-  vertical-align: middle;
-}
-div.modal form span.dataLabel {
-  display: inline-block;
-  float: none;
-}
-div.modal form fieldset {
-  margin-top: 4px;
-  float: left;
-}
-div.modal form input[type=text],
-div.modal form input[type=number],
-div.modal form input[type=file] {
-  float: left;
-  width: 195px;
-}
-div.modal form select {
-  float: left;
-  width: 199px;
-}
-div.modal form input.datepicker,
-div.modal form input.timepicker {
-  width: 80px;
-  margin-right: 10px;
-}
-div.modal form input[type=checkbox] {
-  float: left;
-}
-div.modal form .leftSettingsColumn {
-  float: left;
+div.modal div.modal-body .leftSettingsColumn {
   width: 48%;
-  clear: left;
+  float: left;
 }
-div.modal form .rightSettingsColumn {
+div.modal div.modal-body .rightSettingsColumn {
+  width: 48%;
   float: right;
-  width: 48%;
-  clear: none;
 }
-div.modal form button.fullWidth {
-  width: 100%;
-}
-div.modal form div {
-  clear: both;
-}
-div.modal form ul {
+div.modal div.modal-body ul {
   background: #fff;
   width: 99%;
   height: 100px;
   border: 1px solid #aaa;
+  border-radius: 5px;
   overflow-y: auto;
+  padding: 5px;
 }
-div.modal form ul li {
-  /*color: #666;*/
-  height: 20px;
-  /*padding: 6px 3px 0 3px;*/
+div.modal div.modal-body ul li {
   font-size: 1.05em;
   cursor: move;
+  padding: 4px;
 }
-div.modal form ul li span {
-  display: inline;
-  float: none;
-}
-div.modal form ul li button {
+div.modal div.modal-body ul li button {
   font-size: 0.7em;
-}
-div.modal form span.helpText {
-  color: #666;
-  width: auto;
-}
-div.modal form a.linkstyle {
-  display: inline-block;
-  padding: 0px;
-  color: blue;
-  background: none;
-  border: 0px;
-}
-div.modal .fileLoadingPanel {
-  margin-left: 120px;
 }
 ul.rich_item_list {
   background: #fff;
@@ -696,31 +608,34 @@ li.blockItem {
   border-radius: 8px;
   background-color: #5c8ab7;
   overflow: hidden;
-  padding: 4px;
   margin: 3px;
   vertical-align: middle;
 }
 li.blockItem > .blockItemText {
-  margin-right: -10px;
+  margin: 1px -32px 1px 1px;
   width: 100%;
   display: inline-block;
-  float: left;
 }
 li.blockItem > .blockItemEditable {
   cursor: text;
 }
 li.blockItem > .blockItemEdit {
-  margin-right: -10px;
+  margin-right: -30px;
   width: 97%;
   display: inline-block;
   float: left;
+  color: #000;
 }
 li.blockItem > .blockItemRemoveButton {
-  display: inline-block;
-  float: left;
-  width: 20px;
-  margin-left: -10px;
-  height: 100%;
+  float: right;
+  color: #000;
+  height: 18px;
+  margin-bottom: 0 !important;
+  cursor: pointer;
+}
+li.blockItem > .blockItemRemoveButton:hover {
+  margin-top: 0;
+  border-bottom-width: 0px;
 }
 #results_container table {
   margin: 0px;

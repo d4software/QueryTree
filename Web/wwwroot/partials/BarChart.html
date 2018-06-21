@@ -16,20 +16,22 @@
         <select class="form-control" name="HorizontalAxis" data-bind="options: AllInputColumns, value: HorizontalAxis"></select>
     </div>
     <h3>Plot the following columns:</h3>
-    <span class="helpText">Drag columns into the list on the right and re-order as required. Click the 'x' button to remove columns from the list.</span>
-    <div class="leftSettingsColumn expandingHeight">
-        <ul class="connectedColumnList expandingHeight" data-bind="foreach: AllInputColumnInfos">
-            <li class="availableColumn blockItem" data-bind="attr: { 'data-bind-col-index': Index }, draggable_column: $data"> <span data-bind="text: Name"></span></li>
-        </ul>
-        <button class="fullWidth" data-bind="click: AddAll" style="float:right">add all</button>
-    </div>
-    <div class="rightSettingsColumn expandingHeight">
-        <ul class="connectedColumnList expandingHeight" data-bind="foreach: DataSeriesColumnIndexes, sortable_column_list: { data: DataSeriesColumnIndexes }">
-            <li class="selectedColumn blockItem" data-bind="attr: { 'data-bind-col-index': $data }">
-                <span class="selectedColumn blockItemText" data-bind="text: $parent.GetColumnName($data)"></span>
-                <button class="blockItemRemoveButton" data-bind="click: $parent.RemoveItem">x</button>
-            </li>
-        </ul>
-        <button class="fullWidth"  data-bind="click: RemoveAll">remove all</button>
+    <p class="helpText">Drag columns into the list on the right and re-order as required. Click the 'x' button to remove columns from the list.</p>
+    <div class="form-group">
+        <div class="leftSettingsColumn">
+            <ul class="connectedColumnList" data-bind="foreach: AllInputColumnInfos">
+                <li class="availableColumn blockItem" data-bind="attr: { 'data-bind-col-index': Index }, draggable_column: $data"> <span data-bind="text: Name"></span></li>
+            </ul>
+            <button class="btn btn-default" data-bind="click: AddAll" style="float:right">add all</button>
+        </div>
+        <div class="rightSettingsColumn">
+            <ul class="connectedColumnList" data-bind="foreach: DataSeriesColumnIndexes, sortable_column_list: { data: DataSeriesColumnIndexes }">
+                <li class="selectedColumn blockItem" data-bind="attr: { 'data-bind-col-index': $data }">
+                    <span class="selectedColumn blockItemText" data-bind="text: $parent.GetColumnName($data)"></span>
+                    <button class="btn btn-sm blockItemRemoveButton" data-bind="click: $parent.RemoveItem">x</button>
+                </li>
+            </ul>
+            <button class="btn btn-default"  data-bind="click: RemoveAll">remove all</button>
+        </div>
     </div>
 </form>
