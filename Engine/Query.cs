@@ -20,6 +20,11 @@ namespace QueryTree.Engine
                 var inputDict = Nodes.Where(n => (node as DataProcessorNode).Inputs.Contains(n.ClientId)).ToDictionary(n => n.ClientId);
                 (node as DataProcessorNode).InputDict = inputDict;
             }
+
+            foreach (var node in Nodes.Where(n => (n is IRequireConfiguration)))
+            {
+                (node as IRequireConfiguration).Configure(tables);
+            }
         }
 
         private NodeBase CreateNode(Dictionary<string, object> nodeSettings, IList<ITableInfo> tables, DatabaseType type)
@@ -53,11 +58,6 @@ namespace QueryTree.Engine
 
                 // let this node setup update its settings
                 n.UpdateSettings(nodeSettings);
-
-                if (n is DatabaseTableNode)
-                {
-                    (n as DatabaseTableNode).Configure(tables);
-                }
             }
 
             return n;

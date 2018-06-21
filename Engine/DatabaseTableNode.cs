@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace QueryTree.Engine
 {
-    public class DatabaseTableNode : DataSourceNode, ICollapsibleQueryNode
+    public class DatabaseTableNode : DataSourceNode, ICollapsibleQueryNode, IRequireConfiguration
     {
 		public void Configure(IList<ITableInfo> tables)
 		{
