@@ -26,7 +26,7 @@ namespace QueryTree.Engine
     {
         private IList<int> GroupByColumnIndexes;
         private IList<int> AggColumnIndexes;
-        private IList<GroupByFunction> GroupByFunctions;
+        private IList<GroupByFunction?> GroupByFunctions;
         private IList<AggregationFunction> AggFunctions;
 
         public override void UpdateSettings(Dictionary<string, object> settings)
@@ -43,11 +43,11 @@ namespace QueryTree.Engine
 
             if (settings.ContainsKey("GroupByFunctions"))
             {
-                GroupByFunctions = JsonConvert.DeserializeObject<List<GroupByFunction>>(settings["GroupByFunctions"].ToString());
+                GroupByFunctions = JsonConvert.DeserializeObject<List<GroupByFunction?>>(settings["GroupByFunctions"].ToString());
             }
             else
             {
-                GroupByFunctions = new List<GroupByFunction>();
+                GroupByFunctions = new List<GroupByFunction?>();
             }
 
             if (settings.ContainsKey("AggFunctions"))
@@ -89,20 +89,25 @@ namespace QueryTree.Engine
             }
         }
 
-        private string GetGroupByFunctionUIText(string columnName, GroupByFunction groupByFunction)
+        private string GetGroupByFunctionUIText(string columnName, GroupByFunction? groupByFunction)
         {
-            if (groupByFunction == GroupByFunction.Month)
+            if (groupByFunction != null)
             {
-                return columnName + " Month";
+                if (groupByFunction == GroupByFunction.Month)
+                {
+                    return columnName + " Month";
+                }
+                else if (groupByFunction == GroupByFunction.Year)
+                {
+                    return columnName + " Year";
+                }
+                else
+                {
+                    return columnName;
+                }
             }
-            else if (groupByFunction == GroupByFunction.Year)
-            {
-                return columnName + " Year";
-            }
-            else
-            {
-                return columnName;
-            }
+
+            return null;
         }
 
         public string GetAggStr(int columnIndex, AggregationFunction aggFunction)
@@ -197,9 +202,9 @@ namespace QueryTree.Engine
             {
                 GroupByFunction groupByFunction = GroupByFunction.Date;
 
-                if (i < GroupByFunctions.Count)
+                if (i < GroupByFunctions.Count && GroupByFunctions[i].HasValue)
                 {
-                    groupByFunction = GroupByFunctions[i];
+                    groupByFunction = GroupByFunctions[i].Value;
                 }
 
                 var colIndex = GroupByColumnIndexes[i];
@@ -229,9 +234,9 @@ namespace QueryTree.Engine
             {
                 GroupByFunction groupByFunction = GroupByFunction.Date;
 
-                if (i < GroupByFunctions.Count)
+                if (i < GroupByFunctions.Count && GroupByFunctions[i].HasValue)
                 {
-                    groupByFunction = GroupByFunctions[i];
+                    groupByFunction = GroupByFunctions[i].Value;
                 }
 
                 var groupByStr = GetGroupByStr(GroupByColumnIndexes[i], groupByFunction);
