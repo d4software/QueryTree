@@ -1,5 +1,6 @@
 using System.Linq;
 using System.IO;
+using System.Globalization;
 
 namespace QueryTree.Managers
 {
@@ -301,13 +302,8 @@ namespace QueryTree.Managers
       /// <param name="save">Save the worksheet</param>
       /// <returns>True if succesful</returns>
       public static bool SetCellValue(DocumentFormat.OpenXml.Packaging.SpreadsheetDocument spreadsheet, DocumentFormat.OpenXml.Spreadsheet.Worksheet worksheet, uint columnIndex, uint rowIndex, System.DateTime datetimeValue, uint? styleIndex, bool save = true) {
-#if EN_US_CULTURE
-         string columnValue = datetimeValue.ToString();
-#else
-         string columnValue = datetimeValue.ToString().Replace(",", ".");
-#endif
-
-         return SetCellValue(spreadsheet, worksheet, columnIndex, rowIndex, DocumentFormat.OpenXml.Spreadsheet.CellValues.Date, columnValue, styleIndex, save);
+          var columnValue = datetimeValue.ToOADate().ToString(CultureInfo.InvariantCulture);
+          return SetCellValue(spreadsheet, worksheet, columnIndex, rowIndex, DocumentFormat.OpenXml.Spreadsheet.CellValues.Date, columnValue, styleIndex, save);
       }
 
       /// <summary>
