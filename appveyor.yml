@@ -3,6 +3,10 @@ branches:
   only:
   - master
 image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: 'Web\QueryTree.csproj'
+  version: '{version}'
 before_build:
 - cmd: dotnet restore ./Web/QueryTree.csproj --verbosity m
 build_script:

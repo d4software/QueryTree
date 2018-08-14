@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-QueryTree-46E61BB7-4239-4527-BA0C-1B66D664CC58</UserSecretsId>
-    <Version>2.0.0</Version>
+    <Version>0.0.0</Version>
     <Authors>D4 Software Ltd</Authors>
     <Company>D4 Software Ltd</Company>
     <Description>An ad-hoc reporting web application that works with any Microsoft SQL Server, MySQL or PostgreSQL database.</Description>
@@ -19,7 +19,10 @@
     <Content Include="Styles\aqb\base.css.map" />
     <Content Include="Styles\aqb\base.less" />
     <Content Include="Styles\aqb\base.min.css" />
+<<<<<<< HEAD
     <Content Include="Styles\aqb\jquery.ui.timepicker.css" />
+=======
+>>>>>>> master
     <Content Include="Styles\aqb\reset.css" />
   </ItemGroup>
   
