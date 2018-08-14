@@ -35,6 +35,7 @@
     "inputFiles": [
       "Scripts/lib/knockout-pickatime/knockout-pickatime.min.js",
       "Scripts/lib/knockout-pickatime/pickatime.min.js",
+      "Scripts/tools.js",
       "Scripts/utils.js",
       "Scripts/backend.js"
     ]
