@@ -5,6 +5,7 @@ jobs:
       - image: microsoft/dotnet:2.0-sdk-stretch
     steps:
       - checkout
+      - run: npm install less -g
       - run: dotnet build ./Web/QueryTree.csproj -v n
   test:
     docker:
