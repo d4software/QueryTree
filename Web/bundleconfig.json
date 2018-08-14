@@ -13,7 +13,7 @@
   {
     "outputFileName": "wwwroot/css/aqb.css",
     "inputFiles": [
-      "Styles/jquery.ui.timepicker.css",
+      "Styles/jquery-ui.datepicker.css",
       "Styles/aqb/base.css",
       "Styles/aqb/app.css"
     ]
@@ -21,7 +21,7 @@
   {
     "outputFileName": "wwwroot/css/jquery.css",
     "inputFiles": [
-      "Styles/jquery.ui.timepicker.css"
+      "Styles/jquery-ui.datepicker.css"
     ]
   },
   {
@@ -43,7 +43,6 @@
   {
     "outputFileName": "wwwroot/js/sqb.js",
     "inputFiles": [
-      "Scripts/lib/jquery.timePicker/jquery.ui.timepicker.js",
       "Scripts/lib/jquery.maskedinput/jquery.maskedinput.min.js",
       "Scripts/lib/jquery.numeric/jquery.numeric.js",
       "Scripts/utils.js",
@@ -68,7 +67,6 @@
   {
     "outputFileName": "wwwroot/js/aqb.js",
     "inputFiles": [
-      "Scripts/lib/jquery.timePicker/jquery.ui.timepicker.js",
       "Scripts/lib/jquery.maskedinput/jquery.maskedinput.min.js",
       "Scripts/lib/jquery.numeric/jquery.numeric.js",
       "Scripts/jquery.querystring.js",

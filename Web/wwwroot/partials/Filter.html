@@ -22,7 +22,7 @@
             <option value="0">false</option>
         </select>
         <input class="form-control" type="text" name="FilterValueDate" class="datepicker" data-bind="datepicker: FilterDateValue1, datepickerOptions: { dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true }, visible: ShowFilterCompareDatetime"/>
-        <input class="form-control" type="text" name="FilterValueTime" class="timepicker" data-bind="timepicker: FilterTimeValue1, timepickerOptions: {show24Hours: true, showSeconds: true, spinnerImage: ''}, visible: ShowFilterCompareDatetime" />
+        <input class="form-control" type="text" name="FilterValueTime" class="timepicker" data-bind="timepicker: FilterTimeValue1, value: FilterTimeValue1, visible: ShowFilterCompareDatetime" />
     </div>
     <div class="form-group">
         <label for="CaseSensitive" data-bind="visible: ShowCaseSensitive">Case Sensitive</label>

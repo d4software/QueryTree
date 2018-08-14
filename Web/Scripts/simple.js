@@ -61,30 +61,10 @@ ko.bindingHandlers.datepicker = {
 
 ko.bindingHandlers.timepicker = {
     init: function (element, valueAccessor, allBindingsAccessor) {
-        //initialize datepicker with some optional options
-        var options = allBindingsAccessor().timepickerOptions || {},
-            $el = $(element);
-
-        var onTimeChanged = function () {
-            var observable = valueAccessor();
-            observable($el.timepicker("getTime"));
-        };
-
-        options.onSelect = onTimeChanged;
-        $el.change(onTimeChanged);
-
+        var $el = $(element);
         $el.mask("99:99");
-        $el.timepicker(options);
     },
     update: function (element, valueAccessor) {
-        var value = ko.utils.unwrapObservable(valueAccessor()),
-            $el = $(element);
-
-        var current = $el.timepicker("getTime");
-
-        if ((value != undefined) && (value - current !== 0)) {
-            $el.timepicker("setTime", value);
-        }
     }
 };
 
