@@ -15,7 +15,7 @@
         }
     </title>
     <link type="text/css" href="/css/site.min.css" rel="stylesheet" />
-    <link type="text/css" href="/css/jquery.css" rel="stylesheet" />
+    <link type="text/css" href="/css/jquery.min.css" rel="stylesheet" />
     @RenderSection("head", required: false)
     @if (string.IsNullOrEmpty(CustomizationConfiguration.Value.ExtraCSS) == false)
     {
@@ -48,7 +48,7 @@
         <br/>
     </div>
     @Html.Partial("_FooterPartial")
-    <script src="~/js/base.js"></script>
+    <script src="/js/base.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

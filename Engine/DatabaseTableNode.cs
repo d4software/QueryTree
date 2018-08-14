@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace QueryTree.Engine
 {
-    public class DatabaseTableNode : DataSourceNode, ICollapsibleQueryNode
+    public class DatabaseTableNode : DataSourceNode, ICollapsibleQueryNode, IRequireConfiguration
     {
 		public void Configure(IList<ITableInfo> tables)
 		{
@@ -85,7 +85,7 @@ namespace QueryTree.Engine
             return colSpecifier;
         }
 
-        protected override string GetSelectColumns()
+        protected string GetDbSelectColumns()
         {
             var sql = new StringBuilder();
             var sep = "";
@@ -129,7 +129,7 @@ namespace QueryTree.Engine
 
         public override string GetQuerySql()
         {
-            return string.Format("SELECT {0} FROM {1} AS {2}", GetSelectColumns(), GetDatabaseTable(), GetTableAlias());
+            return string.Format("SELECT {0} FROM {1} AS {2}", GetDbSelectColumns(), GetDatabaseTable(), GetTableAlias());
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace QueryTree.Engine
@@ -26,17 +27,12 @@ namespace QueryTree.Engine
 
             if (settings.ContainsKey("DataSeriesColumnIndexes"))
             {
-                DataSeriesColumnIndexes = (IList<int>)settings["DataSeriesColumnIndexes"];
+                DataSeriesColumnIndexes = JsonConvert.DeserializeObject<List<int>>(settings["DataSeriesColumnIndexes"].ToString());
             }
 
             if (settings.ContainsKey("Type"))
             {
                 NodeType = (string)settings["Type"];
-				
-                if (NodeType == "Line Chart")
-				{
-					SortColumnIndexes = new List<int>() { GetColumns().IndexOf(HorizontalAxis) };
-				}
             }
         }
 
@@ -105,6 +101,11 @@ namespace QueryTree.Engine
 
         public override string GetQuerySql()
         {
+            if (NodeType == "Line Chart")
+            {
+                SortColumnIndexes = new List<int>() { GetColumns().IndexOf(HorizontalAxis) };
+            }
+            
 			var input1 = InputDict[Inputs[0]];
 			var input1Cols = input1.GetColumns();
             var input1ColTypes = input1.GetColumnTypes();

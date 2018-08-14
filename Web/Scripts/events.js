@@ -20,7 +20,7 @@ events = {};
         
 events.OnBottomPanelResize = function(event, ui) {
 
-    events.OnResultsPanelResize(ui.offset.top);
+    events.OnResultsPanelResize(ui.offset.top - $("#qt-container").offset().top);
 }
 
 events.SetBottomPanelSize = function() {
@@ -29,8 +29,8 @@ events.SetBottomPanelSize = function() {
 }
 
 events.OnResultsPanelResize = function(resizerPosition) {
-    var topPanelHeight = resizerPosition - $("div#navbar").height();
-    var bottomPanelHeight = $(window).height() - resizerPosition;
+    var topPanelHeight = resizerPosition;
+    var bottomPanelHeight = $("div#qt-container").height() - resizerPosition;
 
     $("div#top_panel").css("height", topPanelHeight + "px");
     $("div#bottom_panel").css("height", bottomPanelHeight + "px");
@@ -130,20 +130,36 @@ events.OnToolDrop = function(event, ui, tool) {
 
 events.LoadNodeOptionsTemplate = function(newNode, callback) {
     // Load the node's options template into the DOM
-    $("#node_options_container").append("<div class='dialog' data-node-id='" + newNode.Id + "'></div>");
-    $("#node_options_container > div[data-node-id='" + newNode.Id + "']").load(newNode.OptionsTemplateUrl, function() {
+    $("#node_options_container").append(`
+        <div class='modal' data-node-id='` + newNode.Id + `' role='dialog'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                        <h4 class='modal-title'>Tool Options</h4>
+                    </div>
+                    <div class='modal-body'>
+                    </div>
+                    <div class="modal-footer">
+                        <button type='button' class='btn btn-danger remove'>Remove Tool</button>
+                        <button type='button' class='btn btn-primary ok'>OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`);
+    
+    $("#node_options_container > div[data-node-id='" + newNode.Id + "'] div.modal-body").load(newNode.OptionsTemplateUrl, function() {
         // Wait till now to do this to avoid errors on full page applyBingings
-        var optionsContainer = $("#node_options_container > div[data-node-id='" + newNode.Id + "']");
+        var optionsContainer = $("#node_options_container > div[data-node-id='" + newNode.Id + "'] div.modal-body");
         ko.applyBindings(newNode, optionsContainer[0]);
-        $('.node_options a').button();
         if (newNode.Tool.HelpUrl) {
-            optionsContainer.append("<a class='toolHelpLink' href='#'>How does this tool work?</a>");
-            optionsContainer.find(".toolHelpLink")
-                .click(function() {
-                    platformSpecific.OpenLink(newNode.Tool.HelpUrl);
-                });
+            optionsContainer.append("<div class='form-group toolHelpLink'><a href='" + newNode.Tool.HelpUrl + "' target='_blank'>How does this tool work?</a>");
         }
 
+        $("#node_options_container > div[data-node-id='" + newNode.Id + "'] button.remove").click(events.ActiveOptionsModalRemove);
+        $("#node_options_container > div[data-node-id='" + newNode.Id + "'] button.ok").click(events.ActiveOptionsModalOK);
+        
         if (callback) {
             callback();
         }
@@ -151,7 +167,7 @@ events.LoadNodeOptionsTemplate = function(newNode, callback) {
 }
 
 events.OnWindowResize = function() {
-    events.OnResultsPanelResize($("#resize_bar").offset().top);
+    events.OnResultsPanelResize($("#resize_bar").offset().top - $("#qt-container").offset().top);
 }
 
 var snapToNode = function(staticNode, snappingNode, rightToLeft) {
@@ -256,13 +272,14 @@ events.FetchSelectedNodeData = function(startRow, rowCount, callback) {
             		if (data.status && models.SelectedNode() && models.SelectedNode().Id === requestedNodeId) {
             		    models.SelectedNodeStatus(data.status)
 
-            		    models.SelectedNode().SetColumns(data.columns, data.column_types);
+            		    models.SelectedNode().SetColumns(data.columns, data.columnTypes);
 
             			if (data.status === "ok") {
             				models.CurrentData(data.rows);
             				models.CurrentRowStart(startRow + 1);
             				models.CurrentRowEnd(startRow + data.rows.length);
-            				models.CurrentRowsTotal(data.row_count);
+                            models.CurrentRowsTotal(data.rowCount);
+                            models.CurrentDataColumns(data.columns);
             			}
 
             			if (data.status === "error") {
@@ -275,7 +292,8 @@ events.FetchSelectedNodeData = function(startRow, rowCount, callback) {
             	models.CurrentData(null);
             	models.CurrentRowStart(null);
             	models.CurrentRowEnd(null);
-            	models.CurrentRowsTotal(null);
+                models.CurrentRowsTotal(null);
+                models.CurrentDataColumns(null);
 
             	// This node wants to render it's own results, so tell it to do so now
             	models.SelectedNode().RenderResults($("#nonTabularResultsContainer > div[data-results-node-id='" + models.SelectedNode().Id + "']"), models);
@@ -389,44 +407,24 @@ events.UpdateSelectedNodeOptions = function () {
     }
 },
 
-events.ShowOptionsDialog = function () {
-    var optionsDiv = $(".dialog[data-node-id='" + models.SelectedNode().Id + "']");
-    optionsDiv.dialog({
-        title:"Tool Options",
-        modal:true,
-        buttons:[
-            {
-                text: "Ok", click: function () {
-                    events.UpdateSelectedNodeOptions();
-                    $(this).dialog("close");
-                    backend.SaveQuery(models.ServerQueryKey, models.GetCoreNodeSettings(), function () {
-                        events.FetchSelectedNodeData();
-                    });
-                }
-
-
-            },
-            {
-                text: "Remove Tool",
-                class: 'removeButton',
-                click: function () {
-                    events.DeleteSelectedObject();
-                    $(this).dialog("close");
-                }
-            }
-        ],
-        dragStop:function (event) {
-            event.cancelBubble = true;
-        },
-        width:360,
-        resizeStop: function( event, ui ) {
-            // Pass any changes in height on to the expandable height items
-            $(optionsDiv).find(".expandingHeight").each(function(i, element) {
-                $(element).height($(element).height() + (ui.size.height - ui.originalSize.height));
-            });
-            $(optionsDiv).width("");
-        }
+events.ActiveOptionsModalOK = function() {
+    events.UpdateSelectedNodeOptions();
+    var optionsDiv = $(".modal[data-node-id='" + models.SelectedNode().Id + "']");
+    optionsDiv.modal('hide');
+    backend.SaveQuery(models.ServerQueryKey, models.GetCoreNodeSettings(), function () {
+        events.FetchSelectedNodeData();
     });
+}
+
+events.ActiveOptionsModalRemove = function() {
+    var optionsDiv = $(".modal[data-node-id='" + models.SelectedNode().Id + "']");
+    optionsDiv.modal('hide');
+    events.DeleteSelectedObject();
+}
+
+events.ShowOptionsDialog = function () {
+    var optionsDiv = $(".modal[data-node-id='" + models.SelectedNode().Id + "']");
+    optionsDiv.modal();
 };
         
 events.DeleteSelectedObject = function() {

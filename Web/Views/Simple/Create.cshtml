@@ -125,7 +125,7 @@
                     <option value="0">false</option>
                 </select>
                 <input class="form-control datepicker" type="text" name="FilterValueDate" data-bind="datepicker: FilterDateValue1, datepickerOptions: { dateFormat: 'yy-mm-dd', changeYear: true, changeMonth: true }, visible: ShowFilterCompareDatetime" />
-                <input class="form-control timepicker" type="text" name="FilterValueTime" data-bind="timepicker: FilterTimeValue1, timepickerOptions: {show24Hours: true, showSeconds: true, spinnerImage: ''}, visible: ShowFilterCompareDatetime" />
+                <input class="form-control timepicker" type="text" name="FilterValueTime" data-bind="timepicker: FilterTimeValue1, value: FilterTimeValue1, visible: ShowFilterCompareDatetime" />
             </div>
             <div class="form-group">
                 <a href="#" class="btn btn-default" data-bind="click: function() { $root.removeFilter($index()); }"><span class="glyphicon glyphicon-remove-sign"></span> remove</a>
@@ -163,11 +163,6 @@
             <div class="form-group">
                 <select name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" class="form-control"></select>
             </div>
-            <!--ko if: AggFunction() == 1-->
-            <div class="form-group">
-                <label class="control-label"> of results</label>
-            </div>
-            <!--/ko-->
             <!--ko if: AggFunction() != 1-->
             <div class="form-group">
                 <label for="AggColumn" class="control-label" style="width: 40px; text-align: center;"> of </label>
@@ -324,7 +319,7 @@
 }
 
 @section Scripts { 
-    <script src="https://cdn.jsdelivr.net/g/jquery@1.10.2,jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
+    <script src="https://cdn.jsdelivr.net/g/jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
     <script src="/js/sqb.js"></script>
 
     <script>

@@ -19,6 +19,6 @@ namespace QueryTree.Models
         public List<DbColumn> Columns { get; set; }
 
         IList<IColumnInfo> ITableInfo.Columns { get => Columns.Select(c => c as IColumnInfo).ToList(); set { } }
-        string ITableInfo.DisplayName { get => Name; set { } }
+        string ITableInfo.DisplayName { get => DisplayName; set { } }
     }
 }

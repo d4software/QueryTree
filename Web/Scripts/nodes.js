@@ -249,12 +249,11 @@ nodes.DatabaseTable = function(properties) {
     instance.OnSelected = function(models) {
         // Load the tables if they are empty
         instance.loadTables();
+    }
 
-        var optionsDiv = $(".dialog[data-node-id='" + models.SelectedNode().Id + "']");
-        optionsDiv.find("a.refreshData").click(function() { 
-            instance.Tables.removeAll();
-            instance.loadTables();
-        });
+    instance.RefreshTables = function() { 
+        instance.Tables.removeAll();
+        instance.loadTables();
     }
 
     return instance;
@@ -1116,7 +1115,7 @@ nodes.LineChart = function (properties) {
 
 
                     var xScale, xAxis, xSelector;
-                    if (tools.IsDatetimeType(data.column_types[0])) {
+                    if (tools.IsDatetimeType(data.columnTypes[0])) {
                         xSelector = function (d) { return new Date(d[0]); };
 
                         xScale = d3.time.scale()

@@ -1,20 +1,32 @@
-<form>
-    <label for="Name">Name</label>
-    <input type="text" name="Name" data-bind="value: Name"/>
-
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
     <!--ko foreach: SortColumns -->
-    <!--ko if: $index() == 0-->
-    <label for="Column">Sort By</label>
-    <!--/ko-->
+    <div class="form-group">
+        <!--ko if: $index() == 0-->
+        <label for="Column">Sort By</label>
+        <!--/ko-->
+        <!--ko if: $index() > 0-->
+        <label for="SplitBy">Then By</label>
+        <!--/ko-->    
+        <select class="form-control" name="Column" data-bind="options: $parent.AllInputColumns, value: $data.SortColumn"></select>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" data-bind="checked: $data.Descending"> Descending
+            </label>
+        </div>
+    </div>
     <!--ko if: $index() > 0-->
-    <label for="SplitBy">Then By</label>
-    <!--/ko-->    
-    <select name="Column" data-bind="options: $parent.AllInputColumns, value: $data.SortColumn" style="width:100px;"></select>
-    <!--ko if: $index() > 0-->
-    <a href="#" class="rowAction" data-bind="click: $parent.RemoveSort">remove</a>
+    <div class="form-group">
+        <button class="btn btn-warning" data-bind="click: $parent.RemoveSort">Remove</button>
+    </div>
     <!--/ko-->
-    <label for="Descending">Descending</label>
-    <input type="Checkbox" name="Descending" data-bind="checked: $data.Descending"/>
     <!--/ko-->
-    <a href="#" class="rowAction onOwnRow" data-bind="click: AddSort">Add</a>
+    <div class="form-group">
+        <button class="btn btn-primary" data-bind="click: AddSort">Add Another</button>
+    </div>
 </form>

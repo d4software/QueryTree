@@ -1,20 +1,38 @@
-<form>
-    <label for="Name">Name</label>
-    <input type="text" name="Name" data-bind="value: Name"/>
-    <label for="Column">Source Column</label>
-    <select name="Column" data-bind="options: AllInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: InputColumnIndex"></select>
-    <label for="ResultColumnName">New Column Name</label>
-    <input type="text" name="ResultColumnName" data-bind="value: ResultColumnName"/>
-    <label for="StartType">Start</label>
-    <select name="StartType" data-bind="options: Tool.StartTypes, optionsText: 'text', optionsValue: 'id', value: StartType"></select>
-    <label for="StartPosition" data-bind="visible: ShowStartPosition">Position</label>
-    <input type="text" name="StartPosition" data-bind="value: StartPosition, visible: ShowStartPosition"/>
-    <label for="StartSearch" data-bind="visible: ShowStartSearch">Start Text</label>
-    <input type="text" name="StartSearch" data-bind="value: StartSearch, visible: ShowStartSearch"/>
-    <label for="EndType">End</label>
-    <select name="EndType" data-bind="options: Tool.EndTypes, optionsText: 'text', optionsValue: 'id', value: EndType"></select>
-    <label for="EndPosition" data-bind="visible: ShowEndPosition, text: EndPositionText">Position</label>
-    <input type="text" name="EndPosition" data-bind="value: EndPosition, visible: ShowEndPosition"/>
-    <label for="EndSearch" data-bind="visible: ShowEndSearch">End Text</label>
-    <input type="text" name="EndSearch" data-bind="value: EndSearch, visible: ShowEndSearch"/>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
+    <div class="form-group">
+        <label for="Column">Source Column</label>
+        <select class="form-control" name="Column" data-bind="options: AllInputColumnInfos, optionsText: 'Name', optionsValue: 'Index', value: InputColumnIndex"></select>
+    </div>
+    <div class="form-group">
+        <label for="ResultColumnName">New Column Name</label>
+        <input class="form-control" type="text" name="ResultColumnName" data-bind="value: ResultColumnName"/>
+    </div>
+    <div class="form-group">
+        <label for="StartType">Start</label>
+        <select class="form-control" name="StartType" data-bind="options: Tool.StartTypes, optionsText: 'text', optionsValue: 'id', value: StartType"></select>
+    </div>
+    <div class="form-group">
+        <label for="StartPosition" data-bind="visible: ShowStartPosition">Position</label>
+        <input class="form-control" type="text" name="StartPosition" data-bind="value: StartPosition, visible: ShowStartPosition"/>
+    </div>
+    <div class="form-group">
+        <label for="StartSearch" data-bind="visible: ShowStartSearch">Start Text</label>
+        <input class="form-control" type="text" name="StartSearch" data-bind="value: StartSearch, visible: ShowStartSearch"/>
+    </div>
+    <div class="form-group">
+        <label for="EndType">End</label>
+        <select class="form-control" name="EndType" data-bind="options: Tool.EndTypes, optionsText: 'text', optionsValue: 'id', value: EndType"></select>
+    </div>
+    <div class="form-group">
+        <label for="EndPosition" data-bind="visible: ShowEndPosition, text: EndPositionText">Position</label>
+        <input class="form-control" type="text" name="EndPosition" data-bind="value: EndPosition, visible: ShowEndPosition"/>
+    </div>
+    <div class="form-group">
+        <label for="EndSearch" data-bind="visible: ShowEndSearch">End Text</label>
+        <input class="form-control" type="text" name="EndSearch" data-bind="value: EndSearch, visible: ShowEndSearch"/>
+    </div>
 </form>

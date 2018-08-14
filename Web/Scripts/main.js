@@ -66,8 +66,6 @@ $(document).ready(function() {
     $("#workspace_canvas").dblclick(events.OnCanvasDoubleClick);
 
     $(window).resize(events.OnWindowResize);
-            
-
 
     models.ui_state.connector.IsVisible.subscribe(views.RedrawConnector);
     models.ui_state.connector.StartX.subscribe(views.RedrawConnector);
@@ -81,11 +79,6 @@ $(document).ready(function() {
 
     models.SelectedNode.subscribe(views.UpdateSelectedNode);
     models.SelectedConnector.subscribe(views.UpdateSelectedConnector);
-
-    $("#result_options a.open-dialog").button({
-        icons: { primary: "ui-icon-newwin" }
-    });
-    $("#result_options a.button").button();
 
     $("#showConfig").click(events.ShowOptionsDialog);
     $("#showQuery").click(events.ShowQueryForSelectedObject);
@@ -121,3 +114,80 @@ $(document).ready(function() {
     $("div#bottom_left_panel").show();
     events.OnWindowResize();
 });
+
+var getQuery = function () {
+    var query = "";
+
+    var data = {
+        Nodes: []
+    }
+    
+    $.each(models.current_nodes(), function (i, node) {
+        data.Nodes.push(node.GetSaveSettings());
+    });
+
+    if (models.SelectedNode() != null) {
+        data.SelectedNodeId = models.SelectedNode().Id;
+    }
+
+    query = JSON.stringify(data);
+    return query;
+}
+
+var loadNode = function (models, node) {
+    var tool = models.findTool(node.Type);
+    if (tool) {
+        var newNode = tool.createNode(node.Name, node.Top, node.Left, node.Id);
+        newNode.LoadSettings(node, models);
+        models.current_nodes.push(newNode);
+    }
+}
+
+var loadQuery = function (events, models, query) {
+    models.RemoveEverything();
+
+    var data = JSON.parse(query);
+    var nonTableNodes = [];
+
+    // Load data tables first, no need to worry about dependencies
+    $.each(data.Nodes, function (i, node) {
+        if (node.Type == "Data Table") {
+            loadNode(models, node);
+        }
+        else {
+            nonTableNodes.push(node)
+        }
+    })
+
+
+    while (nonTableNodes.length > 0) {
+        var node = nonTableNodes.splice(0, 1)[0];
+
+        var configureNow = true;
+
+        if (node.Inputs != null) {
+            $.each(node.Inputs, function (ii, inputId) {
+                var configuredNode = models.GetNodeById(inputId);
+                var pendingNode = nonTableNodes.find(function (n) { return n.Id == inputId; });
+                if (configuredNode == null && pendingNode != null) {
+                    nonTableNodes.push(node);
+                    configureNow = false;
+                    return false;
+                }
+            });
+        }
+
+        if (configureNow == true) {
+            loadNode(models, node);
+        }
+    }
+
+    $.each(models.current_nodes(), function (i, node) {
+        events.LoadNodeOptionsTemplate(node);
+    });
+
+    if (data.SelectedNodeId) {
+        events.SelectNode(models.GetNodeById(data.SelectedNodeId));
+        events.FetchSelectedNodeData();
+    }
+};

@@ -1,6 +1,13 @@
-<form>
-    <label for="Name">Name</label>
-    <input type="text" name="Name" data-bind="value: Name"/>
-    <label for="IncludeUniqueColumns">Include Non-matched Columns</label>
-    <input type="Checkbox" name="IncludeUniqueColumns" data-bind="checked: IncludeUniqueColumns"/>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" data-bind="checked: IncludeUniqueColumns"> Include Non-matched Columns
+            </label>
+        </div>
+    </div>
 </form>
