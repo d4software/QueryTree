@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.0-sdk-stretch
+      - image: microsoft/aspnetcore-build:2.0-stretch
     steps:
       - checkout
       - run: npm install less -g
