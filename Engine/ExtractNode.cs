@@ -6,7 +6,7 @@ namespace QueryTree.Engine
 {
     public enum ExtractStartTypes
     {
-        TheBeginning,
+        TheBeginning = 1,
         SpecificPosition,
         OnFirstOccurrenceOf,
         AfterFirstOccurrenceOf
@@ -14,7 +14,7 @@ namespace QueryTree.Engine
 
     public enum ExtractEndTypes
     {
-        TheEnd,
+        TheEnd = 1,
         SpecificPosition,
         SpecificLength,
         OnNextOccurrenceOf,
@@ -52,14 +52,46 @@ namespace QueryTree.Engine
         public override void UpdateSettings(Dictionary<string, object> settings)
         {
             base.UpdateSettings(settings);
-            InputColumnIndex = (int)settings["InputColumnIndex"];
-            StartType = (ExtractStartTypes)settings["StartType"];
-            StartPosition = (int)settings["StartPosition"];
-            StartSearch = (string)settings["StartSearch"];
-            EndType = (ExtractEndTypes)settings["EndType"];
-            EndPosition = (int)settings["EndPosition"];
-            EndSearch = (string)settings["EndSearch"];
-            ResultColumnName = (string)settings["ResultColumnName"];
+            
+            if (settings.ContainsKey("InputColumnIndex"))
+            {
+                InputColumnIndex = Convert.ToInt32(settings["InputColumnIndex"]);
+            }
+
+            if (settings.ContainsKey("StartType"))
+            {
+                StartType = (ExtractStartTypes)Enum.Parse(typeof(ExtractStartTypes), settings["StartType"].ToString());
+            }
+            
+            if (settings.ContainsKey("StartPosition"))
+            {
+                StartPosition = Convert.ToInt32(settings["StartPosition"]);
+            }
+
+            if (settings.ContainsKey("StartSearch"))
+            {
+                StartSearch = (string)settings["StartSearch"];
+            }
+
+            if (settings.ContainsKey("EndType"))
+            {
+                EndType = (ExtractEndTypes)Enum.Parse(typeof(ExtractEndTypes), settings["EndType"].ToString());
+            }
+
+            if (settings.ContainsKey("EndPosition"))
+            {
+                EndPosition = Convert.ToInt32(settings["EndPosition"]);
+            }
+
+            if (settings.ContainsKey("EndSearch"))
+            {
+                EndSearch = (string)settings["EndSearch"];
+            }
+
+            if (settings.ContainsKey("ResultColumnName"))
+            {
+                ResultColumnName = (string)settings["ResultColumnName"];
+            }
         }
  
         public override IList<string> GetColumns()
