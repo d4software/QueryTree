@@ -101,13 +101,9 @@ namespace QueryTree.Engine
                 {
                     return columnName + " Year";
                 }
-                else
-                {
-                    return columnName;
-                }
             }
 
-            return null;
+            return columnName;
         }
 
         public string GetAggStr(int columnIndex, AggregationFunction aggFunction)
