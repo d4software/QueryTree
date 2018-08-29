@@ -1,6 +1,7 @@
-FROM microsoft/dotnet:2.0-sdk-stretch as builder
+FROM microsoft/aspnetcore-build:2.0-stretch as builder
 WORKDIR /build
 COPY . .
+RUN npm install less -g
 RUN dotnet restore
 RUN dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
 
