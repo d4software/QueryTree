@@ -12,6 +12,7 @@ jobs:
       - image: microsoft/aspnetcore-build:2.0-stretch
     steps:
       - checkout
+      - run: npm install less -g
       - run: dotnet test ./Tests/Tests.csproj -v n
   docker-publish:
    machine: true
