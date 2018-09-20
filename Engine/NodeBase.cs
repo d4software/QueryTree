@@ -217,7 +217,7 @@ namespace QueryTree.Engine
         {
             var query = new StringBuilder();
 
-            if (this is DataProcessorNode && (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL))
+            if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
             {
                 IList<NodeBase> nodes = new List<NodeBase>();
                 FetchOrderedDependencies(nodes);
