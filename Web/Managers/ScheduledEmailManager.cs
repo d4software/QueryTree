@@ -1,18 +1,14 @@
-using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using QueryTree.Models;
-using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 using MimeKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using QueryTree.Services;
 
 namespace QueryTree.Managers
 {
@@ -24,22 +20,25 @@ namespace QueryTree.Managers
 
     public class ScheduledEmailManager : IScheduledEmailManager
     {
-        private IEmailSender _emailSender;
-        private IConfiguration _config;
-        private ApplicationDbContext _db;
-        private DbManager _dbMgr;
-        private IHostingEnvironment _env;
-        private ConvertManager _convertManager;
+		private readonly IEmailSenderService _emailSenderService;
+		private readonly IEmailSender _emailSender;
+		private readonly IConfiguration _config;
+		private readonly ApplicationDbContext _db;
+		private readonly DbManager _dbMgr;
+		private readonly IHostingEnvironment _env;
+		private readonly ConvertManager _convertManager;
 
 
-        public ScheduledEmailManager(
-            IEmailSender emailSender,
-            IConfiguration config, 
+		public ScheduledEmailManager(
+			IEmailSenderService emailSenderService,
+			IEmailSender emailSender,
+			IConfiguration config, 
             ApplicationDbContext db,
             IHostingEnvironment env,
             IMemoryCache cache,
             IPasswordManager passwordManager)
         {
+			_emailSenderService = emailSenderService;
             _emailSender = emailSender;
             _config = config;
             _db = db;
@@ -54,8 +53,13 @@ namespace QueryTree.Managers
 			{
 				return;
 			}
-            
-            var query = _db.Queries
+
+			if(!_emailSenderService.TrySetDelivered(queryId)) 
+			{
+				return;
+			}
+
+			var query = _db.Queries
                 .Include(q => q.DatabaseConnection)
                 .FirstOrDefault(q => q.QueryID == queryId);
                 
