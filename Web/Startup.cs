@@ -65,9 +65,10 @@ namespace QueryTree
                 options.User.RequireUniqueEmail = true;
             });
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
+			// Add application services.
+			services.AddSingleton<IEmailSender, EmailSender>();
+			services.AddSingleton<IEmailSenderManager, EmailSenderManager>();
+			services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
             services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 			services.AddMemoryCache();
 

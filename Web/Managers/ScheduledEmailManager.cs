@@ -16,7 +16,55 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace QueryTree.Managers
 {
-    public interface IScheduledEmailManager
+
+	#region
+
+	public interface IEmailSenderManager {
+		void Send( string messageId, MimeMessage message );
+	}
+
+	public sealed class MessageSentInfo {
+
+		public MessageSentInfo( string messageId, DateTime sentTimeUtc ) {
+			MessageId = messageId;
+			SentTimeUtc = sentTimeUtc;
+		}
+
+		public string MessageId { get; }
+		public DateTime SentTimeUtc { get; }
+	}
+
+	public sealed class EmailSenderManager : IEmailSenderManager {
+
+		private readonly object _locker = new object();
+		private readonly Dictionary<string, MessageSentInfo> _info = new Dictionary<string, MessageSentInfo>();
+
+		private readonly IEmailSender _emailSender;
+
+		public EmailSenderManager( IEmailSender emailSender ) {
+			_emailSender = emailSender;
+		}
+
+		public void Send( string messageId, MimeMessage message ) {
+
+			MessageSentInfo info;
+			if( !_info.TryGetValue( messageId, out info ) || info.SentTimeUtc.AddMinutes( 1 ) <= DateTime.UtcNow ) {
+				lock( _locker ) {
+					if( !_info.TryGetValue( messageId, out info ) || info.SentTimeUtc.AddMinutes( 1 ) <= DateTime.UtcNow ) {
+						_info.Add( messageId, new MessageSentInfo( messageId, DateTime.UtcNow ) );
+						_emailSender.SendMail( message );
+					}
+				}
+			}
+
+		}
+
+	}
+
+	#endregion
+
+
+	public interface IScheduledEmailManager
     {
         void BuildScheduledEmail(string queryName, string editUrl, string recipients, int queryId);
     }
@@ -24,7 +72,8 @@ namespace QueryTree.Managers
 
     public class ScheduledEmailManager : IScheduledEmailManager
     {
-        private IEmailSender _emailSender;
+		private readonly IEmailSenderManager _emailSenderManager;
+		private IEmailSender _emailSender;
         private IConfiguration _config;
         private ApplicationDbContext _db;
         private DbManager _dbMgr;
@@ -33,14 +82,16 @@ namespace QueryTree.Managers
 
 
         public ScheduledEmailManager(
-            IEmailSender emailSender,
+			IEmailSenderManager emailSenderManager,
+			IEmailSender emailSender,
             IConfiguration config, 
             ApplicationDbContext db,
             IHostingEnvironment env,
             IMemoryCache cache,
             IPasswordManager passwordManager)
         {
-            _emailSender = emailSender;
+			_emailSenderManager = emailSenderManager;
+			_emailSender = emailSender;
             _config = config;
             _db = db;
             _env = env;
@@ -108,7 +159,8 @@ namespace QueryTree.Managers
 
                 message.Body = builder.ToMessageBody();
 
-                _emailSender.SendMail(message);
+                //_emailSender.SendMail(message);
+				_emailSenderManager.Send( queryId + recipients, message ); //TODO: get an ID
             }
 		}
     }
