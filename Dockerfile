@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0-stretch as builder
+FROM microsoft/aspnetcore-build:2.1-stretch as builder
 WORKDIR /build
 COPY . .
 RUN npm install less -g
@@ -6,7 +6,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
 
 
-FROM microsoft/aspnetcore:2.0-stretch as runtime
+FROM microsoft/aspnetcore:2.1-stretch as runtime
 WORKDIR /app
 COPY --from=builder /dist .
 COPY ./Web/EmailTemplates ./EmailTemplates

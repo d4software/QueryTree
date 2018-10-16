@@ -42,56 +42,61 @@ for more information.
 - [Running the Tests](#running-the-tests)
 - [Running with Docker](/docs/docker.md)
 
+### Prerequisites
+
+To build binaries or run from source you need the [.NET Core SDK v2.1](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed.
+
+You will need to install the Less.js compiler using NPM:
+
+```sh
+npm install less -g
+```
+
 ### Running from Source
 
-To run QueryTree from it's source code, you will need to install the .NET Core SDK. You can download
-the SDK for your platform here: [https://www.microsoft.com/net/download/core](https://www.microsoft.com/net/download/core)
-
-Once the .NET Core SDK is installed, follow these steps:
+Check you have the prerequisites installed, then follow these steps:
 
 1. Clone this repo into a folder
 
 2. At the command prompt, cd into the folder, then into the "Web" folder.
 
 3. Type:
- 
+
 ```sh
 dotnet run
 ```
- 
-4. Visit [http://localhost:5000/](http://localhost:5000/) in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
+
+4. Dotnet should report that the applicaiton is running, e.g.
+
+```sh
+Now listening on: http://localhost:54182
+Application started. Press Ctrl+C to shut down.
+```
+
+Visit the URL shown in your browser. You should see the QueryTree application. 
 
 If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
 
 ### Building Binaries
 
-You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK. To build the initial binaries you need the [.NET Core SDK](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed.
-
-You will need to install the Less.js compiler using NPM:
-
-```
-npm install less -g
-```
-
 To build a release binary from the project root execute:
 
-```
+```sh
 dotnet publish -c Release ./Web/QueryTree.csproj -o ./dist
 ```
 
 This will create a release folder in `dist` of all the unpacked QueryTree binaries and its dependencies.
 
-
 ### Running from Binaries
 
 QueryTree is built using .NET Core. To run QueryTree on your server
-you will need to install the .NET Core 2.0.x runtime. You can download
+you will need to install the .NET Core 2.1.x runtime. You can download
 the installer [here](https://www.microsoft.com/net/download/core#/run).
 
 To verify that you have the .NET runtime installed, open a terminal/cmd
 window and type
 
-```
+```sh
 dotnet --version
 ```
 

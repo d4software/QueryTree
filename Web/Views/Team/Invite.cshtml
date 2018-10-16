@@ -9,7 +9,7 @@
 {
     <div class="alert alert-info" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <Text>You haven't got any of your own databases connected yet. To invite someone who can set up a new database for you, select an access level of 'Administrator'.</Text>
+        You haven't got any of your own databases connected yet. To invite someone who can set up a new database for you, select an access level of 'Administrator'.
     </div>
 }
 
@@ -108,7 +108,7 @@
                 <p>Any databases created by this new user will be visible to everyone in your team.</p>
             </div>
             <div class="nonAdminHelp" @Html.Raw(Model.IsOrganisationAdmin ? "style=\"display: none;\"" : "")>
-                @Html.Partial("_AccessTypeHelp")
+                <partial name="_AccessTypeHelp"/>
             </div>
         </div>
     </div>

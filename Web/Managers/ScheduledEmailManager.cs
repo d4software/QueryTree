@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using QueryTree.Models;
-using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 using MimeKit;
 using Microsoft.EntityFrameworkCore;
