@@ -56,7 +56,7 @@ To override this setting in docker you need to supply an enviroment variable cal
 You can then pass this into docker as
 
 ```sh
-docker run -p 8080:80 --name querytree -d d4software/querytree:latest -e Customization__SystemName="Acme Reporting"
+docker run -p 8080:80 --name querytree -d -e Customization__SystemName="Acme Reporting" d4software/querytree:latest
 ```
 
 If you need a more permanent solution consider building a custom docker image with the appropriate appsettings.json file in [/Web/appsettings.json](/Web/appsettings.json)

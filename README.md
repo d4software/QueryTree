@@ -65,9 +65,9 @@ If you would like to run QueryTree with your own local development settings, you
 
 ### Building Binaries
 
-You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK. To build the initial binaries you need the .NET Core SDK installed.
+You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK. To build the initial binaries you need the [.NET Core SDK](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed.
 
-You will also need to install the Less.js compiler:
+You will need to install the Less.js compiler using NPM:
 
 ```
 npm install less -g

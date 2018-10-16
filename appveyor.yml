@@ -3,6 +3,8 @@ branches:
   only:
   - master
 image: Visual Studio 2017
+install:
+- npm install less -g
 dotnet_csproj:
   patch: true
   file: 'Web\QueryTree.csproj'
