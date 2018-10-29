@@ -12,7 +12,7 @@ dotnet_csproj:
 before_build:
 - cmd: dotnet restore ./Web/QueryTree.csproj --verbosity m
 build_script:
-- cmd: dotnet publish --framework netcoreapp2.1 -c Release ./Web/QueryTree.csproj -o ./dist
+- cmd: dotnet publish --framework netcoreapp2.1 --no-restore -c Release ./Web/QueryTree.csproj -o ./dist
 after_build:
 - cmd: 7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/Web/dist/*
 - cmd: 7z a QueryTree.zip %APPVEYOR_BUILD_FOLDER%/README.md
