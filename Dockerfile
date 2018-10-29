@@ -3,7 +3,7 @@ WORKDIR /build
 COPY . .
 RUN npm install less -g
 RUN dotnet restore
-RUN dotnet publish -c Release ./Web/QueryTree.csproj -o /dist
+RUN dotnet publish --no-restore -c Release ./Web/QueryTree.csproj -o /dist
 
 
 FROM microsoft/aspnetcore:2.1-stretch as runtime
