@@ -25,7 +25,6 @@ namespace QueryTree
             using (var scope = host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-                context.Database.EnsureCreated();
                 context.Database.Migrate();
             }
 
