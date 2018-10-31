@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QueryTree.Models;
 using QueryTree.Managers;
+using QueryTree.Services;
 
 namespace QueryTree
 {
@@ -65,8 +66,9 @@ namespace QueryTree
                 options.User.RequireUniqueEmail = true;
             });
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+			// Add application services.
+			services.AddSingleton<IEmailSenderService, EmailSenderService>();
+			services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
             services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 			services.AddMemoryCache();
