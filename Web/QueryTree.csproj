@@ -19,7 +19,6 @@
     <Content Include="Styles\aqb\base.css.map" />
     <Content Include="Styles\aqb\base.less" />
     <Content Include="Styles\aqb\base.min.css" />
-    <Content Include="Styles\aqb\reset.css" />
   </ItemGroup>
   
   <ItemGroup>
