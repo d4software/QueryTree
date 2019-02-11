@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QueryTree.Models;
 using QueryTree.Managers;
-using QueryTree.Services;
 
 namespace QueryTree
 {
@@ -31,9 +30,30 @@ namespace QueryTree
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<IConfiguration>(Configuration);
 
+            services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
+            services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
+
+            switch (Configuration.GetValue<string>("Customization:DataStore"))
+            {
+                case "MSSqlServer":
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    services.AddHangfire(x =>
+                        x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"))
+                    );
+                    break;
+
+                default:
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                    services.AddHangfire(x =>
+                        x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))
+                    );
+                    break;
+            }
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -66,21 +86,11 @@ namespace QueryTree
                 options.User.RequireUniqueEmail = true;
             });
 
-			// Add application services.
-			services.AddSingleton<IEmailSenderService, EmailSenderService>();
-			services.AddTransient<IEmailSender, EmailSender>();
+            // Add application services.
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
             services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 			services.AddMemoryCache();
-
-            services.AddSingleton<IConfiguration>(Configuration);
-
-            services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
-            services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
-
-            services.AddHangfire(x => 
-                x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))
-            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

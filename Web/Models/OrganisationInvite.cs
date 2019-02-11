@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace QueryTree.Models
 {
     public class OrganisationInvite
     {
+        [Key]
         public int OrganisationInviteId { get; set; }
 
         public virtual ApplicationUser CreatedBy { get; set; }
