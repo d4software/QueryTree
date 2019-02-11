@@ -10,7 +10,6 @@ RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-lin
 
 WORKDIR /build
 COPY . .
-RUN npm install less -g
 RUN dotnet restore
 RUN dotnet publish --no-restore -c Release ./Web/QueryTree.csproj -o /dist
 

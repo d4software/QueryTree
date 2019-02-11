@@ -28,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+    <PackageReference Include="dotless" Version="1.6.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="Respond" Version="1.4.2" />
@@ -62,12 +63,6 @@
     </Content>
   </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-  </Target>
-
-  <Target Name="LessBuild" BeforeTargets="BeforeBuild">
-    <Message Text="Building .less files..." />
-    <Exec Command="lessc --source-map=Styles/aqb/app.css.map Styles/aqb/app.less Styles/aqb/app.css" />
-    <Exec Command="lessc --source-map=Styles/aqb/base.css.map Styles/aqb/base.less Styles/aqb/base.css" />
   </Target>
   
 </Project>

@@ -44,13 +44,7 @@ for more information.
 
 ### Prerequisites
 
-To build binaries or run from source you need the [.NET Core SDK v2.1](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed.
-
-You will need to install the Less.js compiler using NPM:
-
-```sh
-npm install less -g
-```
+To build binaries or run from source you need the [.NET Core SDK v2.1](https://www.microsoft.com/net/download) installed.
 
 ### Running from Source
 
