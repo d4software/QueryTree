@@ -19,7 +19,7 @@ Supports customization of the logo image, system name and CSS used
 within the app.
 
 Can use either Sqlite or Microsoft SQL Server database for it's own user
-and reports data storage. 
+and reports data storage.
 
 Database and SSH passwords are stored in its database in encryped form, 
 using AES encryption. Users may provide their own key file, or let the

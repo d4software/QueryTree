@@ -9,7 +9,8 @@ The [appsettings.json](/Web/appsettings.json) file contains a section titled “
    "SystemName": "QueryTree",
    "SystemLogo": "/images/querytree_logo.png",
    "ExtraCSS": "",
-   "AllowAdvancedQuery": false
+   "AllowAdvancedQuery": false,
+   "DataStore": "Sqlite"
  }
 ```
 
@@ -19,3 +20,4 @@ The following section details what each of the settings do:
 * *SystemLogo*: contains the URL of an image that will be displayed on the top left of each page. Change this setting to display your own system logo on the top left. This image does not necessarily need to be located inside QueryTree’s wwwroot folder. It could potentially be hosted at a different domain. Note: the application will still display a smaller version of the QueryTree logo in the footer.
 * *ExtraCSS*: points to a .css file that will be referenced by all the QueryTree pages, after it’s own CSS. This file does not necessarily need to be located inside QueryTree’s wwwroot folder. It could potentially be hosted at a different domain.
 * *AllowAdvancedQuery*: indicated whether users will be given the option to use the advanced query builder. See [here](/docs/advanced.md) for more information.
+* *DataStore*: Controls what kind of database QueryTree will store it's configuration data in. Valid options are 'MSSqlServer' or 'Sqlite'. The contents of the ConnectionString setting in the [appsettings.json](/Web/appsettings.json) should be set to an appropriate connection string for this database type.
