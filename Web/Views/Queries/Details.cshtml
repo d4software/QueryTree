@@ -148,6 +148,14 @@
     <script src="https://cdn.jsdelivr.net/g/jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
     <script src="~/js/schedule.js"></script>
+    @if (!String.IsNullOrEmpty(CustomizationConfiguration.Value.BaseUri))
+    {
+        <script>
+            if (typeof backend !== 'undefined') {
+                backend.baseUri = "@CustomizationConfiguration.Value.BaseUri";
+            }
+        </script>
+    }
     <script>
         var ModalViewModel = function(data) {
             var self = this;
