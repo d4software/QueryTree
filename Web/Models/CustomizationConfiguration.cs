@@ -12,5 +12,6 @@ namespace QueryTree.Models
         public string ExtraCSS { get; set; }
         public bool AllowAdvancedQuery { get; set; }
         public string DataStore { get; set; }
+        public string BaseUri { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Hangfire.SQLite;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -130,6 +131,13 @@ namespace QueryTree
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+               
+            if (!String.IsNullOrWhiteSpace(Configuration.GetValue<string>("Customization:BaseUri"))) {
+                app.Use((context, next) => {
+                    context.Request.PathBase = new PathString(Configuration.GetValue<string>("Customization:BaseUri"));
+                    return next();
+                });
+            }
         }
     }
 }
