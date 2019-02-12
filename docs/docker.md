@@ -4,7 +4,6 @@ We maintain an image of QueryTree on the docker hub at [d4software/querytree](ht
 
 ## How to use the docker hub image
 
-
 ```sh
 docker run -p 8080:80 --name querytree -d d4software/querytree:latest
 ```
@@ -16,6 +15,7 @@ The image runs QueryTree Web on port 80 so you'll need to proxy through to port 
 ### Confirm the container is running
 
 `docker container ls` returns:
+
 ```sh
 CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                  NAMES
 9a75b09da5cd        d4software/querytree:latest   "/bin/sh -c 'dotnet …"   11 seconds ago      Up 11 seconds       0.0.0.0:8080->80/tcp   querytree
@@ -33,7 +33,7 @@ docker stop querytree
 docker start querytree
 ```
 
-# Override configuration defaults
+## Override configuration defaults
 
 Query tree uses an appsettings.json file to store advanced configuration settings. You may need to change some of these settings when deploying QueryTree or when you need an advanced feature that is disabled by default.
 
@@ -62,15 +62,15 @@ docker run -p 8080:80 --name querytree -d -e Customization__SystemName="Acme Rep
 If you need a more permanent solution consider building a custom docker image with the appropriate appsettings.json file in [/Web/appsettings.json](/Web/appsettings.json)
 
 Read more about:
+
 - [Enviroment variables in docker](https://docs.docker.com/engine/reference/run/#env-environment-variables)
 - [appsettings.json in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.1&tabs=basicconfiguration)
 
-# Use QueryTree to query a DB inside a docker network
+## Use QueryTree to query a DB inside a docker network
 
 You may want to run queries on a database that is not exposed to the host machine and exists soley withina a [docker network](https://docs.docker.com/network/).
 
 To link QueryTree and your DB to the same network you'll need to create a [user defined bridge](https://docs.docker.com/network/bridge/#manage-a-user-defined-bridge) and place both containers within it.
-
 
 ### Create the network
 
@@ -86,7 +86,7 @@ docker network connect querynet querytree
 
 ### Example with running MySQL in the same network
 
-```
+```sh
 docker run --name some-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true --network querynet mysql:latest
 ```
 
@@ -119,8 +119,7 @@ You should then see something like this:
 
 **some-mysql** will be accesible by the **querytree** container at **172.19.0.3:3306**, without needing some-mysql to be exposed to the network
 
-
-# Building locally
+## Building locally
 
 You can optionally build and run the image locally. This is useful if you do not have the .NET-core sdk or you need to run QueryTree inside a container with some custom changes you've made.
 
@@ -132,7 +131,7 @@ To build a local container image using this method you can run the following com
 docker build -t querytree .
 ```
 
-## Skipping the build step
+### Skipping the build step
 
 If you don't wish to make use of the first build step and do have .NET installed on the host system you can achieve this by commenting out the build step in the Dockerfile.
 
