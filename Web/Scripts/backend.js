@@ -2,20 +2,22 @@
 //
 // Depends on: utils.js
 
-backend = {};
+backend = {
+    "baseUri": ""
+};
 
 (function () {
 
     backend.CheckConnection = function (models, callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/connections/" + databaseId + "/status/", function (data) {
+        $.getJSON(backend.baseUri + "/api/connections/" + databaseId + "/status/", function (data) {
             callback(data);
         });
     };
 
     backend.LoadTables = function (callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/connections/" + databaseId + "/tables/", function (data) {
+        $.getJSON(backend.baseUri + "/api/connections/" + databaseId + "/tables/", function (data) {
             callback(data);
         })
         .fail(function () {
@@ -25,7 +27,7 @@ backend = {};
 
     backend.GetJoins = function (tableName, callback) {
         var databaseId = utils.GetHiddenValByName('DatabaseConnectionID');
-        $.getJSON("/api/connections/" + databaseId + "/tables/" + tableName + "/joins/", function (data) {
+        $.getJSON(backend.baseUri + "/api/connections/" + databaseId + "/tables/" + tableName + "/joins/", function (data) {
             callback(data);
         })
         .fail(function () {
@@ -48,7 +50,7 @@ backend = {};
             lock = true;
             latestNodes = null;
             $.ajax({
-                "url": "/api/cache/",
+                "url": backend.baseUri + "/api/cache/",
                 "type": 'POST',
                 "data": {
                     id: serverQueryKey(),
@@ -84,7 +86,7 @@ backend = {};
                 backend.LoadData(serverQueryKey, nodes, nodeId, startRow, rowCount, format, output, callback);
             });
         } else {
-            $.getJSON("/api/cache/" + serverQueryKey() + "/" + nodeId + "/?startRow=" + startRow + "&rowCount=" + rowCount, function (data) {
+            $.getJSON(backend.baseUri + "/api/cache/" + serverQueryKey() + "/" + nodeId + "/?startRow=" + startRow + "&rowCount=" + rowCount, function (data) {
                 if (data.query) {
                     console.log(data.query);
                 }
@@ -103,7 +105,7 @@ backend = {};
 
     backend.SaveSchedule = function (schedule, callback) {
         $.ajax({
-            "url": '/api/schedule',
+            "url": backend.baseUri + '/api/schedule',
             "type": 'POST',
             "contentType": "application/json",
             "data": JSON.stringify(schedule),
@@ -117,7 +119,7 @@ backend = {};
 
     backend.GetSchedule = function (queryId) {
         return $.ajax({
-            "url": '/api/schedule?id=' + queryId,
+            "url": backend.baseUri + '/api/schedule?id=' + queryId,
             "type": 'GET',
             "contentType": "application/json",
             "dataType": "json"
@@ -126,7 +128,7 @@ backend = {};
 
     backend.LoadQueryColumnsName = function (queryId) {
         return $.ajax({
-            "url": "/api/queries/" + queryId + "/columns/",
+            "url": backend.baseUri + "/api/queries/" + queryId + "/columns/",
             "type": 'GET'
         });
     };

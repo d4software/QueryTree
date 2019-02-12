@@ -1,15 +1,17 @@
 ﻿<div class="text-center" id="spinner">
     <span>Connecting to your database...</span>
     <br/>
-    <img src="/images/loading.gif"/>
+    <img src="~/images/loading.gif"/>
 </div>  
-<table id="proposals" class="table table-striped table-bordered table-condensed table-responsive" style="display: none;" >
-    <thead>
-    <tr>
-        <!-- ko foreach: columns -->
-        <th><small data-bind="text: $data"></small></th>
-        <!-- /ko -->
-    </tr>
-    </thead>
-</table>
-<div id="chart" style="display: none;"></div>
+<div id="results_container">
+    <table id="results" class="table table-striped table-bordered table-condensed table-responsive" style="display: none;">
+        <thead>
+            <tr>
+                <!-- ko foreach: columns -->
+                <th><small data-bind="text: $data"></small></th>
+                <!-- /ko -->
+            </tr>
+        </thead>
+    </table>
+    <div id="chart" style="display: none;"></div>
+</div>

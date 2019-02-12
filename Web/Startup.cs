@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using QueryTree.Models;
 using QueryTree.Managers;
+using QueryTree.Services;
 
 namespace QueryTree
 {
@@ -88,6 +89,7 @@ namespace QueryTree
             });
 
             // Add application services.
+            services.AddTransient<IEmailSenderService, EmailSenderService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
             services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();

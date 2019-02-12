@@ -28,7 +28,7 @@
                     <div id="node_status_panel" class="status_text" data-bind="visible: SelectedNodeHasError">
                         <span data-bind="visible: SelectedNodeStatus() == 'not_ready'">Connecting to your database</span>
                         <br data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
-                        <img src="/images/loading.gif" data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
+                        <img src="~/images/loading.gif" data-bind="visible: SelectedNodeStatus() == 'not_ready'" />
                         <span data-bind="visible: SelectedNodeStatus() == 'not_configured'">This tool is not set up yet, please click options to edit its settings</span>
                         <span data-bind="visible: SelectedNodeStatus() == 'no_data'">No data was returned</span>
                         <span data-bind="visible: SelectedNodeStatus() == 'error', html: SelectedNodeErrorText()"></span>
