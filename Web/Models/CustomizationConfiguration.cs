@@ -11,7 +11,8 @@ namespace QueryTree.Models
         public string SystemLogo { get; set; }
         public string ExtraCSS { get; set; }
         public bool AllowAdvancedQuery { get; set; }
-        public string DataStore { get; set; }
+        public Enums.DataStoreType DataStore { get; set; }
         public string BaseUri { get; set; }
+        public Enums.AuthenticationMode AuthenticationMode { get; set; }
     }
 }

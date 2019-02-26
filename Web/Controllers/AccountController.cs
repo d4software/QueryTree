@@ -13,7 +13,9 @@ using QueryTree.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Cryptography;
 
 namespace QueryTree.Controllers
 {
@@ -45,11 +47,45 @@ namespace QueryTree.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            // Clear the existing external cookie to ensure a clean login process
-            await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
+            // If Windows Auth is enabled, check for a user and either sign up or sign in directly
+            if (_config.GetValue<Enums.AuthenticationMode>("Customization:AuthenticationMode") == Enums.AuthenticationMode.Windows
+                && User.Identity.IsAuthenticated)
+            {
+                var identity = ((ClaimsIdentity)HttpContext.User.Identity);
 
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+                var username = identity.Name.Split('\\').Last();
+                var domain = identity.Name.Split('\\').First();
+                var email = string.Format("{0}@{1}.local", username, domain);
+
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    var rnd = RandomNumberGenerator.Create();
+                    var bytes = new byte[64];
+                    rnd.GetBytes(bytes);
+
+                    user = await CreateUser(username, "", "", email, Base64UrlTextEncoder.Encode(bytes));
+                }
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                if (!String.IsNullOrWhiteSpace(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                // Clear the existing external cookie to ensure a clean login process
+                await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);
+
+                ViewData["ReturnUrl"] = returnUrl;
+                return View();
+            }
         }
 
         //
@@ -96,6 +132,35 @@ namespace QueryTree.Controllers
             return View(model);
         }
 
+        private async Task<ApplicationUser> CreateUser(string firstName, string lastName, string organisationName, string email, string password)
+        {
+            var user = new ApplicationUser { FirstName = firstName, LastName = lastName, UserName = email, Email = email, CreatedOn = DateTime.Now };
+            var org = new Organisation { OrganisationName = organisationName, CreatedOn = DateTime.Now };
+
+            db.Add(org);
+
+            user.Organisation = org;
+
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                var dbInvtations = db.UserDatabaseConnections.Where(u => u.InviteEmail == user.Email);
+                foreach (var invitation in dbInvtations)
+                {
+                    invitation.InviteEmail = null;
+                    invitation.ApplicationUserID = user.Id;
+                }
+                db.SaveChanges();
+
+                return user;
+            }
+
+            AddErrors(result);
+
+            return null;
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -105,30 +170,14 @@ namespace QueryTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { FirstName = model.FirstName, LastName = model.LastName, UserName = model.Email, Email = model.Email, CreatedOn = DateTime.Now };
-                var org = new Organisation { OrganisationName = model.OrganisationName, CreatedOn = DateTime.Now };
+                var user = await CreateUser(model.FirstName, model.LastName, model.OrganisationName, model.Email, model.Password);
 
-                db.Add(org);
-
-                user.Organisation = org;
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    var dbInvtations = db.UserDatabaseConnections.Where(u => u.InviteEmail == user.Email);
-                    foreach (var invitation in dbInvtations)
-                    {
-                        invitation.InviteEmail = null;
-                        invitation.ApplicationUserID = user.Id;
-                    }
-                    db.SaveChanges();
-
+                if (user != null)
+                { 
                     await _signInManager.SignInAsync(user, isPersistent:false);
 
                     return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form

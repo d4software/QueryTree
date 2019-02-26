@@ -37,9 +37,9 @@ namespace QueryTree
             services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
             services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
 
-            switch (Configuration.GetValue<string>("Customization:DataStore"))
+            switch (Configuration.GetValue<Enums.DataStoreType>("Customization:DataStore"))
             {
-                case "MSSqlServer":
+                case Enums.DataStoreType.MSSqlServer:
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                     services.AddHangfire(x =>
@@ -55,13 +55,13 @@ namespace QueryTree
                     );
                     break;
             }
-            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            
             services.AddMvc();
-
+            
             services.AddAuthentication()
                 .AddCookie(options => 
                 {                
@@ -70,16 +70,12 @@ namespace QueryTree
                     options.LoginPath = "/Account/LogIn";
                     options.LogoutPath = "/Account/LogOut";                    
                 });
-
+           
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-
+                
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;

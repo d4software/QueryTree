@@ -1,29 +1,40 @@
-﻿@if (User.Identity.IsAuthenticated)
+﻿@using Microsoft.Extensions.Options;
+@using QueryTree.Models
+@using QueryTree.Enums
+@inject IOptions<CustomizationConfiguration> CustomizationConfiguration
+
+@if (User.Identity.IsAuthenticated)
 {
     using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="http://querytreeapp.com/help/" target="_blank">Help</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-cog"></i> @User.Identity.Name&nbsp;<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="http://querytreeapp.com/help/" target="_blank">Help</a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="glyphicon glyphicon-cog"></i> @User.Identity.Name&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu">
 
-                <li>@Html.ActionLink("Settings", "Index", "Account")</li>
-                <li>@Html.ActionLink("My Team", "Index", "Team")</li>
-                <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a></li>
-            </ul>
-        </li>
-    </ul>
-    }
+                    <li>@Html.ActionLink("Settings", "Index", "Account")</li>
+                    <li>@Html.ActionLink("My Team", "Index", "Team")</li>
+                    @if (CustomizationConfiguration.Value.AuthenticationMode != AuthenticationMode.Windows)
+                    {
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a></li>
+                    }
+                </ul>
+            </li>
+        </ul>
+}
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
+    @if (CustomizationConfiguration.Value.AuthenticationMode != AuthenticationMode.Windows)
+    {
         <li>@Html.ActionLink("Sign up", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    }
     </ul>
 }
