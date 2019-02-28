@@ -2,13 +2,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/aspnetcore-build:2.1-stretch
+      - image: microsoft/aspnetcore-build:2.2-stretch
     steps:
       - checkout
       - run: dotnet build ./Web/QueryTree.csproj -v n
   test:
     docker:
-      - image: microsoft/aspnetcore-build:2.1-stretch
+      - image: microsoft/aspnetcore-build:2.2-stretch
     steps:
       - checkout
       - run: dotnet test ./Tests/Tests.csproj -v n

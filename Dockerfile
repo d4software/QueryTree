@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:2.1-sdk-stretch as builder
+FROM microsoft/dotnet:2.2-sdk-stretch as builder
 WORKDIR /build
 COPY . .
 RUN dotnet restore
 RUN dotnet publish --no-restore -c Release ./Web/QueryTree.csproj -o /dist
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime as runtime
+FROM microsoft/dotnet:2.2-aspnetcore-runtime as runtime
 WORKDIR /app
 COPY --from=builder /dist .
 COPY ./Web/EmailTemplates ./EmailTemplates
