@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-QueryTree-46E61BB7-4239-4527-BA0C-1B66D664CC58</UserSecretsId>
     <Version>0.0.0</Version>
     <Authors>D4 Software Ltd</Authors>
@@ -27,25 +27,25 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.0" />
     <PackageReference Include="dotless" Version="1.6.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="Respond" Version="1.4.2" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
     <PackageReference Include="Hangfire.SQLite" Version="1.4.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.2" />
-    <PackageReference Include="Npgsql" Version="4.0.3" />
-    <PackageReference Include="MySql.Data" Version="8.0.12" />
-    <PackageReference Include="Hangfire" Version="1.6.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Npgsql" Version="4.0.4" />
+    <PackageReference Include="MySql.Data" Version="8.0.15" />
+    <PackageReference Include="Hangfire" Version="1.6.22" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
-    <PackageReference Include="MailKit" Version="2.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.4" />
+    <PackageReference Include="MailKit" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
