@@ -397,16 +397,22 @@ namespace QueryTree.Managers
                 }
             }
 
-            var tableByIdName = dbModel.Tables.ToDictionary(t => t.Name.ToLower() + "id");
-
             foreach (var table in dbModel.Tables)
             {
                 foreach (var column in table.Columns.Select(c => c as Models.DbColumn))
                 {
                     DbTable dbTable = null;
-                    if (column.IsPrimaryKey == false && column.Parent == null && tableByIdName.TryGetValue(column.Name.ToLower(), out dbTable))
+                    if (column.IsPrimaryKey == false && column.Parent == null)
                     {
-                        column.Parent = dbTable.Columns[0] as Models.DbColumn;
+                        dbTable = dbModel.Tables.FirstOrDefault(t => 
+                            t.Schema == table.Schema && 
+                            ((t.Name.ToLower() + "_id") == column.Name.ToLower()) ||
+                            ((t.Name.ToLower() + "id") == column.Name.ToLower()));
+                     
+                        if (dbTable != null)
+                        {
+                            column.Parent = dbTable.Columns[0] as Models.DbColumn;
+                        }
                     }
                 }
             }
