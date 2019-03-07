@@ -620,7 +620,7 @@ namespace QueryTree.Managers
                     conn.Open();
                     break;
                 case DatabaseType.SQLServer:
-                    conn = new SqlConnection(string.Format("Data Source={0},{1};Database={2};User Id={3};Password={4};Encrypt=True;TrustServerCertificate=True;", server, port, databaseName, username, password));
+                    conn = new SqlConnection(string.Format("Server=tcp:{0},{1};Initial Catalog={2};User ID={3};Password={4};Encrypt=True;TrustServerCertificate=True;", server, port, databaseName, username, password));
                     conn.Open();
                     break;
             }
