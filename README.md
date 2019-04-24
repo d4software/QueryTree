@@ -44,10 +44,15 @@ for more information.
 
 ### Running from Source
 
-To run QueryTree from it's source code, you will need to install the .NET Core SDK. You can download
-the SDK for your platform here: [https://www.microsoft.com/net/download/core](https://www.microsoft.com/net/download/core)
+To run QueryTree from it's source code, you need the [.NET Core SDK](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed. 
 
-Once the .NET Core SDK is installed, follow these steps:
+You will need to install the Less.js compiler using NPM:
+
+```
+npm install less -g
+```
+
+Then follow these steps:
 
 1. Clone this repo into a folder
 
