@@ -1232,7 +1232,7 @@ var SimpleQueryBuilderViewModel = function () {
                     if (settingTree.Type == 'Filter') {
                         self.addFilter(settingTree);
                     }
-                    if (settingTree.Type == 'Statistics2') {
+                    if (settingTree.Type == 'Summarize') {
                         self.addStatistic(settingTree);
                     }
                     if ($.inArray(settingTree.Type, ['Line Chart', 'Bar Chart', 'Pie Chart']) >= 0) {
