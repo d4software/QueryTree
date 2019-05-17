@@ -12,7 +12,8 @@ Example:
     "SmtpUser": "youremail@gmail.com",
     "SmtpPassword": "yourgmailpassword",
     "SenderAddress": "Sender Name <youremail@gmail.com>",
-    "UseSSL": true
+    "UseSSL": true,
+    "UseAuthentication": true
 }
 ```
 
