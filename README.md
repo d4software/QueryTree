@@ -43,7 +43,9 @@ for more information.
 - [Running the Tests](#running-the-tests)
 - [Running with Docker](/docs/docker.md)
 
-### Try on heroku
+### Deploy to a cloud
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 
@@ -117,7 +119,7 @@ Now listening on: http://localhost:5000
 Application started. Press Ctrl+C to shut down.
 ```
 
-Visit the URL shown in your browser. You should see the QueryTree application. 
+Visit the URL shown in your browser. You should see the QueryTree application.
 
 5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
 
