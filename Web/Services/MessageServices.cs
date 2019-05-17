@@ -34,7 +34,9 @@ namespace QueryTree
                 client.Connect(_config.GetValue<string>("Email:SmtpHost"), _config.GetValue<int>("Email:SmtpPort"), _config.GetValue<bool>("Email:UseSSL"));
 
 				// Note: only needed if the SMTP server requires authentication
-                client.Authenticate(_config.GetValue<string>("Email:SmtpUser"), _config.GetValue<string>("Email:SmtpPassword"));
+                if(_config.GetValue<bool>("Email:UseAuthentication")){
+                    client.Authenticate(_config.GetValue<string>("Email:SmtpUser"), _config.GetValue<string>("Email:SmtpPassword"));
+                }
 
 				client.Send(message);
 				client.Disconnect(true);
