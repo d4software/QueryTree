@@ -397,7 +397,10 @@ namespace QueryTree.Managers
                 }
             }
 
-            var tableByIdName = dbModel.Tables.ToDictionary(t => t.Name.ToLower() + "id");
+            var tableByIdName = dbModel.Tables
+                .GroupBy(t => t.Name.ToLower())
+                .ToDictionary(group => group.Key + "id",
+                              items => items.First());
 
             foreach (var table in dbModel.Tables)
             {
