@@ -252,12 +252,12 @@ tools.Summarize = function () {
     });
 
     instance.AggFunctions = ko.observableArray([
-        { id: 1, text: "Number of Rows" },
-        { id: 2, text: "Total" },
-        { id: 3, text: "Minimum" },
-        { id: 4, text: "Maximum" },
-        { id: 5, text: "Average" },
-        { id: 6, text: "Median" }
+        { id: 1, text: "Number of Rows", requiresNumeric: false },
+        { id: 2, text: "Total", requiresNumeric: true },
+        { id: 3, text: "Minimum", requiresNumeric: true },
+        { id: 4, text: "Maximum", requiresNumeric: true },
+        { id: 5, text: "Average", requiresNumeric: true },
+        { id: 6, text: "Median", requiresNumeric: true }
     ]);
 
     instance.DateFunctions = ko.observableArray([
@@ -267,7 +267,7 @@ tools.Summarize = function () {
     ]);
 
     instance.MaxInputs = 1;
-    instance.HelpUrl = "http://querytreeapp.com/help/tools/summarize/";
+    instance.HelpUrl = "http://querytreeapp.com/help/tools/statistics/";
 
     return instance;
 };

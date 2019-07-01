@@ -845,6 +845,9 @@ nodes.Summarize = function(properties) {
         return instance.AllInputColumnInfos().filter(function (col) { return tools.IsNumericType(col.Type); });
     });
 
+    instance.AggFunctions = ko.computed(function() {
+        return instance.Tool.AggFunctions().filter(function(aggFunc) { return aggFunc.requiresNumeric === false || instance.AggColumns().length > 0 });
+    });
 
     var innerGetCoreSettings = instance.GetCoreSettings;
     instance.GetCoreSettings = function () {
@@ -855,7 +858,7 @@ nodes.Summarize = function(properties) {
         settings.AggColumnIndexes = [];
         $.each(instance.Statistics(), function (i, statistic) {
             settings.AggFunctions.push(statistic.AggFunction());
-            settings.AggColumnIndexes.push(statistic.AggColumn());
+            settings.AggColumnIndexes.push(statistic.AggColumn());            
         });
         return settings;
     }
@@ -898,7 +901,7 @@ nodes.Summarize = function(properties) {
     instance.AddStatistic = function () {
         instance.Statistics.push({
             "AggFunction": ko.observable(2),
-            "AggColumn": ko.observable()
+            "AggColumn": ko.observable(0)
         });
     };
 

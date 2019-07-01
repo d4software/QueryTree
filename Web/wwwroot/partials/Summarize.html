@@ -6,7 +6,7 @@
     <!--ko foreach: Statistics-->
     <div class="form-group">
         <label>Calculate the</label>
-        <select class="form-control" name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
+        <select class="form-control" name="AggFunction" data-bind="options: $parent.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
     </div>
     <!--ko if: AggFunction() != 1-->
     <div class="form-group">
