@@ -1,5 +1,5 @@
 ﻿@{
-    var version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion;
+    var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
 }
 
 <footer class="footer">

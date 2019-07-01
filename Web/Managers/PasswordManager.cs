@@ -6,7 +6,6 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using QueryTree.Models;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
