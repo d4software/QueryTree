@@ -1,6 +1,5 @@
-﻿@using System.Reflection;
 @{
-    var version = typeof(Program).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+    var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
 }
 
 <footer class="footer">
