@@ -7,6 +7,7 @@ using Hangfire.SQLite;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -31,15 +32,36 @@ namespace QueryTree
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
+            services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
+
+            switch (Configuration.GetValue<Enums.DataStoreType>("Customization:DataStore"))
+            {
+                case Enums.DataStoreType.MSSqlServer:
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    services.AddHangfire(x =>
+                        x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"))
+                    );
+                    break;
+
+                default:
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                    services.AddHangfire(x =>
+                        x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))
+                    );
+                    break;
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            
             services.AddMvc();
-
+            
             services.AddAuthentication()
                 .AddCookie(options => 
                 {                
@@ -48,16 +70,12 @@ namespace QueryTree
                     options.LoginPath = "/Account/LogIn";
                     options.LogoutPath = "/Account/LogOut";                    
                 });
-
+           
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-
+                
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
@@ -66,21 +84,12 @@ namespace QueryTree
                 options.User.RequireUniqueEmail = true;
             });
 
-			// Add application services.
-			services.AddSingleton<IEmailSenderService, EmailSenderService>();
-			services.AddTransient<IEmailSender, EmailSender>();
+            // Add application services.
+            services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
             services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 			services.AddMemoryCache();
-
-            services.AddSingleton<IConfiguration>(Configuration);
-
-            services.Configure<CustomizationConfiguration>(Configuration.GetSection("Customization"));
-            services.Configure<PasswordsConfiguration>(Configuration.GetSection("Passwords"));
-
-            services.AddHangfire(x => 
-                x.UseSQLiteStorage(Configuration.GetConnectionString("DefaultConnection"))
-            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,7 +102,6 @@ namespace QueryTree
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
@@ -121,6 +129,13 @@ namespace QueryTree
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+               
+            if (!String.IsNullOrWhiteSpace(Configuration.GetValue<string>("Customization:BaseUri"))) {
+                app.Use((context, next) => {
+                    context.Request.PathBase = new PathString(Configuration.GetValue<string>("Customization:BaseUri"));
+                    return next();
+                });
+            }
         }
     }
 }

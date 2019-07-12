@@ -14,8 +14,11 @@
             <text> - @ViewBag.Title</text>
         }
     </title>
-    <link type="text/css" href="/css/site.min.css" rel="stylesheet" />
-    <link type="text/css" href="/css/jquery.min.css" rel="stylesheet" />
+    <style>
+    @@font-face { font-family: 'Glyphicons Halflings'; src: url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.eot'); src: url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.woff2') format('woff2'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.woff') format('woff'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.svg') format('svg') }
+    </style>
+    <link type="text/css" href="~/css/site.min.css" rel="stylesheet" />
+    <link type="text/css" href="~/css/jquery.min.css" rel="stylesheet" />
     @RenderSection("head", required: false)
     @if (string.IsNullOrEmpty(CustomizationConfiguration.Value.ExtraCSS) == false)
     {
@@ -32,7 +35,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href='@Url.Action("Index", "Home")'>
-                    <img src="@CustomizationConfiguration.Value.SystemLogo" /><span class="navbar-brand">@CustomizationConfiguration.Value.SystemName</span>
+                    <img src="@(CustomizationConfiguration.Value.BaseUri + @CustomizationConfiguration.Value.SystemLogo)" /><span class="navbar-brand">@CustomizationConfiguration.Value.SystemName</span>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -45,10 +48,18 @@
         <div class="container alert-container affix">
         </div>
         @RenderBody()
-        <br/>
+        <br />
     </div>
     @Html.Partial("_FooterPartial")
-    <script src="/js/base.js"></script>
+    <script src="~/js/base.js"></script>
     @RenderSection("scripts", required: false)
+    @if (!String.IsNullOrEmpty(CustomizationConfiguration.Value.BaseUri))
+    {
+        <script>
+            if (typeof backend !== 'undefined') {
+                backend.baseUri = "@CustomizationConfiguration.Value.BaseUri";
+            }
+        </script>
+    }
 </body>
 </html>

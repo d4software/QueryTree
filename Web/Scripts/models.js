@@ -198,7 +198,7 @@ models.Export = function () {
             return true;
         } else {
             if (models.ServerQueryKey()) {
-                models.ExportUrl("/api/cache/" + models.ServerQueryKey() + "/" + node.Id + "/export/");
+                models.ExportUrl(backend.baseUri + "/api/cache/" + models.ServerQueryKey() + "/" + node.Id + "/export/");
                 models.ExportFileName("export.xlsx");
             } else {
                 models.ExportUrl(null);

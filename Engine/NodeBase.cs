@@ -217,13 +217,6 @@ namespace QueryTree.Engine
         {
             var query = new StringBuilder();
 
-            if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
-            {
-                IList<NodeBase> nodes = new List<NodeBase>();
-                FetchOrderedDependencies(nodes);
-                query.Append(BuildWithSql(nodes));
-            }
-
             if (DatabaseType == DatabaseType.MySQL)
             {
                 query.AppendFormat("SELECT {0} FROM ({1} ORDER BY {2}) AS results",
@@ -238,6 +231,10 @@ namespace QueryTree.Engine
             }
             else if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
             {
+                IList<NodeBase> nodes = new List<NodeBase>();
+                FetchOrderedDependencies(nodes);
+                query.Append(BuildWithSql(nodes));
+
                 if (startRow.HasValue && rowCount.HasValue)
                 {
                     // In order for this to work, we will need a ROW_NUMBER column in the CTE, which we

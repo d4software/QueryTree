@@ -19,7 +19,7 @@ Supports customization of the logo image, system name and CSS used
 within the app.
 
 Can use either Sqlite or Microsoft SQL Server database for it's own user
-and reports data storage. 
+and reports data storage.
 
 Database and SSH passwords are stored in its database in encryped form, 
 using AES encryption. Users may provide their own key file, or let the
@@ -42,67 +42,56 @@ for more information.
 - [Running the Tests](#running-the-tests)
 - [Running with Docker](/docs/docker.md)
 
+### Prerequisites
+
+To build binaries or run from source you need the [.NET Core SDK v2.2](https://www.microsoft.com/net/download) installed.
+
 ### Running from Source
 
-To run QueryTree from it's source code, you need the [.NET Core SDK](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed. 
-
-You will need to install the Less.js compiler using NPM:
-
-```
-npm install less -g
-```
-
-Then follow these steps:
+Check you have the prerequisites installed, then follow these steps:
 
 1. Clone this repo into a folder
 
 2. At the command prompt, cd into the folder, then into the "Web" folder.
 
 3. Type:
- 
+
 ```sh
 dotnet run
 ```
- 
-4. Visit [http://localhost:5000/](http://localhost:5000/) in your browser. You should see the QueryTree application. *Dotnet may decide to run it on a different port if 5000 is not available, check your terminal output.
+
+4. Dotnet should report that the applicaiton is running, e.g.
+
+```sh
+Now listening on: http://localhost:54182
+Application started. Press Ctrl+C to shut down.
+```
+
+Visit the URL shown in your browser. You should see the QueryTree application.
 
 If you would like to run QueryTree with your own local development settings, you can add a Web/usersettings.json file containing a modified copy of appsettings.json. Settings in this file will override appsettings.json. However, this file will be ignored by git.
 
 ### Building Binaries
 
-You may need to build a release binary to be run with the [.NET Core 2.0.x runtime](https://www.microsoft.com/net/download/core#/runtime). These binaries can be used on systems without the full .NET Core SDK. To build the initial binaries you need the [.NET Core SDK](https://www.microsoft.com/net/download) and [NPM](https://nodejs.org/) installed.
-
-You will need to install the Less.js compiler using NPM:
-
-```
-npm install less -g
-```
-
 To build a release binary from the project root execute:
 
-```
+```sh
 dotnet publish -c Release ./Web/QueryTree.csproj -o ./dist
 ```
 
 This will create a release folder in `dist` of all the unpacked QueryTree binaries and its dependencies.
 
-
 ### Running from Binaries
 
-QueryTree is built using .NET Core. To run QueryTree on your server
-you will need to install the .NET Core 2.0.x runtime. You can download
-the installer [here](https://www.microsoft.com/net/download/core#/run).
+To run QueryTree on your server you will need to install the .NET Core 2.2.x runtime. (It is not necessary to install the full .NET SDK, just the runtime.) You can download the installer [here](https://www.microsoft.com/net/download/core#/runtime).
 
-To verify that you have the .NET runtime installed, open a terminal/cmd
-window and type
+To verify that you have the .NET runtime installed, open a terminal/cmd window and type
 
-```
+```sh
 dotnet --version
 ```
 
 If the command returns a version number, you're ready to run QueryTree.
-If not, please visit [https://www.microsoft.com/net/download/core#/runtime](https://www.microsoft.com/net/download/core#/runtime)
-and follow the instructions for your platform.
 
 Once the dotnet runtime is installed, follow these steps:
 
@@ -112,11 +101,18 @@ Once the dotnet runtime is installed, follow these steps:
 
 3. At the command prompt, type:
 
-```
+```sh
 dotnet QueryTree.dll
 ```
 
-4. Visit [http://localhost:5000/](http://localhost:5000/) in your browser. You should see the QueryTree application.
+4. Dotnet should report that the applicaiton is running, e.g.
+
+```sh
+Now listening on: http://localhost:5000
+Application started. Press Ctrl+C to shut down.
+```
+
+Visit the URL shown in your browser. You should see the QueryTree application. 
 
 5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
 
@@ -125,9 +121,10 @@ in IIS see: https://docs.microsoft.com/en-us/aspnet/core/publishing/iis
 
 ### Running the Tests
 
-To run the automated tests in this project, cd into the "Tests" folder, then type:
+To run the automated tests in this project, from the project root folder, type the following:
 
-```
+```sh
+cd Tests
 dotnet test
 ```
 
@@ -137,8 +134,7 @@ See the full Docker guide: [docs/docker.md](/docs/docker.md)
 
 ## Getting Started
 
-1. When first run, QueryTree will have no users and no database connections. Visiting
-app, you will be presented with a login page:
+1. When first run, QueryTree will have no users and no database connections. Visiting app, you will be presented with a login page:
 
 ![The QueryTree login page](http://querytreeapp.com/img/screenshots/querytree-login.png "The QueryTree login page")
 
@@ -146,73 +142,55 @@ app, you will be presented with a login page:
 
 ![The QueryTree signup page](http://querytreeapp.com/img/screenshots/querytree-signup.png "The QueryTree signup page")
 
-3. Having signed in, you won't have any database connections configured. The system
-will ask you whether you want to set up a connection yourself, or invite another user
-who might be able to do it for you.
+3. Having signed in, you won't have any database connections configured. The system will ask you whether you want to set up a connection yourself, or invite another user who might be able to do it for you.
 
 ![The QueryTree onboard page](http://querytreeapp.com/img/screenshots/querytree-onboarding.png "The QueryTree onboarding page")
 
-4. Assuming you have a database that you can connect to, select the "+ Connect Database" 
-option. You will see the Create Connection page:
+4. Assuming you have a database that you can connect to, select the "+ Connect Database" option. You will see the Create Connection page:
 
 ![The QueryTree create connection page](http://querytreeapp.com/img/screenshots/querytree-create-connection.png "The QueryTree create connection page")
 
-Once all the information is entered, you can check the connection by pressing the
-"Test Connection" button. If the system reports that the conneciton is working,
-press "Save".
+Once all the information is entered, you can check the connection by pressing the "Test Connection" button. If the system reports that the conneciton is working, press "Save".
 
 ![The QueryTree test connection feature](http://querytreeapp.com/img/screenshots/querytree-test-connection.png "The QueryTree test connection feature")
 
-5. You will be taken to the reports list for this connection, but there won't be
-any reports yet.
+5. You will be taken to the reports list for this connection, but there won't be any reports yet.
 
 ![The QueryTree reports page](http://querytreeapp.com/img/screenshots/querytree-reports-empty.png "The QueryTree reports page")
 
 6. Click on "+ Create Report". You will be taken to the defualt report builder
 
-7. All reports start by picking a datbase table to start from. From there
-the report builder will prompt you to select any related tables that it can
-join to. For example, in this screenshot, I have selected the "orders" table
-and QueryTree is prompting me to join the "users" table. QueryTree can see
-that "orders" has a link to "users" so it offers to join the tables.
+7. All reports start by picking a datbase table to start from. From there the report builder will prompt you to select any related tables that it can join to. For example, in this screenshot, I have selected the "orders" table and QueryTree is prompting me to join the "users" table. QueryTree can see that "orders" has a link to "users" so it offers to join the tables.
 
 ![The QueryTree create report page](http://querytreeapp.com/img/screenshots/querytree-create-report-orders.png "The QueryTree create report page")
 
-For more information on how to help QueryTree automatically join between tables
-in your database see [QueryTree's Auto Join feature](/docs/autojoin.md)
+For more information on how to help QueryTree automatically join between tables in your database see [QueryTree's Auto Join feature](/docs/autojoin.md)
 
-8. Having selected a starting table, and any relevant related tables, click Next.
-The filter panel will open and you will be prompted to add one or more Filters.
+8. Having selected a starting table, and any relevant related tables, click Next. The filter panel will open and you will be prompted to add one or more Filters.
 
 ![The QueryTree report filter panel](http://querytreeapp.com/img/screenshots/querytree-report-filter.png "The QueryTree report filter panel")
 
-9. Once you are happy with the filters, you have the option to summarize the data
-that is being shown in the results panel. Summerizing the data can mean totaling, 
-averaging, counting or finding the minimum/maximum values, for one or more columns.
-You can do this for all the data, or for different groups of values. For example, 
-you could find the average value of the orders, for each country.
+9. Once you are happy with the filters, you have the option to summarize the data that is being shown in the results panel. summerizing the data can mean totaling, averaging, counting or finding the minimum/maximum values, for one or more columns. You can do this for all the data, or for different groups of values. For example, you could find the average value of the orders, for each country.
 
 ![The QueryTree report summerize panel](http://querytreeapp.com/img/screenshots/querytree-report-summerize.png "The QueryTree report summerize panel")
 
-10. Finally, you have the option of generating a chart from the data in the results
-panel.
+10. Finally, you have the option of generating a chart from the data in the results panel.
 
 ![The QueryTree report chart panel](http://querytreeapp.com/img/screenshots/querytree-report-chart.png "The QueryTree report chart panel")
 
-11. Once you are happy with your report, save it by clicking the Save button. You
-will be returned to the list of reports for this connection.
+11. Once you are happy with your report, save it by clicking the Save button. You will be returned to the list of reports for this connection.
 
 ## Other Guides
 
-  * [Scheduling Reports](/docs/scheduling.md)
- * [Sharing Individual Reports](/docs/sharing.md)
- * [Team Management](/docs/teams.md)
- * [The Advanced Query Builder](/docs/advanced.md)
- * [Auto Join](/docs/autojoin.md)
- * [Customizing QueryTree](/docs/customizing.md)
- * [Building a password manager](/docs/password-manager.md)
- * [Using with Docker](/docs/docker.md)
- * [Configuring Email](/docs/mail.md)
+- [Scheduling Reports](/docs/scheduling.md)
+- [Sharing Individual Reports](/docs/sharing.md)
+- [Team Management](/docs/teams.md)
+- [The Advanced Query Builder](/docs/advanced.md)
+- [Auto Join](/docs/autojoin.md)
+- [Customizing QueryTree](/docs/customizing.md)
+- [Building a password manager](/docs/password-manager.md)
+- [Using with Docker](/docs/docker.md)
+- [Configuring Email](/docs/mail.md)
 
 ## License
 

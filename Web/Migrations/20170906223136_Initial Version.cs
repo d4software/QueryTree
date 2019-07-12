@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Migrations
@@ -41,6 +42,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     OrganisationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     NumberOfConnections = table.Column<int>(nullable: false),
@@ -57,6 +59,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
@@ -115,6 +118,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
@@ -180,6 +184,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     OrganisationInviteId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     AcceptedOn = table.Column<DateTime>(nullable: true),
                     CreatedById = table.Column<string>(nullable: true),
@@ -204,6 +209,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     ContentType = table.Column<string>(nullable: true),
                     CreatedById = table.Column<string>(nullable: true),
@@ -226,6 +232,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     DatabaseConnectionID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     DatabaseName = table.Column<string>(nullable: false),
@@ -264,6 +271,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     QueryID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     CreatedById = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
@@ -303,6 +311,7 @@ namespace Web.Migrations
                 columns: table => new
                 {
                     UserDatabaseConnectionID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     ApplicationUserID = table.Column<string>(nullable: true),
                     CreatedById = table.Column<string>(nullable: true),

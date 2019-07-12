@@ -440,8 +440,8 @@ namespace QueryTree.Controllers
 
         #region Query APIs
 
-        [HttpGet("/api/queries/{queryId}/")]
-        public ActionResult QueryData(int queryId, int draw, int start, int length)
+        [HttpPost("/api/getquerydata/{queryId}/")]
+        public ActionResult GetData(int queryId, GetDataRequest req)
         {
             var query = db.Queries
                 .Include(q => q.DatabaseConnection)
@@ -454,11 +454,11 @@ namespace QueryTree.Controllers
                 var nodes = JsonConvert.SerializeObject(queryDefinition.Nodes);
                 var selectedNodeId = queryDefinition.SelectedNodeId.ToString();
 
-                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, start, length);
+                var data = _dbMgr.GetData(query.DatabaseConnection, nodes, selectedNodeId, req.Start, req.Length);
                 var rows = data.Rows;
                 var totalCount = data.RowCount;
 
-                var dataTable = new {draw = draw, recordsTotal = totalCount, recordsFiltered = totalCount, data = rows};
+                var dataTable = new {draw = req.Draw, recordsTotal = totalCount, recordsFiltered = totalCount, data = rows};
 
                 return Json(dataTable);
             }

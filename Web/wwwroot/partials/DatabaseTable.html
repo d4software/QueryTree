@@ -8,6 +8,6 @@
         <select id="datatable-table" class="form-control" data-bind="options: Tables, value: Table"></select>
     </div>
     <p data-bind="visible: TablesLoading() === false && Tables().length == 0">No tables found</p>
-    <img src="/images/loading.gif" data-bind="visible: TablesLoading"/>
+    <img src="~/images/loading.gif" data-bind="visible: TablesLoading"/>
     <a class="btn btn-primary" data-bind="visible: !TablesLoading(), click: RefreshTables">Refresh Tables</a>
 </form>

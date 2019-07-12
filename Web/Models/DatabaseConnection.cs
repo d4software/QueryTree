@@ -8,6 +8,7 @@ namespace QueryTree.Models
 {
     public class DatabaseConnection
     {
+        [Key]
         public int DatabaseConnectionID { get; set; }
 
 		public int OrganisationId { get; set; }

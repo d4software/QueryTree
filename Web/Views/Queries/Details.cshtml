@@ -1,11 +1,14 @@
-﻿@model QueryTree.Models.Query
+﻿@using Microsoft.Extensions.Options;
+@using QueryTree.Models
+@model QueryTree.Models.Query
+@inject IOptions<CustomizationConfiguration> CustomizationConfiguration
 
 @{
     ViewBag.Title = Model.DatabaseConnection.Name + " - " + Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jqc-1.12.4/dt-1.10.13/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css" />
-<link rel="stylesheet" type="text/css" href="/css/pickatime.css">
+<link rel="stylesheet" type="text/css" href="~/css/pickatime.css">
 <div class="back-to-parent-nav">Back to: @Html.ActionLink(Model.DatabaseConnection.Name, "Details", "Home", new { id = Model.DatabaseConnectionID }, null)</div>
 
 <div>
@@ -36,15 +39,15 @@
     <div id="data-controls" class="controls">
         <!-- ko if IsDataVisible -->
         @*<span data-bind="visible: IsDataVisible">Rows <span data-bind="text: CurrentRowStartFormatted"></span> to <span data-bind="text: CurrentRowEndFormatted"></span> of <span data-bind="text: CurrentRowsTotalFormatted"></span></span>
-        <a id="PagerStart" class="btn btn-lg btn-default" data-bind="visible: IsPreviousVisible, click: NavigateStart">&lt;&lt;</a>
-        <a id="PagerPrev" class="btn btn-lg btn-default" data-bind="visible: IsPreviousVisible, click: NavigatePrev">&lt;</a>
-        <a id="PagerNext" class="btn btn-lg btn-default" data-bind="visible: IsNextVisible, click: NavigateNext">&gt;</a>
-        <a id="PagerEnd" class="btn btn-lg btn-default" data-bind="visible: IsNextVisible, click: NavigateEnd">&gt;&gt;</a>*@
+            <a id="PagerStart" class="btn btn-lg btn-default" data-bind="visible: IsPreviousVisible, click: NavigateStart">&lt;&lt;</a>
+            <a id="PagerPrev" class="btn btn-lg btn-default" data-bind="visible: IsPreviousVisible, click: NavigatePrev">&lt;</a>
+            <a id="PagerNext" class="btn btn-lg btn-default" data-bind="visible: IsNextVisible, click: NavigateNext">&gt;</a>
+            <a id="PagerEnd" class="btn btn-lg btn-default" data-bind="visible: IsNextVisible, click: NavigateEnd">&gt;&gt;</a>*@
         <!-- /ko -->
         @*<a id="export" target="_blank" href="#" download="export.csv" class="btn btn-lg btn-primary" data-bind="visible: ShowExport, click: Export, attr: { href: ExportUrl, download: ExportFileName }">Export as Excel</a>*@
         @Html.ActionLink("Export as Excel", "ExportQuery", "Api", new { id = Model.QueryID }, new { @class = "btn btn-lg btn-primary" })
     </div>
-    
+
     <div class="form-group">
         <span class="small">Created by <a href="email:@(Model.CreatedBy.UserName)">@(Model.CreatedBy.UserName)</a> at @(Model.CreatedOn)</span>
     </div>
@@ -57,84 +60,84 @@
 
 <div id="scheduledReportsModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" data-bind="disable: Locked">&times;</button>
-                    <h4 class="modal-title">Schedule This Report</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <ul data-bind="foreach: ValidationErrors">
-                        <li>
-                            <strong data-bind="text: $data" class="text-danger"></strong>
-                        </li>
-                    </ul>
-                    <br/>
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Frequency</label>
-                        </div>
-
-                        <div class="col-sm-9">
-                            <select class="form-control" data-bind="options: Frequency, optionsValue: 'value', optionsText: 'text', value: SelectedFrequency, disable: Locked"></select>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row" data-bind="visible: SelectedFrequency() != 0">
-                        <div class="col-sm-3">
-                            <label>Time</label>
-                        </div>
-
-                        <div class="col-sm-9">
-                            <input id="scheduleTime" type='text' class="form-control" data-bind='pickatime: Time, disable: Locked'>
-                        </div>
-                    </div>
-                    <br/>
-                    <!-- ko if: SelectedFrequency() != 0 && SelectedFrequency() == 2-->
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Day of the Week</label>
-                        </div>
-
-                        <div class="col-sm-9">
-                            <select class="form-control" data-bind="options: Days, optionsValue: 'value', optionsText: 'text', value: SelectedDay, disable: Locked"></select>
-                        </div>
-                    </div>
-                    <br/>
-                    <!-- /ko -->
-                    <!-- ko if: SelectedFrequency() != 0 && SelectedFrequency() == 3 -->
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Day of the Month</label>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <input type='number' max="31" min="1" class="form-control" data-bind='value: DayOfMonth, disable: Locked'>
-                        </div>
-                    </div>
-                    <br/>
-                    <!-- /ko -->
-                    <!-- ko if: SelectedFrequency() != 0 -->
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label>Recipients</label>
-                        </div>
-
-                        <div class="col-sm-9">
-                           <textarea class="form-control" rows="3" data-bind='value: Recipients,  event: {keypress: keypress, blur: blurRecipients}, valueUpdate : "afterkeydown", disable: Locked'></textarea>
-                        </div>
-                    </div>
-                    <!-- /ko -->
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-default" data-bind="click: Submit, disable: Locked">Save</button>
-                    <button type="button" class="btn btn-default" data-bind="disable: Locked" data-dismiss="modal">Close</button>
-                </div>
-
-                
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-bind="disable: Locked">&times;</button>
+                <h4 class="modal-title">Schedule This Report</h4>
             </div>
+            <div class="modal-body">
+
+                <ul data-bind="foreach: ValidationErrors">
+                    <li>
+                        <strong data-bind="text: $data" class="text-danger"></strong>
+                    </li>
+                </ul>
+                <br />
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Frequency</label>
+                    </div>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" data-bind="options: Frequency, optionsValue: 'value', optionsText: 'text', value: SelectedFrequency, disable: Locked"></select>
+                    </div>
+                </div>
+                <br />
+                <div class="row" data-bind="visible: SelectedFrequency() != 0">
+                    <div class="col-sm-3">
+                        <label>Time</label>
+                    </div>
+
+                    <div class="col-sm-9">
+                        <input id="scheduleTime" type='text' class="form-control" data-bind='pickatime: Time, disable: Locked'>
+                    </div>
+                </div>
+                <br />
+                <!-- ko if: SelectedFrequency() != 0 && SelectedFrequency() == 2-->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Day of the Week</label>
+                    </div>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" data-bind="options: Days, optionsValue: 'value', optionsText: 'text', value: SelectedDay, disable: Locked"></select>
+                    </div>
+                </div>
+                <br />
+                <!-- /ko -->
+                <!-- ko if: SelectedFrequency() != 0 && SelectedFrequency() == 3 -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Day of the Month</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <input type='number' max="31" min="1" class="form-control" data-bind='value: DayOfMonth, disable: Locked'>
+                    </div>
+                </div>
+                <br />
+                <!-- /ko -->
+                <!-- ko if: SelectedFrequency() != 0 -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Recipients</label>
+                    </div>
+
+                    <div class="col-sm-9">
+                        <textarea class="form-control" rows="3" data-bind='value: Recipients,  event: {keypress: keypress, blur: blurRecipients}, valueUpdate : "afterkeydown", disable: Locked'></textarea>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default" data-bind="click: Submit, disable: Locked">Save</button>
+                <button type="button" class="btn btn-default" data-bind="disable: Locked" data-dismiss="modal">Close</button>
+            </div>
+
+
+        </div>
         @Html.Hidden("DatabaseConnectionID", Model.DatabaseConnection.DatabaseConnectionID)
         @Html.HiddenFor(model => model.QueryDefinition)
         @Html.HiddenFor(model => model.QueryID)
@@ -144,24 +147,32 @@
     <script src="https://cdn.datatables.net/v/bs/dt-1.10.13/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/g/jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
-    <script src="/js/schedule.js"></script>
+    <script src="~/js/schedule.js"></script>
+    @if (!String.IsNullOrEmpty(CustomizationConfiguration.Value.BaseUri))
+    {
+        <script>
+            if (typeof backend !== 'undefined') {
+                backend.baseUri = "@CustomizationConfiguration.Value.BaseUri";
+            }
+        </script>
+    }
     <script>
         var ModalViewModel = function(data) {
             var self = this;
 
             self.Frequency = ko.observableArray([
-                { value: 0, text: "None" }, 
-                { value: 1, text: "Daily" }, 
+                { value: 0, text: "None" },
+                { value: 1, text: "Daily" },
                 { value: 2, text: "Weekly" },
                 { value: 3, text: "Monthly" }
             ]);
 
             self.Days = [
-                { value: 1, text: "Monday" }, 
-                { value: 2, text: "Tuesday" }, 
+                { value: 1, text: "Monday" },
+                { value: 2, text: "Tuesday" },
                 { value: 3, text: "Wednesday" },
-                { value: 4, text: "Thursday" }, 
-                { value: 5, text: "Friday" }, 
+                { value: 4, text: "Thursday" },
+                { value: 5, text: "Friday" },
                 { value: 6, text: "Saturday" },
                 { value: 7, text: "Sunday" }
             ];
@@ -309,88 +320,82 @@
         backend.GetSchedule(@this.Model.QueryID).done(function(data) {
             modalViewModel = new ModalViewModel(data);
             ko.applyBindings(modalViewModel, $("#scheduledReportsModal")[0]);
-            $("#scheduleTime").click(function() { 
+            $("#scheduleTime").click(function() {
                 $(this).pickatime("open");
             });
         });
-
 
         $('#scheduledReportsModal').on('hide.bs.modal',function(e) {
             modalViewModel._cleanUnsavedChanges();
             $('.alert').remove();
         });
 
-    </script>
+        $(function () {
+            var query = JSON.parse($('input[name=QueryDefinition]').val());
 
-<script>
-    $(function () {
-        var query = JSON.parse($('input[name=QueryDefinition]').val());
+            var selectedNode = query.Nodes.filter(function(node) { return node.Id === query.SelectedNodeId; })[0];
 
-        var selectedNode = query.Nodes.filter(function(node) { return node.Id === query.SelectedNodeId; })[0];
+            if ($.inArray(selectedNode.Type, ['Bar Chart', 'Line Chart', 'Pie Chart']) >= 0) {
 
-        if ($.inArray(selectedNode.Type, ['Bar Chart', 'Line Chart', 'Pie Chart']) >= 0) {
-            
-            $('#chart').show();
+                $('#chart').show();
 
-            var num = null;
+                var num = null;
 
-            switch (selectedNode.Type) {
-                case 'Bar Chart':
-                    num = 25;
-                    break;
-                case 'Line Chart':
-                    num = 100;
-                    break;
-                case 'Pie Chart':
-                    num = 10;
-                    break;
-                default:
-                    num = 10;
-                    break;
-            }
+                switch (selectedNode.Type) {
+                    case 'Bar Chart':
+                        num = 25;
+                        break;
+                    case 'Line Chart':
+                        num = 100;
+                        break;
+                    case 'Pie Chart':
+                        num = 10;
+                        break;
+                    default:
+                        num = 10;
+                        break;
+                }
 
-            var serverQueryKey = ko.observable();
-            backend.LoadData(serverQueryKey, query.Nodes, query.SelectedNodeId, 0, num,"JSON", null, function(data) {
-                utils.RenderChart('#chart', data.rows, selectedNode.Type, 0, data.columnTypes[0], 1, data.columnTypes[1]);
-                $('#spinner').remove();
-            });
-        } else {
-            $('#proposals').show();
+                var serverQueryKey = ko.observable();
+                backend.LoadData(serverQueryKey, query.Nodes, query.SelectedNodeId, 0, num,"JSON", null, function(data) {
+                    utils.RenderChart('#chart', data.rows, selectedNode.Type, 0, data.columnTypes[0], 1, data.columnTypes[1]);
+                    $('#spinner').remove();
+                });
+            } else {
+                $('#results').show();
 
-            backend.LoadQueryColumnsName(@this.Model.QueryID).done(function (data) {
+                backend.LoadQueryColumnsName(@this.Model.QueryID).done(function (data) {
 
-                ko.applyBindings(new ViewModel(data), $("#proposals")[0]);
+                    ko.applyBindings(new ViewModel(data), $("#results")[0]);
 
-                $("#proposals").DataTable({
-                    "dom": '<l><"top">rt<i><"pagingTable"p><"clear">',
-                    responsive: false,
-                    searching: true,
-                    fixedHeader: true,
-                    scrollX: true,
-                    ordering: false,
-                    processing: true,
-                    serverSide: true,
-                    info: true,
-                    stateSave: true,
-                    ajax:{
-                        "url": "/api/queries/" + @this.Model.QueryID + "/",
-                        "type": "GET",
-                        "contentType": "application/json",
-                    },
+                    $("#results").DataTable({
+                        "dom": '<l><"top">rt<i><"pagingTable"p><"clear">',
+                        responsive: false,
+                        searching: true,
+                        fixedHeader: true,
+                        scrollX: true,
+                        ordering: false,
+                        processing: true,
+                        serverSide: true,
+                        info: true,
+                        stateSave: true,
+                        ajax:{
+                            "url": "@CustomizationConfiguration.Value.BaseUri/api/getquerydata/" + @this.Model.QueryID + "/",
+                            "type": "POST"
+                        },
+                    });
+
+                    function ViewModel(data) {
+                        var self = this;
+                        self.columns = data;
+                    };
+
                 });
 
-
-                function ViewModel(data) {
-                    var self = this;
-                    self.columns = data;
-                };
-
-            });
-
-            $('#proposals').on('init.dt', function () {
-                $('#spinner').remove();
-            });
-        }
-    });
-</script>
+                $('#results').on('init.dt', function () {
+                    $('#spinner').remove();
+                });
+            }
+        });
+    </script>
 }

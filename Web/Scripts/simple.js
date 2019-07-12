@@ -843,7 +843,7 @@ var SimpleQueryBuilderViewModel = function () {
 
     self.exportUrl = ko.pureComputed(function () {
         if (self.serverQueryKey()) {
-            return "/api/cache/" + self.serverQueryKey() + "/" + self.selectedNode().Id + "/export/";
+            return backend.baseUri + "/api/cache/" + self.serverQueryKey() + "/" + self.selectedNode().Id + "/export/";
         } else {
             return null;
         }
