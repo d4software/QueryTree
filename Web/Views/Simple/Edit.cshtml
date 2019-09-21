@@ -163,14 +163,12 @@
         <!--ko foreach: Statistics-->
         <div class="form-inline">
             <div class="form-group">
-                <select name="AggFunction" data-bind="options: $parent.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" class="form-control"></select>
+                <select name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction" class="form-control"></select>
             </div>
-            <!--ko if: AggFunction() != 1-->
-            <div class="form-group">
+            <div class="form-group" data-bind="visible: ShowAggColumn">
                 <label for="AggColumn" class="control-label" style="width: 40px; text-align: center;"> of </label>
-                <select name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn" class="form-control"></select>
+                <select name="AggColumn" data-bind="options: AvailableAggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn" class="form-control"></select>
             </div>
-            <!--/ko-->
             <div class="form-group">
                 <!--ko if: $parent.Statistics().length == 1-->
                 <a href="#" class="btn btn-default" data-bind="click: $root.removeStatistics">remove</a>
@@ -344,7 +342,7 @@
 
 @section Scripts { 
     <script src="https://cdn.jsdelivr.net/g/jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
-    <script src="~/js/sqb.min.js"></script>
+    <partial name="_SqbInclude" />
 
     <script>
         $(document).ready(function () {

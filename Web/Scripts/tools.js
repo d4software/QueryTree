@@ -252,12 +252,12 @@ tools.Summarize = function () {
     });
 
     instance.AggFunctions = ko.observableArray([
-        { id: 1, text: "Number of Rows", requiresNumeric: false },
-        { id: 2, text: "Total", requiresNumeric: true },
-        { id: 3, text: "Minimum", requiresNumeric: true },
-        { id: 4, text: "Maximum", requiresNumeric: true },
-        { id: 5, text: "Average", requiresNumeric: true },
-        { id: 6, text: "Median", requiresNumeric: true }
+        { id: 1, text: "Number of Rows", requiresColumn: false, WorksWithDates: true },
+        { id: 2, text: "Total", requiresColumn: true, WorksWithDates: false },
+        { id: 3, text: "Minimum", requiresColumn: true, WorksWithDates: true },
+        { id: 4, text: "Maximum", requiresColumn: true, WorksWithDates: true },
+        { id: 5, text: "Average", requiresColumn: true, WorksWithDates: false },
+        { id: 6, text: "Median", requiresColumn: true, WorksWithDates: false }
     ]);
 
     instance.DateFunctions = ko.observableArray([

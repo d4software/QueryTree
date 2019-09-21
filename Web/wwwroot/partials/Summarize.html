@@ -6,14 +6,12 @@
     <!--ko foreach: Statistics-->
     <div class="form-group">
         <label>Calculate the</label>
-        <select class="form-control" name="AggFunction" data-bind="options: $parent.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
+        <select class="form-control" name="AggFunction" data-bind="options: $parent.Tool.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
     </div>
-    <!--ko if: AggFunction() != 1-->
-    <div class="form-group">
+    <div class="form-group" data-bind="visible: ShowAggColumn">
         <label for="AggColumn">Of column</label>
-        <select class="form-control" name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn"></select>
+        <select class="form-control" name="AggColumn" data-bind="options: AvailableAggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn"></select>
     </div>
-    <!--/ko-->
     <!--ko if: $parent.Statistics().length > 1-->
     <div class="form-group">
         <a class="btn btn-warning" data-bind="click: $parent.RemoveStatistic">Remove</a>

@@ -814,6 +814,26 @@ nodes.Sort = function(properties) {
     return instance;
 };
 
+var SummarizeStatistic = function(parent, aggFunc, aggCol) {
+    var _parent = parent;
+    var self = this;
+    self.AggFunction = ko.observable(aggFunc);
+    self.AggColumn = ko.observable(aggCol);
+    self.ShowAggColumn = ko.pureComputed(function() {
+        var af = self.AggFunction();
+        var afi = _parent.Tool.AggFunctions().filter(function(f) { return f.id == af })[0];
+        return afi.requiresColumn;
+    });
+    self.AvailableAggColumns = ko.pureComputed(function() {
+        return _parent.AllInputColumnInfos().filter(function(c) { 
+            var af = self.AggFunction();
+            var afi = _parent.Tool.AggFunctions().filter(function(f) { return f.id == af })[0];
+            return tools.IsNumericType(c.Type) || (tools.IsDatetimeType(c.Type) && afi.WorksWithDates); 
+        });
+    });
+    return self;
+};
+
 nodes.Summarize = function(properties) {
     var instance = new nodes.DataProcessorBase(properties);
 
@@ -840,14 +860,6 @@ nodes.Summarize = function(properties) {
 
         return results;
     }
-
-    instance.AggColumns = ko.computed(function () {
-        return instance.AllInputColumnInfos().filter(function (col) { return tools.IsNumericType(col.Type); });
-    });
-
-    instance.AggFunctions = ko.computed(function() {
-        return instance.Tool.AggFunctions().filter(function(aggFunc) { return aggFunc.requiresNumeric === false || instance.AggColumns().length > 0 });
-    });
 
     var innerGetCoreSettings = instance.GetCoreSettings;
     instance.GetCoreSettings = function () {
@@ -880,10 +892,7 @@ nodes.Summarize = function(properties) {
         var statistics = [];
         for (var i = 0; i < settings.AggFunctions.length; i++) {
             if (settings.AggColumnIndexes.length > i) {
-                statistics.push({
-                    "AggFunction": ko.observable(settings.AggFunctions[i]),
-                    "AggColumn": ko.observable(settings.AggColumnIndexes[i]),
-                });
+                statistics.push(new SummarizeStatistic(instance, settings.AggFunctions[i], settings.AggColumnIndexes[i]));
             }
         }
         instance.Statistics(statistics);
@@ -899,10 +908,7 @@ nodes.Summarize = function(properties) {
     }
 
     instance.AddStatistic = function () {
-        instance.Statistics.push({
-            "AggFunction": ko.observable(2),
-            "AggColumn": ko.observable(0)
-        });
+        instance.Statistics.push(new SummarizeStatistic(instance, 2, 0));
     };
 
     instance.RemoveStatistic = function (item, event) {
