@@ -351,6 +351,8 @@ tools.IsDatetimeType = function (theType) {
 }
 
 tools.IsTextType = function (theType) {
+    let regex = /\([0-9]*\)$/;
+    theType = theType.replace(regex, '');
     switch (theType.toUpperCase()) {
         case "VARCHAR":
         case "NVARCHAR":
