@@ -91,7 +91,7 @@ namespace QueryTree.Engine
 
         protected bool IsTextType(string colType)
         {
-            var quotedTypes = new List<string>() { "VARCHAR", "NVARCHAR", "CHAR", "NCHAR", "ENUM", "XML", "CHARACTER VARYING", "CHARACTER", "TEXT", "USER-DEFINED" };
+            var quotedTypes = new List<string>() { "VARCHAR", "NVARCHAR", "CHAR", "NCHAR", "ENUM", "XML", "CHARACTER VARYING", "CHARACTER", "TEXT", "USER-DEFINED", "LONGTEXT" };
 
             switch (DatabaseType)
             {

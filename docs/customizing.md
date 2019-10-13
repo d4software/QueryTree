@@ -11,6 +11,7 @@ The [appsettings.json](/Web/appsettings.json) file contains a section titled “
    "ExtraCSS": "",
    "AllowAdvancedQuery": false,
    "DataStore": "Sqlite",
+   "BaseUri": "",
    "AuthenticationMode": "Forms"
  }
 ```
@@ -22,4 +23,5 @@ The following section details what each of the settings do:
 * *ExtraCSS*: points to a .css file that will be referenced by all the QueryTree pages, after it’s own CSS. This file does not necessarily need to be located inside QueryTree’s wwwroot folder. It could potentially be hosted at a different domain.
 * *AllowAdvancedQuery*: indicated whether users will be given the option to use the advanced query builder. See [here](/docs/advanced.md) for more information.
 * *DataStore*: Controls what kind of database QueryTree will store it's configuration data in. Valid options are 'MSSqlServer' or 'Sqlite'. The contents of the ConnectionString setting in the [appsettings.json](/Web/appsettings.json) should be set to an appropriate connection string for this database type.
+* *BaseUri*: If you want to run QueryTree from a subfolder on your webserver, e.g. http://my.app.com/reports/, the BaseUri setting should be used to tell QueryTree what location it is running from, e.g. "/reports".
 * *AuthenticationMode*: Valid options are "Forms" or "Windows". The default value is "Forms". "Forms" means that users will see "sign up", "sign in" and "sign out" pages. If "Windows" is enabled, those pages will be hidden and users will be automatically signed in using their Windows accounts. This option will only work for Windows clients, and when QueryTree is hosted using IIS, with "Windows Authentication" enabled and "Anonymous Authentication" disabled. See [https://docs.microsoft.com/en-us/iis/configuration/system.webserver/security/authentication/windowsauthentication/]() for more information on configuring IIS.

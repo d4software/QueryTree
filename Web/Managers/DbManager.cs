@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using QueryTree.Enums;
 using QueryTree.ViewModels;
+using System.Text.RegularExpressions;
 
 
 namespace QueryTree.Managers
@@ -648,6 +649,14 @@ namespace QueryTree.Managers
             return cmd;
         }
 
+        // Sometimes DbDataReader.GetDataTypeName returns a length specifier, which isn't useful
+        // to QueryTree, is different to the GetDbModel data and breaks things. This removes it
+        private string RemoveLengthSpecifier(string databaseType)
+        {
+            var re = new Regex("\\([0-9]*\\)$");
+            return re.Replace(databaseType, "");
+        }
+
         public QueryResponse GetData(DatabaseConnection connection, string nodes, string nodeId, int? startRow, int? rowCount)
         {
             var data = new QueryResponse() { Status = "ok" };
@@ -671,7 +680,7 @@ namespace QueryTree.Managers
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
                             data.Columns.Add(reader.GetName(i));
-                            data.ColumnTypes.Add(reader.GetDataTypeName(i));
+                            data.ColumnTypes.Add(RemoveLengthSpecifier(reader.GetDataTypeName(i)));
                         }
 
                         while (reader.Read())

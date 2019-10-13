@@ -367,6 +367,7 @@ tools.IsTextType = function (theType) {
         case "CHARACTER VARYING":
         case "CHARACTER":
         case "TEXT":
+        case "LONGTEXT":
         case "USER-DEFINED": // Treat any user defined columns as text
             return true;
         default:
