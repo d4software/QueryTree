@@ -210,6 +210,11 @@ namespace QueryTree.Engine
 
         internal virtual void FetchOrderedDependencies(IList<NodeBase> dependencies)
         {
+            if (dependencies.Contains(this))
+            {
+                dependencies.Remove(this);
+            }
+            
             dependencies.Insert(0, this);
         }
 
