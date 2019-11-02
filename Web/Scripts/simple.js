@@ -95,7 +95,7 @@ var SimpleQueryBuilderViewModel = function () {
 
     self.currentData = ko.computed(function() {
         if (self.HasChart() && self.currentDataFull()) {
-            return self.currentDataFull().slice(self.currentRowStart(), self.currentRowStart() + self.dataPageSize())
+            return self.currentDataFull().slice(self.currentRowStart() - 1, self.currentRowStart() + self.dataPageSize() - 1)
         } else {
             return self.currentDataFull();
         }
