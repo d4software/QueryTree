@@ -291,7 +291,7 @@ namespace QueryTree.Engine
         {
             if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
             {
-                return GetNodeAlias() + " ";
+                return GetNodeAlias();
             }
             else 
             {
