@@ -58,6 +58,8 @@ namespace QueryTree.ViewModels
 
         public int OrganisationId { get; set; }
 
+        public int OrganisationInviteId { get; set; }
+
         public bool IsOrganisationAdmin { get; set; }
 
         public List<string> DatabasesMerged { get; set; }

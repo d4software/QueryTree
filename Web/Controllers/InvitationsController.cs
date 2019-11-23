@@ -61,7 +61,10 @@ namespace QueryTree.Controllers
                 .Include(c => c.CreatedBy)
                 .GroupBy(c => c.OrganisationId))
             {
-                InvitationViewModel viewModel = new InvitationViewModel();
+                InvitationViewModel viewModel = new InvitationViewModel
+                {
+                    OrganisationInviteId = orgGrp.First().OrganisationInviteId
+                };
                 
                 Organisation organisation = db.Organisations.First(ba => ba.OrganisationId == orgGrp.Key);
                 viewModel.OrganisationId = organisation.OrganisationId;
@@ -119,22 +122,20 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var organisation = db.Organisations.FirstOrDefault(ba => ba.OrganisationId == id);
+            var invite = db.OrganisationInvites.FirstOrDefault(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null && uc.OrganisationInviteId == id);
+
+            if (invite == null)
+            {
+                return NotFound("Invite not found");
+            }
+
+            var organisation = db.Organisations.FirstOrDefault(ba => ba.OrganisationId == invite.OrganisationId);
 
             if (organisation == null)
             {
                 return NotFound("Organisation not found");
             }
 
-            // remove other invitations to other organisations
-            db.OrganisationInvites.RemoveWhere(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.OrganisationId != id);
-
-            db.SaveChanges();
-
-            var invitationsToAccept = db.OrganisationInvites
-                .Where(uc => uc.InviteEmail == CurrentUser.Email && uc.OrganisationId == id)
-                .ToList();
-            
             List<DatabaseConnection> leave = new List<DatabaseConnection>();
             List<DatabaseConnection> migrate = new List<DatabaseConnection>();
             
@@ -173,11 +174,16 @@ namespace QueryTree.Controllers
             
             CurrentUser.OrganisationId = organisation.OrganisationId;
 
-            foreach (var invite in invitationsToAccept)
-            {
-                invite.AcceptedOn = DateTime.Now;
-            }
+            invite.AcceptedOn = DateTime.Now;
+            
+            // reject other invitations to other organisations
+            var invitesToReject = db.OrganisationInvites.Where(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.OrganisationInviteId != invite.OrganisationInviteId);
         
+            foreach (var inviteToReject in invitesToReject)
+            {
+                inviteToReject.RejectedOn = DateTime.Now;
+            }
+
             db.SaveChanges();
 
             return RedirectToAction("Index", "Home");
@@ -190,7 +196,13 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
             
-            var invite = db.OrganisationInvites.First(i => i.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && i.OrganisationId == id && i.AcceptedOn == null && i.RejectedOn == null);
+            var invite = db.OrganisationInvites.FirstOrDefault(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null && uc.OrganisationInviteId == id);
+
+            if (invite == null)
+            {
+                return NotFound("Invite not found");
+            }
+
             invite.RejectedOn = DateTime.Now;
 
             db.SaveChanges();
