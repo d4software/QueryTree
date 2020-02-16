@@ -44,7 +44,7 @@ for more information.
 
 ### Prerequisites
 
-To build binaries or run from source you need the [.NET Core SDK v2.2](https://www.microsoft.com/net/download) installed.
+To build binaries or run from source you need the [.NET Core SDK v3.1](https://www.microsoft.com/net/download) installed.
 
 ### Running from Source
 
@@ -83,7 +83,7 @@ This will create a release folder in `dist` of all the unpacked QueryTree binari
 
 ### Running from Binaries
 
-To run QueryTree on your server you will need to install the .NET Core 2.2.x runtime. (It is not necessary to install the full .NET SDK, just the runtime.) You can download the installer [here](https://www.microsoft.com/net/download/core#/runtime).
+To run QueryTree on your server you will need to install the .NET Core 3.1.x runtime. (It is not necessary to install the full .NET SDK, just the runtime.) You can download the installer [here](https://www.microsoft.com/net/download/core#/runtime).
 
 To verify that you have the .NET runtime installed, open a terminal/cmd window and type
 
