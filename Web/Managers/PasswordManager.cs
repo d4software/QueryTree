@@ -21,12 +21,12 @@ namespace QueryTree.Managers
     public class PasswordManager : IPasswordManager
     {
 		private ApplicationDbContext _db;
-		private IHostingEnvironment _env;
+		private IWebHostEnvironment _env;
         private IOptions<PasswordsConfiguration> _config;
 
 		public PasswordManager(
             ApplicationDbContext dbContext,
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             IOptions<PasswordsConfiguration> config
         )
         {

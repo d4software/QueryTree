@@ -33,7 +33,7 @@ namespace QueryTree.Controllers
         private IPasswordManager _passwordManager;
         private DbManager _dbMgr;
         private IConfiguration _config;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IScheduledEmailManager _scheduledEmailManager;
         private ApplicationUser _currentUser;
 
@@ -45,7 +45,7 @@ namespace QueryTree.Controllers
             IPasswordManager passwordManager, 
             IConfiguration config, 
             IScheduledEmailManager scheduledEmailManager,
-            IHostingEnvironment env)
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             db = dbContext;

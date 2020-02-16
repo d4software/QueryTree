@@ -25,7 +25,7 @@ namespace QueryTree.Managers
 		private readonly IConfiguration _config;
 		private readonly ApplicationDbContext _db;
 		private readonly DbManager _dbMgr;
-		private readonly IHostingEnvironment _env;
+		private readonly IWebHostEnvironment _env;
 		private readonly ConvertManager _convertManager;
 
 
@@ -34,7 +34,7 @@ namespace QueryTree.Managers
 			IEmailSender emailSender,
 			IConfiguration config, 
             ApplicationDbContext db,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IMemoryCache cache,
             IPasswordManager passwordManager)
         {

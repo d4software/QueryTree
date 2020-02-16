@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Hangfire;
-using Hangfire.Dashboard;
 using Hangfire.SQLite;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using QueryTree.Models;
 using QueryTree.Managers;
 using QueryTree.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace QueryTree
 {
@@ -60,7 +58,7 @@ namespace QueryTree
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             
-            services.AddMvc();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
             
             services.AddAuthentication()
                 .AddCookie(options => 
@@ -93,11 +91,10 @@ namespace QueryTree
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
+            LoggerFactory.Create(builder => builder.AddConsole());
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

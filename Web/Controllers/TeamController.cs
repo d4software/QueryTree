@@ -21,13 +21,13 @@ namespace QueryTree.Controllers
     public class TeamController : IdentityController
     {
         private IEmailSender _emailSender;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IConfiguration _config;
 
 		public TeamController(
             ApplicationDbContext dbContext,
             IEmailSender emailSender,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IConfiguration config,
             UserManager<ApplicationUser> userManager)
             : base(userManager, dbContext)
