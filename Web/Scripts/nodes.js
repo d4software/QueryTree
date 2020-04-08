@@ -602,10 +602,10 @@ nodes.Filter = function(properties) {
         if (instance.FilterCompareColumnIndex()) {
             settings.FilterCompareColumnIndex = instance.FilterCompareColumnIndex();
         }
-        if (instance.FilterColumnIsBool()) {
+        if (instance.FilterCompareValueIsBool()) {
             settings.FilterValue1 = instance.FilterBoolValue1();
         }
-        else if (instance.FilterColumnIsDatetime()) {
+        else if (instance.FilterCompareValueIsDatetime()) {
             settings.FilterValue1 = utils.FormatDateTime(
                     instance.FilterDateValue1(),
                     instance.FilterTimeValue1());
@@ -708,20 +708,53 @@ nodes.Filter = function(properties) {
         return false;
     });
 
+    instance.FilterCompareValueIsBool = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'bool';
+        }
+        return instance.FilterColumnIsBool();
+    });
+    
+    instance.FilterCompareValueIsDatetime = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'datetime';
+        }
+        return instance.FilterColumnIsDatetime();
+    });
+
+    instance.FilterCompareValueIsNumeric = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'numeric';
+        }
+        return instance.FilterColumnIsNumeric();
+    });
+
     instance.ShowFilterCompareBool = ko.computed(function() {
-        return instance.FilterColumnIsBool() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsBool();
     });
 
     instance.ShowFilterCompareDatetime = ko.computed(function() {
-        return instance.FilterColumnIsDatetime() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsDatetime();
     });
 
     instance.ShowFilterCompareNumeric = ko.computed(function() {
-        return instance.FilterColumnIsNumeric() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsNumeric();
     });
 
     instance.ShowFilterCompareValue1 = ko.computed(function() {
-        return instance.FilterColumnIsNumeric() == false &&instance.FilterColumnIsBool() == false && instance.FilterColumnIsDatetime() == false && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.FilterCompareValueIsNumeric() == false &&instance.FilterCompareValueIsBool() == false && instance.FilterCompareValueIsDatetime() == false && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
     });
             
     instance.ShowCaseSensitive = ko.computed(function () {

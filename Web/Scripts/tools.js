@@ -133,7 +133,9 @@ tools.Filter = function() {
         { type: "NextMonth", simpleName: 'is next month', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
         { type: "LastMonth", simpleName: 'was last month', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
         { type: "Last90Days", simpleName: 'was in the last 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
-        { type: "Next90Days", simpleName: 'is in the next 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false }
+        { type: "Next90Days", simpleName: 'is in the next 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
+        { type: "LastNDays", simpleName: 'was in the last N days', number: false, text: false, date: true, bool: false, compareValue: true, showCaseSensitive: false, compareValueType: 'numeric' },
+        { type: "NextNDays", simpleName: 'is in the next N days', number: false, text: false, date: true, bool: false, compareValue: true, showCaseSensitive: false, compareValueType: 'numeric' }
     ]);
     instance.MaxInputs = 1;
     instance.HelpUrl = "http://querytreeapp.com/help/tools/filter/";

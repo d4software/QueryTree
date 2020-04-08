@@ -25,7 +25,9 @@ namespace QueryTree.Engine
         NextMonth,
         LastMonth,
         Last90Days,
-        Next90Days
+        Next90Days,
+        LastNDays,
+        NextNDays
     }
 
     public class FilterNode : DataProcessorNode
@@ -85,6 +87,7 @@ namespace QueryTree.Engine
                         sql += "BINARY ";
 
                 string compareValue;
+                int days = 0;
 
                 var filterColumnSpecifier = string.Format("{0}.Column_{1:D} ",
                                                           firstInput.GetNodeAlias(),
@@ -205,7 +208,7 @@ namespace QueryTree.Engine
                                 sql += string.Format("{0}::date - NOW()::date BETWEEN -90 AND -1", filterColumnSpecifier);
                                 break;
                             case DatabaseType.MySQL:
-                                sql += string.Format("DATEDIFF(NOW(), {0}) BETWEEN -90 AND -1", filterColumnSpecifier);
+                                sql += string.Format("DATEDIFF({0}, NOW()) BETWEEN -90 AND -1", filterColumnSpecifier);
                                 break;
                         }
 
@@ -220,10 +223,44 @@ namespace QueryTree.Engine
                                 sql += string.Format("{0}::date - NOW()::date BETWEEN 0 AND 89", filterColumnSpecifier);
                                 break;
                             case DatabaseType.MySQL:
-                                sql += string.Format("DATEDIFF(NOW(), {0}) BETWEEN 0 AND 89", filterColumnSpecifier);
+                                sql += string.Format("DATEDIFF({0}, NOW()) BETWEEN 0 AND 89", filterColumnSpecifier);
                                 break;
                         }
 
+                        break;
+                    case FilterOperator.LastNDays:
+                        if (int.TryParse(FilterValue1, out days))
+                        {
+                            switch (DatabaseType)
+                            {
+                                case DatabaseType.SQLServer:
+                                    sql += $"DATEDIFF(d, GETDATE(), {filterColumnSpecifier}) BETWEEN -{days} AND -1";
+                                    break;
+                                case DatabaseType.PostgreSQL:
+                                    sql += $"{filterColumnSpecifier}::date - NOW()::date BETWEEN -{days} AND -1";
+                                    break;
+                                case DatabaseType.MySQL:
+                                    sql += $"DATEDIFF({filterColumnSpecifier}, NOW()) BETWEEN -{days} AND -1";
+                                    break;
+                            }
+                        }
+                        break;
+                    case FilterOperator.NextNDays:
+                        if (int.TryParse(FilterValue1, out days))
+                        {
+                            switch (DatabaseType)
+                            {
+                                case DatabaseType.SQLServer:
+                                    sql += $"DATEDIFF(d, GETDATE(), {filterColumnSpecifier}) BETWEEN 0 AND {days-1}";
+                                    break;
+                                case DatabaseType.PostgreSQL:
+                                    sql += $"{filterColumnSpecifier}::date - NOW()::date BETWEEN 0 AND {days-1}";
+                                    break;
+                                case DatabaseType.MySQL:
+                                    sql += $"DATEDIFF({filterColumnSpecifier}, NOW()) BETWEEN 0 AND {days-1}";
+                                    break;
+                            }
+                        }
                         break;
                     default:
                         if (DatabaseType == DatabaseType.PostgreSQL && IsTextType(columnTypes[FilterColumnIndex.Value]) && !CaseSensitive && (Operator == FilterOperator.EqualTo || Operator == FilterOperator.DoesNotEqual))
