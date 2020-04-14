@@ -199,7 +199,7 @@ namespace QueryTree.Controllers
                 return View(viewModel);
             }
 
-            var targettedUser = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, viewModel.Email, true) == 0);
+            var targettedUser = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, viewModel.Email, true) == 0);
 
             if (viewModel.IsOrganisationAdmin)
             {
