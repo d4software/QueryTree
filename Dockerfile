@@ -12,3 +12,5 @@ VOLUME /var/lib/querytree
 ENV ConnectionStrings__DefaultConnection="Filename=/var/lib/querytree/querytree.db;"
 ENV Passwords__Keyfile="/var/lib/querytree/querytree.key"
 CMD dotnet QueryTree.dll
+
+EXPOSE 80
