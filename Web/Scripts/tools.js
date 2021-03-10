@@ -338,11 +338,11 @@ tools.IsDatetimeType = function (theType) {
         case "DATE":
         case "DATETIME":
         case "DATETIME2":
+        case "SMALLDATETIME":
         case "TIME":
         case "TIMESTAMP":
         case "TIMESTAMP WITHOUT TIME ZONE":
         case "TIMESTAMP WITH TIME ZONE":
-        case "DATE":
         case "TIME WITHOUT TIME ZONE":
         case "TIME WITH TIME ZONE":
         case "INTERVAL":
