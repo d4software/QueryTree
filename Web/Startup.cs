@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hangfire;
 using Hangfire.SQLite;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +13,7 @@ using QueryTree.Models;
 using QueryTree.Managers;
 using QueryTree.Services;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace QueryTree
 {
@@ -104,6 +103,12 @@ namespace QueryTree
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            // Enable use behind a reverse proxy
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseStaticFiles();
 

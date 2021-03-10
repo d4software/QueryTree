@@ -200,7 +200,7 @@ namespace QueryTree.Controllers
             }
 
             var targettedUser = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, viewModel.Email, true) == 0);
-            
+
             if (viewModel.IsOrganisationAdmin)
             {
                 db.OrganisationInvites.Add(new OrganisationInvite()
