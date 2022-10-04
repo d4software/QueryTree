@@ -11,7 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using QueryTree.Enums;
-
+using Microsoft.Extensions.Logging;
 
 namespace QueryTree.Controllers
 {
@@ -26,10 +26,12 @@ namespace QueryTree.Controllers
             UserManager<ApplicationUser> userManager,
             IPasswordManager passwordManager,
             IConfiguration config,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ILoggerFactory loggerFactory
+            )
             : base(userManager, dbContext)
         {
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             _passwordManager = passwordManager;
         }
 
@@ -37,7 +39,7 @@ namespace QueryTree.Controllers
         public ActionResult Index()
         {
             string Email = User.Identity.Name;
-            
+
             if (CurrentUser == null)
             {
                 return RedirectToAction("Login", "Account");
@@ -56,7 +58,7 @@ namespace QueryTree.Controllers
                 .Include(d => d.Queries)
                 .ThenInclude(q => q.ScheduledReport)
                 .ToList();
-            
+
             foreach (var dbConn in dbConns)
             {
                 dbConnView.Add(new DatabaseConnectionIndexViewModel
@@ -84,7 +86,7 @@ namespace QueryTree.Controllers
                     ReportsCount = db.Queries.Count(q => q.DatabaseConnectionID == conn.Db.DatabaseConnectionID)
                 });
             }
-            
+
             return View(dbConnView);
         }
 
@@ -92,7 +94,7 @@ namespace QueryTree.Controllers
         public ActionResult Details(int id)
         {
             var database = db.DatabaseConnections.FirstOrDefault(dc => dc.DatabaseConnectionID == id);
-            
+
             if (database == null)
             {
                 return NotFound();
@@ -106,7 +108,7 @@ namespace QueryTree.Controllers
             {
                 return NotFound();
             }
-            
+
             ViewBag.UserIsOrganisationAdmin = database.OrganisationId == CurrentUser.OrganisationId;
             ViewBag.UserCanModifyQueries = PermissionMgr.UserCanModifyQuery(userPermissions, database) || database.OrganisationId == CurrentUser.OrganisationId;
             ViewBag.UserCanModifyDatabase = PermissionMgr.UserCanModifyDatabase(userPermissions, database) || database.OrganisationId == CurrentUser.OrganisationId;
@@ -130,12 +132,12 @@ namespace QueryTree.Controllers
                 AccessUsers = new List<UserDatabaseConnection>()
             };
             List<DatabaseConnectionQueriesDetailsViewModel> viewQueries = new List<DatabaseConnectionQueriesDetailsViewModel>();
-            
+
             var queries = db.Queries
                 .Include(q => q.CreatedBy)
                 .Include(q => q.LastEditedBy)
                 .Where(q => q.DatabaseConnectionID == database.DatabaseConnectionID);
-           
+
             foreach(var query in queries)
             {
                 DatabaseConnectionQueriesDetailsViewModel queryView = new DatabaseConnectionQueriesDetailsViewModel();
@@ -151,7 +153,7 @@ namespace QueryTree.Controllers
             }
 
             viewModel.SavedQueries = viewQueries.OrderByDescending(q => q.LastEditedOn);
-            
+
             if (database.Organisation != null)
             {
                 viewModel.OrganisationName = database.Organisation.OrganisationName;
@@ -190,7 +192,7 @@ namespace QueryTree.Controllers
         public ActionResult Create()
         {
             ViewBag.TestMessage = "";
-            
+
             return View(new DatabaseConnectionViewModel
             {
                 SshPort = 22
@@ -198,7 +200,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: DatabaseConnections/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -208,7 +210,7 @@ namespace QueryTree.Controllers
             ViewBag.WillUpgrade = false;
 
             if (ModelState.IsValid)
-            {                
+            {
                 DatabaseConnection connection = new DatabaseConnection
                 {
                     CreatedOn = DateTime.Now,
@@ -244,7 +246,7 @@ namespace QueryTree.Controllers
                 _passwordManager.DeleteSecret(SecretType.SSHPassword.ToString() + "_" + connection.DatabaseConnectionID);
             }
         }
-        
+
         // GET: DatabaseConnections/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -252,7 +254,7 @@ namespace QueryTree.Controllers
             {
                 return BadRequest();
             }
-            
+
             var database = db.DatabaseConnections.FirstOrDefault(dc => dc.DatabaseConnectionID == id.Value);
 
             if (database == null)
@@ -263,16 +265,16 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyDatabase(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
             }
 
             ViewBag.hasExistingKeyFile = database.UseSshKey;
-            
+
             var viewModel = new DatabaseConnectionViewModel(database);
-            
+
             if (viewModel.SshPort == null)
             {
                 viewModel.SshPort = 22;
@@ -347,7 +349,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: DatabaseConnections/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -358,7 +360,7 @@ namespace QueryTree.Controllers
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
                 string error;
@@ -374,7 +376,7 @@ namespace QueryTree.Controllers
                 db.SaveChanges();
 
                 SaveSecureInformation(existingConnection, viewModel);
-                
+
                 return RedirectToAction("Details", new { id = existingConnection.DatabaseConnectionID });
             }
 
@@ -390,16 +392,16 @@ namespace QueryTree.Controllers
             }
 
             DatabaseConnection database = db.DatabaseConnections.Find(id);
-                        
+
             if (database == null)
             {
                 return NotFound();
             }
-            
+
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanDeleteDatabase(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -439,13 +441,13 @@ namespace QueryTree.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 db.Dispose();
-             
+
             }
             base.Dispose(disposing);
         }

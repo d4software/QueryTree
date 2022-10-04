@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using QueryTree.Services;
+using Microsoft.Extensions.Logging;
 
 namespace QueryTree.Managers
 {
@@ -32,18 +33,19 @@ namespace QueryTree.Managers
 		public ScheduledEmailManager(
 			IEmailSenderService emailSenderService,
 			IEmailSender emailSender,
-			IConfiguration config, 
+			IConfiguration config,
             ApplicationDbContext db,
             IHostingEnvironment env,
             IMemoryCache cache,
-            IPasswordManager passwordManager)
+            IPasswordManager passwordManager,
+            ILoggerFactory loggerFactory)
         {
 			_emailSenderService = emailSenderService;
             _emailSender = emailSender;
             _config = config;
             _db = db;
             _env = env;
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             _convertManager = new ConvertManager();
         }
 
@@ -54,7 +56,7 @@ namespace QueryTree.Managers
 				return;
 			}
 
-			if(!_emailSenderService.TrySetDelivered(queryId)) 
+			if(!_emailSenderService.TrySetDelivered(queryId))
 			{
 				return;
 			}
@@ -62,7 +64,7 @@ namespace QueryTree.Managers
 			var query = _db.Queries
                 .Include(q => q.DatabaseConnection)
                 .FirstOrDefault(q => q.QueryID == queryId);
-                
+
             if (query != null && query.QueryDefinition != null)
             {
                 var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);

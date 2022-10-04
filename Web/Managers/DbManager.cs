@@ -13,7 +13,7 @@ using Microsoft.Extensions.Caching.Memory;
 using QueryTree.Enums;
 using QueryTree.ViewModels;
 using System.Text.RegularExpressions;
-
+using Microsoft.Extensions.Logging;
 
 namespace QueryTree.Managers
 {
@@ -22,12 +22,14 @@ namespace QueryTree.Managers
         private IPasswordManager _passwordManager;
         private IMemoryCache _cache;
         private IConfiguration _config;
+        private readonly ILogger _logger;
 
-        public DbManager(IPasswordManager passwordManager, IMemoryCache cache, IConfiguration config)
+        public DbManager(IPasswordManager passwordManager, IMemoryCache cache, IConfiguration config, ILoggerFactory loggerFactory)
         {
             _passwordManager = passwordManager;
             _cache = cache;
             _config = config;
+            _logger = loggerFactory.CreateLogger<DbManager>();
         }
 
         private DbTable GetDbTable(DatabaseType type, DbConnection conn, int connectionId, string databaseName, string tableName)
@@ -276,7 +278,7 @@ namespace QueryTree.Managers
                         result.Tables.Add(currentTable);
                     }
 
-                    if (tableName == currentTable.Name) 
+                    if (tableName == currentTable.Name)
                     {
                         currentTable.Columns.Add(new QueryTree.Models.DbColumn
                         {
@@ -354,7 +356,7 @@ namespace QueryTree.Managers
                     break;
                 case DatabaseType.SQLServer:
                     {
-                        string sql = "SELECT C.TABLE_SCHEMA AS CHILD_TABLE_SCHEMA, " 
+                        string sql = "SELECT C.TABLE_SCHEMA AS CHILD_TABLE_SCHEMA, "
                             + "    C.TABLE_NAME AS CHILD_TABLE_NAME, "
                             + "    C.COLUMN_NAME AS CHILD_COLUMN_NAME, "
                             + "    P.TABLE_SCHEMA AS PARENT_TABLE_SCHEMA, "
@@ -405,11 +407,11 @@ namespace QueryTree.Managers
                     DbTable dbTable = null;
                     if (column.IsPrimaryKey == false && column.Parent == null)
                     {
-                        dbTable = dbModel.Tables.FirstOrDefault(t => 
-                            t.Schema == table.Schema && 
+                        dbTable = dbModel.Tables.FirstOrDefault(t =>
+                            t.Schema == table.Schema &&
                             ((t.Name.ToLower() + "_id") == column.Name.ToLower()) ||
                             ((t.Name.ToLower() + "id") == column.Name.ToLower()));
-                     
+
                         if (dbTable != null)
                         {
                             column.Parent = dbTable.Columns[0] as Models.DbColumn;
@@ -425,7 +427,7 @@ namespace QueryTree.Managers
             queue.Push(table);
 
             HashSet<DbTable> parents = new HashSet<DbTable>();
-            
+
             while (queue.Any())
             {
                 var curr = queue.Pop();
@@ -587,10 +589,12 @@ namespace QueryTree.Managers
             }
             catch (SqlException e)
             {
+                _logger.LogError(e, "unable to query db");
                 error = e.Message;
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "unable to query db");
                 error = e.Message;
             }
 

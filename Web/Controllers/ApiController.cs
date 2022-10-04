@@ -21,6 +21,7 @@ using Hangfire;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace QueryTree.Controllers
 {
@@ -39,13 +40,14 @@ namespace QueryTree.Controllers
 
         protected UserManager<ApplicationUser> _userManager;
 
-        public ApiController(UserManager<ApplicationUser> userManager, 
+        public ApiController(UserManager<ApplicationUser> userManager,
             ApplicationDbContext dbContext,
-            IMemoryCache cache, 
-            IPasswordManager passwordManager, 
-            IConfiguration config, 
+            IMemoryCache cache,
+            IPasswordManager passwordManager,
+            IConfiguration config,
             IScheduledEmailManager scheduledEmailManager,
-            IHostingEnvironment env)
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             db = dbContext;
@@ -54,7 +56,7 @@ namespace QueryTree.Controllers
             _config = config;
             _scheduledEmailManager = scheduledEmailManager;
             _env = env;
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             this.convertManager = new ConvertManager();
         }
 
@@ -111,7 +113,7 @@ namespace QueryTree.Controllers
                     credentials = new SshProxyCredentials(_passwordManager, sshUsername, sshPassword);
                 }
             }
-            
+
             string error = null;
             if (_dbMgr.TryUseDbConnection(dbType, server, port, useSsh, sshServer, sshPort, credentials, username, password, databaseName, out error))
             {
@@ -144,12 +146,12 @@ namespace QueryTree.Controllers
             var connection = GetConnection(databaseId);
 
             if (CanUserAccessDatabase(connection))
-            {            
+            {
                 var statusText = _dbMgr.CheckConnection(connection) ? "ok" : "error";
 
                 return Json(new { status = statusText });
             }
-            
+
             return NotFound();
         }
 
@@ -237,7 +239,7 @@ namespace QueryTree.Controllers
 
                 return Json(data);
             }
-            else 
+            else
             {
                 return NotFound();
             }
@@ -263,7 +265,7 @@ namespace QueryTree.Controllers
 
                 return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
             }
-            
+
             return NotFound();
         }
 
@@ -420,7 +422,7 @@ namespace QueryTree.Controllers
                 .Include(s => s.Query)
                 .Include(s => s.Query.DatabaseConnection)
                 .FirstOrDefaultAsync(m => m.ScheduleID == id);
-            
+
             ScheduledReportViewModel model = null;
 
             if (result == null)
@@ -432,7 +434,7 @@ namespace QueryTree.Controllers
                 model = new ScheduledReportViewModel(result);
                 return Json(model);
             }
-            
+
             return NotFound();
         }
 
@@ -462,7 +464,7 @@ namespace QueryTree.Controllers
 
                 return Json(dataTable);
             }
-            
+
             return NotFound();
         }
 
@@ -473,7 +475,7 @@ namespace QueryTree.Controllers
                 .Include(q => q.DatabaseConnection)
                 .ThenInclude(c => c.SshKeyFile)
                 .FirstOrDefault(q => q.QueryID == queryId);
-            
+
             if (query != null && CanUserAccessDatabase(query.DatabaseConnection))
             {
                 var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);
@@ -484,7 +486,7 @@ namespace QueryTree.Controllers
 
                 return Json(data.Columns);
             }
-            
+
             return NotFound();
         }
 
