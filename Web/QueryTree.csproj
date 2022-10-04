@@ -41,7 +41,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Npgsql" Version="4.0.4" />
-    <PackageReference Include="MySql.Data" Version="8.0.15" />
+    <PackageReference Include="MySql.Data" Version="8.0.28" />
     <PackageReference Include="Hangfire" Version="1.6.22" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
     <PackageReference Include="MailKit" Version="2.1.3" />
