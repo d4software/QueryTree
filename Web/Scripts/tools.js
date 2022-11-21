@@ -133,7 +133,9 @@ tools.Filter = function() {
         { type: "NextMonth", simpleName: 'is next month', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
         { type: "LastMonth", simpleName: 'was last month', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
         { type: "Last90Days", simpleName: 'was in the last 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
-        { type: "Next90Days", simpleName: 'is in the next 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false }
+        { type: "Next90Days", simpleName: 'is in the next 90 days', number: false, text: false, date: true, bool: false, compareValue: false, showCaseSensitive: false },
+        { type: "LastNDays", simpleName: 'was in the last N days', number: false, text: false, date: true, bool: false, compareValue: true, showCaseSensitive: false, compareValueType: 'numeric' },
+        { type: "NextNDays", simpleName: 'is in the next N days', number: false, text: false, date: true, bool: false, compareValue: true, showCaseSensitive: false, compareValueType: 'numeric' }
     ]);
     instance.MaxInputs = 1;
     instance.HelpUrl = "http://querytreeapp.com/help/tools/filter/";
@@ -252,12 +254,12 @@ tools.Summarize = function () {
     });
 
     instance.AggFunctions = ko.observableArray([
-        { id: 1, text: "Number of Rows", requiresNumeric: false },
-        { id: 2, text: "Total", requiresNumeric: true },
-        { id: 3, text: "Minimum", requiresNumeric: true },
-        { id: 4, text: "Maximum", requiresNumeric: true },
-        { id: 5, text: "Average", requiresNumeric: true },
-        { id: 6, text: "Median", requiresNumeric: true }
+        { id: 1, text: "Number of Rows", requiresColumn: false, WorksWithDates: true },
+        { id: 2, text: "Total", requiresColumn: true, WorksWithDates: false },
+        { id: 3, text: "Minimum", requiresColumn: true, WorksWithDates: true },
+        { id: 4, text: "Maximum", requiresColumn: true, WorksWithDates: true },
+        { id: 5, text: "Average", requiresColumn: true, WorksWithDates: false },
+        { id: 6, text: "Median", requiresColumn: true, WorksWithDates: false }
     ]);
 
     instance.DateFunctions = ko.observableArray([
@@ -336,11 +338,11 @@ tools.IsDatetimeType = function (theType) {
         case "DATE":
         case "DATETIME":
         case "DATETIME2":
+        case "SMALLDATETIME":
         case "TIME":
         case "TIMESTAMP":
         case "TIMESTAMP WITHOUT TIME ZONE":
         case "TIMESTAMP WITH TIME ZONE":
-        case "DATE":
         case "TIME WITHOUT TIME ZONE":
         case "TIME WITH TIME ZONE":
         case "INTERVAL":

@@ -602,10 +602,10 @@ nodes.Filter = function(properties) {
         if (instance.FilterCompareColumnIndex()) {
             settings.FilterCompareColumnIndex = instance.FilterCompareColumnIndex();
         }
-        if (instance.FilterColumnIsBool()) {
+        if (instance.FilterCompareValueIsBool()) {
             settings.FilterValue1 = instance.FilterBoolValue1();
         }
-        else if (instance.FilterColumnIsDatetime()) {
+        else if (instance.FilterCompareValueIsDatetime()) {
             settings.FilterValue1 = utils.FormatDateTime(
                     instance.FilterDateValue1(),
                     instance.FilterTimeValue1());
@@ -708,20 +708,53 @@ nodes.Filter = function(properties) {
         return false;
     });
 
+    instance.FilterCompareValueIsBool = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'bool';
+        }
+        return instance.FilterColumnIsBool();
+    });
+    
+    instance.FilterCompareValueIsDatetime = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'datetime';
+        }
+        return instance.FilterColumnIsDatetime();
+    });
+
+    instance.FilterCompareValueIsNumeric = ko.computed(function () {
+        var operatorDef = instance.Tool.Operators().find(function (o) {
+            return o.type == instance.Operator();
+        });
+
+        if (operatorDef && operatorDef.compareValueType) {
+            return operatorDef.compareValueType == 'numeric';
+        }
+        return instance.FilterColumnIsNumeric();
+    });
+
     instance.ShowFilterCompareBool = ko.computed(function() {
-        return instance.FilterColumnIsBool() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsBool();
     });
 
     instance.ShowFilterCompareDatetime = ko.computed(function() {
-        return instance.FilterColumnIsDatetime() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsDatetime();
     });
 
     instance.ShowFilterCompareNumeric = ko.computed(function() {
-        return instance.FilterColumnIsNumeric() && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null && instance.FilterCompareValueIsNumeric();
     });
 
     instance.ShowFilterCompareValue1 = ko.computed(function() {
-        return instance.FilterColumnIsNumeric() == false &&instance.FilterColumnIsBool() == false && instance.FilterColumnIsDatetime() == false && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
+        return instance.FilterCompareValueIsNumeric() == false &&instance.FilterCompareValueIsBool() == false && instance.FilterCompareValueIsDatetime() == false && instance.ShowFilterCompareValue() && instance.FilterCompareColumnIndex() == null;
     });
             
     instance.ShowCaseSensitive = ko.computed(function () {
@@ -814,6 +847,29 @@ nodes.Sort = function(properties) {
     return instance;
 };
 
+var SummarizeStatistic = function(parent, aggFunc, aggCol) {
+    var _parent = parent;
+    var self = this;
+    self.AggFunction = ko.observable(aggFunc);
+    self.AggColumn = ko.observable(aggCol);
+    self.ShowAggColumn = ko.pureComputed(function() {
+        var af = self.AggFunction();
+        var afi = _parent.Tool.AggFunctions().filter(function(f) { return f.id == af })[0];
+        return afi.requiresColumn;
+    });
+    self.AvailableAggColumns = ko.pureComputed(function() {
+        return _parent.AllInputColumnInfos().filter(function(c) { 
+            var af = self.AggFunction();
+            var afi = _parent.Tool.AggFunctions().filter(function(f) { return f.id == af })[0];
+            return tools.IsNumericType(c.Type) || (tools.IsDatetimeType(c.Type) && afi.WorksWithDates); 
+        });
+    });
+    self.HasColumnIndex = ko.pureComputed(function() {
+        return !!self.AggColumn();
+    })
+    return self;
+};
+
 nodes.Summarize = function(properties) {
     var instance = new nodes.DataProcessorBase(properties);
 
@@ -841,14 +897,6 @@ nodes.Summarize = function(properties) {
         return results;
     }
 
-    instance.AggColumns = ko.computed(function () {
-        return instance.AllInputColumnInfos().filter(function (col) { return tools.IsNumericType(col.Type); });
-    });
-
-    instance.AggFunctions = ko.computed(function() {
-        return instance.Tool.AggFunctions().filter(function(aggFunc) { return aggFunc.requiresNumeric === false || instance.AggColumns().length > 0 });
-    });
-
     var innerGetCoreSettings = instance.GetCoreSettings;
     instance.GetCoreSettings = function () {
         var settings = innerGetCoreSettings();
@@ -858,7 +906,9 @@ nodes.Summarize = function(properties) {
         settings.AggColumnIndexes = [];
         $.each(instance.Statistics(), function (i, statistic) {
             settings.AggFunctions.push(statistic.AggFunction());
-            settings.AggColumnIndexes.push(statistic.AggColumn());            
+            if (statistic.HasColumnIndex()) {
+                settings.AggColumnIndexes.push(statistic.AggColumn());
+            }
         });
         return settings;
     }
@@ -880,10 +930,7 @@ nodes.Summarize = function(properties) {
         var statistics = [];
         for (var i = 0; i < settings.AggFunctions.length; i++) {
             if (settings.AggColumnIndexes.length > i) {
-                statistics.push({
-                    "AggFunction": ko.observable(settings.AggFunctions[i]),
-                    "AggColumn": ko.observable(settings.AggColumnIndexes[i]),
-                });
+                statistics.push(new SummarizeStatistic(instance, settings.AggFunctions[i], settings.AggColumnIndexes[i]));
             }
         }
         instance.Statistics(statistics);
@@ -899,10 +946,7 @@ nodes.Summarize = function(properties) {
     }
 
     instance.AddStatistic = function () {
-        instance.Statistics.push({
-            "AggFunction": ko.observable(2),
-            "AggColumn": ko.observable(0)
-        });
+        instance.Statistics.push(new SummarizeStatistic(instance, 2, 0));
     };
 
     instance.RemoveStatistic = function (item, event) {

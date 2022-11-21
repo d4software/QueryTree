@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using QueryTree.Enums;
 
@@ -26,10 +27,11 @@ namespace QueryTree.Controllers
             UserManager<ApplicationUser> userManager,
             IPasswordManager passwordManager,
             IConfiguration config,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ILoggerFactory loggerFactory)
             : base(userManager, dbContext)
         {
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             _passwordManager = passwordManager;
         }
 

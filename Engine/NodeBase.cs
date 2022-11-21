@@ -210,6 +210,11 @@ namespace QueryTree.Engine
 
         internal virtual void FetchOrderedDependencies(IList<NodeBase> dependencies)
         {
+            if (dependencies.Contains(this))
+            {
+                dependencies.Remove(this);
+            }
+            
             dependencies.Insert(0, this);
         }
 
@@ -286,7 +291,7 @@ namespace QueryTree.Engine
         {
             if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
             {
-                return GetNodeAlias() + " ";
+                return GetNodeAlias();
             }
             else 
             {

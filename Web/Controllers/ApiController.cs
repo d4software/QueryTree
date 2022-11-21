@@ -7,19 +7,16 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
-using MimeKit;
 using Microsoft.AspNetCore.Identity;
 
 namespace QueryTree.Controllers
@@ -33,7 +30,7 @@ namespace QueryTree.Controllers
         private IPasswordManager _passwordManager;
         private DbManager _dbMgr;
         private IConfiguration _config;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IScheduledEmailManager _scheduledEmailManager;
         private ApplicationUser _currentUser;
 
@@ -45,7 +42,8 @@ namespace QueryTree.Controllers
             IPasswordManager passwordManager, 
             IConfiguration config, 
             IScheduledEmailManager scheduledEmailManager,
-            IHostingEnvironment env)
+            IWebHostEnvironment env,
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             db = dbContext;
@@ -54,7 +52,7 @@ namespace QueryTree.Controllers
             _config = config;
             _scheduledEmailManager = scheduledEmailManager;
             _env = env;
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             this.convertManager = new ConvertManager();
         }
 

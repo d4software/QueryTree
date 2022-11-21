@@ -21,13 +21,13 @@ namespace QueryTree.Controllers
     public class TeamController : IdentityController
     {
         private IEmailSender _emailSender;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IConfiguration _config;
 
 		public TeamController(
             ApplicationDbContext dbContext,
             IEmailSender emailSender,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IConfiguration config,
             UserManager<ApplicationUser> userManager)
             : base(userManager, dbContext)
@@ -199,7 +199,7 @@ namespace QueryTree.Controllers
                 return View(viewModel);
             }
 
-            var targettedUser = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, viewModel.Email, true) == 0);
+            var targettedUser = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, viewModel.Email, true) == 0);
 
             if (viewModel.IsOrganisationAdmin)
             {
@@ -398,7 +398,7 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var user = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
+            var user = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
             var invite = db.OrganisationInvites.FirstOrDefault(oi => oi.InviteEmail == email && oi.AcceptedOn == null && oi.RejectedOn == null);
             var dbInvite = db.UserDatabaseConnections.FirstOrDefault(uc => uc.ApplicationUserID == null && uc.DatabaseConnection.OrganisationId == CurrentUser.OrganisationId && uc.InviteEmail == email);
 
@@ -425,7 +425,7 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var user = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
+            var user = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
             if (user != null)
             {
                 if (user.OrganisationId == CurrentUser.OrganisationId)

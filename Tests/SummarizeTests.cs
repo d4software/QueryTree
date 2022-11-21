@@ -85,5 +85,18 @@ namespace QueryTree.Engine.Tests
 
             Assert.True(sql.Contains("SELECT SUM(Column_1) AS Column_0"), "SQL Value was: " + sql);
         }
+
+        [Fact]
+        public void TestCountAddsAnAdditionalColumnToTheSelectList()
+        {
+            var query = new Query(
+                DatabaseType.MySQL,
+                NodesJson,
+                DatabaseInfo);
+
+            var sql = query.GetSql("2");
+
+            Assert.True(sql.StartsWith("SELECT Column_0 AS `Count` FROM"), "SQL Value was: " + sql);
+        }
     }
 }

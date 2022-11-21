@@ -20,7 +20,7 @@ namespace QueryTree.Controllers
     public class UserDatabaseConnectionsController : IdentityController
     {
 		private IEmailSender _emailSender;
-        private IHostingEnvironment _env;
+        private IWebHostEnvironment _env;
         private IConfiguration _config;
 		
 		public UserDatabaseConnectionsController(
@@ -28,7 +28,7 @@ namespace QueryTree.Controllers
             UserManager<ApplicationUser> userManager,
             IEmailSender emailSender,
             IConfiguration config,
-            IHostingEnvironment env)
+            IWebHostEnvironment env)
             : base(userManager, dbContext)
 		{
 		    _emailSender = emailSender;

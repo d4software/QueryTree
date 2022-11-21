@@ -117,6 +117,28 @@ namespace QueryTree.Engine.Tests
 			}
 		}
 
+		private string NodesJsonLastNDays
+		{
+			get
+			{
+				return @"[
+                    {
+                        ""Id"": ""1"",
+                        ""Type"": ""Data Table"",
+                        ""Table"": ""employees""
+                    },
+                    {
+                        ""Id"": ""2"",
+                        ""Inputs"": [""1""],
+                        ""Type"": ""Filter"",
+                        ""FilterColumnIndex"": 4,
+                        ""Operator"": ""LastNDays"",
+                        ""FilterValue1"": ""365""
+                    }
+                ]";
+			}
+		}
+
 		private List<ITableInfo> DatabaseInfo
 		{
 			get
@@ -199,6 +221,18 @@ namespace QueryTree.Engine.Tests
 
 			var sql = query.GetSql("2");
 			Assert.True(sql.Contains("node_1.Column_4 > '2017-01-01 00:00'"), "SQL Value was: " + sql);
+		}
+
+		[Fact]
+		public void TestLastNDays()
+		{
+			var query = new Query(
+				DatabaseType.MySQL,
+				NodesJsonLastNDays,
+				DatabaseInfo);
+
+			var sql = query.GetSql("2");
+			Assert.True(sql.Contains("DATEDIFF(node_1.Column_4 , NOW()) BETWEEN -365 AND -1"), "SQL Value was: " + sql);
 		}
     }
 }

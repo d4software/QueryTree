@@ -8,6 +8,7 @@ using MimeKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using QueryTree.Services;
 
 namespace QueryTree.Managers
@@ -25,7 +26,7 @@ namespace QueryTree.Managers
 		private readonly IConfiguration _config;
 		private readonly ApplicationDbContext _db;
 		private readonly DbManager _dbMgr;
-		private readonly IHostingEnvironment _env;
+		private readonly IWebHostEnvironment _env;
 		private readonly ConvertManager _convertManager;
 
 
@@ -34,16 +35,17 @@ namespace QueryTree.Managers
 			IEmailSender emailSender,
 			IConfiguration config, 
             ApplicationDbContext db,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             IMemoryCache cache,
-            IPasswordManager passwordManager)
+            IPasswordManager passwordManager,
+            ILoggerFactory loggerFactory)
         {
 			_emailSenderService = emailSenderService;
             _emailSender = emailSender;
             _config = config;
             _db = db;
             _env = env;
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             _convertManager = new ConvertManager();
         }
 

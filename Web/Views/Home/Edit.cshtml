@@ -16,146 +16,147 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.DatabaseConnectionID)
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "nameDescription" } } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "descriptionDescription" } } })
-                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            
-            <div class="form-group">
-                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.DropDownListFor(model => model.Type, Html.GetEnumSelectList(Model.Type.GetType()), "Select Database Type", new Dictionary<string, Object> { { "id", "database-type" }, { "class", "form-control" }, { "aria-describedby", "typeDescription" } })
-                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Server, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Server, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "serverDescription" } } })
-                    @Html.ValidationMessageFor(model => model.Server, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Port, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Port, new { htmlAttributes = new Dictionary<string, Object> { { "id", "database-port" }, { "class", "form-control" }, { "aria-describedby", "portDescription" } } })
-                    @Html.ValidationMessageFor(model => model.Port, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="ssh-available">
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.UseSsh, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.CheckBoxFor(model => model.UseSsh, new Dictionary<string, Object> { { "id", "use-ssh" }, { "aria-describedby", "useSshDescription" } })
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "nameDescription" } } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group ssh">
-                    @Html.LabelFor(model => model.SshServer, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.SshServer, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshServerDescription" } } })
-                        @Html.ValidationMessageFor(model => model.SshServer, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "descriptionDescription" } } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group ssh">
-                    @Html.LabelFor(model => model.SshPort, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.SshPort, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshPortDescription" } } })
-                        @Html.ValidationMessageFor(model => model.SshPort, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.Type, Html.GetEnumSelectList(Model.Type.GetType()), "Select Database Type", new Dictionary<string, Object> { { "id", "database-type" }, { "class", "form-control" }, { "aria-describedby", "typeDescription" } })
+                        @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group ssh">
-                    @Html.LabelFor(model => model.SshUsername, htmlAttributes: new { @class = "control-label col-md-3 ssh" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.SshUsername, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshUsernameDescription" } } })
-                        @Html.ValidationMessageFor(model => model.SshUsername, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group ssh">
-                    @Html.Label("Use SSH Key File", null, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.CheckBoxFor(model => model.UseSshKey, new Dictionary<string, Object> { { "id", "use-ssh-key" }, { "aria-describedby", "useSshKeyDescription" } })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Server, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Server, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "serverDescription" } } })
+                        @Html.ValidationMessageFor(model => model.Server, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group ssh ssh-password">
-                    @Html.LabelFor(model => model.SshPassword, new { @class = "col-md-3 control-label" })
-                    <div class="col-md-9">
-                        @Html.PasswordFor(model => model.SshPassword, new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshPasswordDescription" }, { "autocomplete", "off" }, { "required", true }, { "value", Model.SshPassword } })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Port, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Port, new { htmlAttributes = new Dictionary<string, Object> { { "id", "database-port" }, { "class", "form-control" }, { "aria-describedby", "portDescription" } } })
+                        @Html.ValidationMessageFor(model => model.Port, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group ssh ssh-key">
-                    @Html.Label("SSH Key", null, new { @class = "col-md-3 control-label" })
-                    <div class="col-md-9">
-                        <div id="not-uploaded">
-                            <div>
-                                <input type="file" id="key-file" name="keyFile" class="form-control" data-val="true" data-val-sshkeyfile="You must upload an SSH key file" aria-describedby="sshKeyDescription" />
-                                @Html.ValidationMessage("keyFile", new { @class = "text-danger" })
+                <div class="ssh-available">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UseSsh, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.CheckBoxFor(model => model.UseSsh, new Dictionary<string, Object> { { "id", "use-ssh" }, { "aria-describedby", "useSshDescription" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group ssh">
+                        @Html.LabelFor(model => model.SshServer, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SshServer, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshServerDescription" } } })
+                            @Html.ValidationMessageFor(model => model.SshServer, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group ssh">
+                        @Html.LabelFor(model => model.SshPort, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SshPort, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshPortDescription" } } })
+                            @Html.ValidationMessageFor(model => model.SshPort, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group ssh">
+                        @Html.LabelFor(model => model.SshUsername, htmlAttributes: new { @class = "control-label col-md-4 ssh" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.SshUsername, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshUsernameDescription" } } })
+                            @Html.ValidationMessageFor(model => model.SshUsername, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group ssh">
+                        @Html.Label("Use SSH Key File", null, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.CheckBoxFor(model => model.UseSshKey, new Dictionary<string, Object> { { "id", "use-ssh-key" }, { "aria-describedby", "useSshKeyDescription" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group ssh ssh-password">
+                        @Html.LabelFor(model => model.SshPassword, new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.PasswordFor(model => model.SshPassword, new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "sshPasswordDescription" }, { "autocomplete", "off" }, { "required", true }, { "value", Model.SshPassword } })
+                        </div>
+                    </div>
+
+                    <div class="form-group ssh ssh-key">
+                        @Html.Label("SSH Key", null, new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div id="not-uploaded">
+                                <div>
+                                    <input type="file" id="key-file" name="keyFile" class="form-control" data-val="true" data-val-sshkeyfile="You must upload an SSH key file" aria-describedby="sshKeyDescription" />
+                                    @Html.ValidationMessage("keyFile", new { @class = "text-danger" })
+                                </div>
                             </div>
+                            <div id="uploaded">                        
+                                @{string filename = Model.SshKeyFile != null ? Model.SshKeyFile.Filename : null; }
+                                <a id="filename">@filename</a>
+                                <br />
+                                <input type="button" id="change-key-file" value="Change" class="btn btn-lg btn-default" />
+                            </div>
+                            @Html.HiddenFor(model => model.SshKeyFileID, new { @id = "SshKeyFileID" })
                         </div>
-                        <div id="uploaded">                        
-                            @{string filename = Model.SshKeyFile != null ? Model.SshKeyFile.Filename : null; }
-                            <a id="filename">@filename</a>
-                            <br />
-                            <input type="button" id="change-key-file" value="Change" class="btn btn-lg btn-default" />
-                        </div>
-                        @Html.HiddenFor(model => model.SshKeyFileID, new { @id = "SshKeyFileID" })
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "usernameDescription" } } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DbPssword, new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.PasswordFor(model => model.DbPssword, new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "passwordDescription" }, { "autocomplete", "off" }, { "value", Model.DbPssword } })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DatabaseName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.DatabaseName, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "databaseDescription" } } })
+                        @Html.ValidationMessageFor(model => model.DatabaseName, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
 
-            <div class="form-group" >
-                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "usernameDescription" } } })
-                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DbPssword, new { @class = "col-md-3 control-label" })
-                <div class="col-md-9">
-                    @Html.PasswordFor(model => model.DbPssword, new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "passwordDescription" }, { "autocomplete", "off" }, { "value", Model.DbPssword } })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DatabaseName, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.DatabaseName, new { htmlAttributes = new Dictionary<string, Object> { { "class", "form-control" }, { "aria-describedby", "databaseDescription" } } })
-                    @Html.ValidationMessageFor(model => model.DatabaseName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
-                    <input type="submit" value="Save" class="btn btn-lg btn-success" />
-                    <input type="button" id="testconnection" value="Test this Connection" class="btn btn-lg btn-default" />
-                    @Html.ActionLink("Cancel", "Index", new { }, new { @class = "btn btn-lg btn-default" })
-                </div>
+            @Html.Partial("_ConnectionHelpers")
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-lg btn-success" />
+                <input type="button" id="testconnection" value="Test this Connection" class="btn btn-lg btn-default" />
+                @Html.ActionLink("Cancel", "Index", new { }, new { @class = "btn btn-lg btn-default" })
             </div>
         </div>
-
-        @Html.Partial("_ConnectionHelpers")
-        
     </div>
     
 }

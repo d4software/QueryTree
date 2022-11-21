@@ -90,16 +90,21 @@ var SimpleQueryBuilderViewModel = function () {
         return x1 + x2;
     };
 
-    self.currentData = ko.observable();
+    self.currentDataFull = ko.observable();
+    self.HasChart = ko.observable(false);
+
+    self.currentData = ko.computed(function() {
+        if (self.HasChart() && self.currentDataFull()) {
+            return self.currentDataFull().slice(self.currentRowStart() - 1, self.currentRowStart() + self.dataPageSize() - 1)
+        } else {
+            return self.currentDataFull();
+        }
+    })
+    
     self.currentDataColumns = ko.observable();
     self.currentRowStart = ko.observable();
     self.currentRowStartFormatted = ko.computed(function () {
         return formatNumber(self.currentRowStart());
-    });
-
-    self.currentRowEnd = ko.observable();
-    self.currentRowEndFormatted = ko.computed(function () {
-        return formatNumber(self.currentRowEnd());
     });
 
     self.currentRowsTotal = ko.observable();
@@ -108,6 +113,15 @@ var SimpleQueryBuilderViewModel = function () {
     });
     
     self.dataPageSize = ko.observable(10);
+
+    self.currentRowEnd = ko.computed(function() {
+        return Math.min(self.currentRowsTotal(), self.currentRowStart() + self.dataPageSize() - 1)
+    });
+    self.currentRowEndFormatted = ko.computed(function () {
+        return formatNumber(self.currentRowEnd());
+    });
+    
+    
 
     self.isPreviousVisible = ko.computed(function () {
         if (self.currentRowStart() != null) {
@@ -129,8 +143,12 @@ var SimpleQueryBuilderViewModel = function () {
 
     self.navigateStart = function () {
         if (self.selectedNode()) {
-            //events.FetchSelectedNodeData(0, models.DataPageSize());
-            self.refresh(0);
+            // If HasChart() == true, we will already have the data, no need to reload from the server
+            if (self.HasChart()) {
+                self.currentRowStart(1);
+            } else {
+                self.refresh(0);
+            }
         }
     }
 
@@ -141,22 +159,34 @@ var SimpleQueryBuilderViewModel = function () {
                 start -= self.dataPageSize();
             }
             var count = self.currentRowsTotal() - start;
-            //events.FetchSelectedNodeData(start, count);
-            self.refresh(start);
+            // If HasChart() == true, we will already have the data, no need to reload from the server
+            if (self.HasChart()) {
+                self.currentRowStart(start + 1);
+            } else {
+                self.refresh(start);
+            }
         }
     }
 
     self.navigateNext = function () {
         if (self.selectedNode()) {
-            //events.FetchSelectedNodeData(self.CurrentRowStart() - 1 + self.DataPageSize(), self.DataPageSize());
-            self.refresh(self.currentRowStart() - 1 + self.dataPageSize());
+            // If HasChart() == true, we will already have the data, no need to reload from the server
+            if (self.HasChart()) {
+                self.currentRowStart(self.currentRowStart() + self.dataPageSize());
+            } else {
+                self.refresh(self.currentRowStart() - 1 + self.dataPageSize());
+            }
         }
     }
 
     self.navigatePrev = function () {
         if (self.selectedNode()) {
-            //events.FetchSelectedNodeData(self.CurrentRowStart() - 1 - self.DataPageSize(), self.DataPageSize());
-            self.refresh(self.currentRowStart() - 1 - self.dataPageSize());
+            // If HasChart() == true, we will already have the data, no need to reload from the server
+            if (self.HasChart()) {
+                self.currentRowStart(self.currentRowStart() - self.dataPageSize());
+            } else {
+                self.refresh(self.currentRowStart() - 1 - self.dataPageSize());
+            }
         }
     }
 
@@ -925,7 +955,16 @@ var SimpleQueryBuilderViewModel = function () {
         populateNodeSettings(node);
         
         backend.SaveQuery(self.serverQueryKey, nodeSettings, function () {
-            backend.LoadData(self.serverQueryKey, nodeSettings, node.Id, start, self.dataPageSize(), "JSON", null, function (data) {
+            fetchStart = start;
+            fetchCount = self.dataPageSize();
+            
+            // If a chart is being shown, fetch all the data
+            if (self.HasChart()) {
+                fetchStart = null;
+                fetchCount = null;
+            }
+
+            backend.LoadData(self.serverQueryKey, nodeSettings, node.Id, fetchStart, fetchCount, "JSON", null, function (data) {
                 if (data.status) {
 
                     node.SetColumns(data.columns, data.columnTypes);
@@ -937,9 +976,8 @@ var SimpleQueryBuilderViewModel = function () {
 
                         if (node.Id == self.selectedNode().Id) {
                             self.currentDataColumns(data.columns);
-                            self.currentData(data.rows);
+                            self.currentDataFull(data.rows);
                             self.currentRowStart(start + 1);
-                            self.currentRowEnd(start + data.rows.length);
                             self.currentRowsTotal(data.rowCount);
 
                             var headerCategories = self.dataTables()
@@ -996,9 +1034,8 @@ var SimpleQueryBuilderViewModel = function () {
 
         self.loading(true);
         self.currentDataColumns([]);
-        self.currentData([]);
+        self.currentDataFull([]);
         self.currentRowStart(0);
-        self.currentRowEnd(0);
         self.currentRowsTotal(0);
 
         self.headerCategories([]);
@@ -1256,12 +1293,10 @@ var SimpleQueryBuilderViewModel = function () {
         }
     }
 
-    self.HasChart = ko.observable(false);
-
     self.RenderChart = function (graphType, xAxis, yAxis) {
-        if (self.HasChart() && self.currentData() && self.currentData().length > 0) {
+        if (self.HasChart() && self.currentDataFull() && self.currentDataFull().length > 0) {
             var columnTypes = self.selectedNode().ColumnTypes();
-            utils.RenderChart('#chart', self.currentData(), graphType, xAxis, columnTypes[xAxis], yAxis, columnTypes[yAxis]);
+            utils.RenderChart('#chart', self.currentDataFull(), graphType, xAxis, columnTypes[xAxis], yAxis, columnTypes[yAxis]);
         } else {
             $('#chart').empty();
         }
@@ -1283,11 +1318,16 @@ var SimpleQueryBuilderViewModel = function () {
     self.ShowChart = function () {
         self.ChartGuid(utils.CreateGuid());
         self.HasChart(true);
-        self.RenderChart(self.GraphType(), self.XAxis(), self.YAxis());
+        self.refresh(self.currentRowStart() - 1, function() {
+            self.RenderChart(self.GraphType(), self.XAxis(), self.YAxis());
+        });
     }
 
     self.HideChart = function () {
+        // save the current page of data, as removing the chart will change how the paging works
+        var data = self.currentData().slice(0);
         self.HasChart(false);
+        self.currentDataFull(data);
         self.RenderChart(self.GraphType(), self.XAxis(), self.YAxis());
     }
 

@@ -14,6 +14,7 @@ using Hangfire.SQLite;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
