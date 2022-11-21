@@ -1,5 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css?family=Montserrat");
-body,figure{margin:0}
+﻿body,figure{margin:0}
 .navbar-fixed-bottom .navbar-collapse,.navbar-fixed-top .navbar-collapse,.pre-scrollable{max-height:340px}
 html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-size:10px;-webkit-tap-highlight-color:transparent}
 article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
@@ -734,7 +733,7 @@ select[multiple].input-lg,textarea.input-lg{height:auto}
 .form-horizontal .checkbox,.form-horizontal .radio{min-height:29px}
 .form-horizontal .form-group{margin-left:-15px;margin-right:-15px}
 .form-horizontal .has-feedback .form-control-feedback{right:15px}
-@media (min-width:768px){.form-horizontal .control-label{text-align:right;margin-bottom:0;padding-top:7px}
+@media (min-width:768px){.form-horizontal .control-label{margin-bottom:0;padding-top:7px}
 .form-horizontal .form-group-lg .control-label{padding-top:11px;font-size:20px}
 .form-horizontal .form-group-sm .control-label{padding-top:6px;font-size:14px}
 }

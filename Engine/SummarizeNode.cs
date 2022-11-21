@@ -173,9 +173,11 @@ namespace QueryTree.Engine
                     }
                 }
 
-                for (int i = 0; i < AggColumnIndexes.Count; i++)
+                for (int i = 0; i < AggFunctions.Count; i++)
                 {
-                    string columnName = input1Cols[AggColumnIndexes[i]];
+                    string columnName = AggFunctions[i] != AggregationFunction.Count
+                        ? input1Cols[AggColumnIndexes[i]]
+                        : null;
 
                     if (i < AggFunctions.Count)
                     {

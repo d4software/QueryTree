@@ -864,6 +864,9 @@ var SummarizeStatistic = function(parent, aggFunc, aggCol) {
             return tools.IsNumericType(c.Type) || (tools.IsDatetimeType(c.Type) && afi.WorksWithDates); 
         });
     });
+    self.HasColumnIndex = ko.pureComputed(function() {
+        return !!self.AggColumn();
+    })
     return self;
 };
 
@@ -903,7 +906,9 @@ nodes.Summarize = function(properties) {
         settings.AggColumnIndexes = [];
         $.each(instance.Statistics(), function (i, statistic) {
             settings.AggFunctions.push(statistic.AggFunction());
-            settings.AggColumnIndexes.push(statistic.AggColumn());            
+            if (statistic.HasColumnIndex()) {
+                settings.AggColumnIndexes.push(statistic.AggColumn());
+            }
         });
         return settings;
     }

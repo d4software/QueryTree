@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "QueryTree";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var teamNameInBrackets = string.IsNullOrWhiteSpace(Model.OrganisationName) == false 
+        ? $"(${Model.OrganisationName})" 
+        : "";
 }
 
 @if (Model.OganisationHasDatabases == false)
@@ -100,7 +104,7 @@
         </div>
         <div class="col-md-6">
             <div class="well adminHelp">
-                <p>This user will be invite to join the same team (@Model.OrganisationName) as you.</p>
+                <p>This user will be invite to join the same team @teamNameInBrackets as you.</p>
                 @if (Model.OganisationHasDatabases)
                 {
                     <p>Your team has @Model.OrganisationDatabaseCount databases, which this new user will have Admin access to.</p>

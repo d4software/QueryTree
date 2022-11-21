@@ -13,8 +13,9 @@ body {
     padding-right: 15px;
 }
 
-.btn {
-    margin-bottom: 5px !important;
+.btn:hover {
+    margin-top: 0;
+    border-bottom-width: 4px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

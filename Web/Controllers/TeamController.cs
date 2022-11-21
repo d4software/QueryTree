@@ -398,7 +398,7 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var user = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
+            var user = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
             var invite = db.OrganisationInvites.FirstOrDefault(oi => oi.InviteEmail == email && oi.AcceptedOn == null && oi.RejectedOn == null);
             var dbInvite = db.UserDatabaseConnections.FirstOrDefault(uc => uc.ApplicationUserID == null && uc.DatabaseConnection.OrganisationId == CurrentUser.OrganisationId && uc.InviteEmail == email);
 
@@ -425,7 +425,7 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var user = db.ApplicationUsers.FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
+            var user = db.ApplicationUsers.AsEnumerable().FirstOrDefault(u => string.Compare(u.Email, email, true) == 0);
             if (user != null)
             {
                 if (user.OrganisationId == CurrentUser.OrganisationId)
