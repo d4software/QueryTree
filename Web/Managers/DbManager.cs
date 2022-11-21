@@ -13,6 +13,7 @@ using Microsoft.Extensions.Caching.Memory;
 using QueryTree.Enums;
 using QueryTree.ViewModels;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 
 
 namespace QueryTree.Managers
@@ -22,12 +23,14 @@ namespace QueryTree.Managers
         private IPasswordManager _passwordManager;
         private IMemoryCache _cache;
         private IConfiguration _config;
+        private readonly ILogger _logger;
 
-        public DbManager(IPasswordManager passwordManager, IMemoryCache cache, IConfiguration config)
+        public DbManager(IPasswordManager passwordManager, IMemoryCache cache, IConfiguration config, ILoggerFactory loggerFactory)
         {
             _passwordManager = passwordManager;
             _cache = cache;
             _config = config;
+            _logger = loggerFactory.CreateLogger<DbManager>();
         }
 
         private DbTable GetDbTable(DatabaseType type, DbConnection conn, int connectionId, string databaseName, string tableName)
@@ -587,10 +590,12 @@ namespace QueryTree.Managers
             }
             catch (SqlException e)
             {
+                _logger.LogError(e, "Unable to query db");
                 error = e.Message;
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Unable to query db");
                 error = e.Message;
             }
 

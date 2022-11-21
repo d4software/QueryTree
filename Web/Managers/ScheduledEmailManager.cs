@@ -8,6 +8,7 @@ using MimeKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using QueryTree.Services;
 
 namespace QueryTree.Managers
@@ -36,14 +37,15 @@ namespace QueryTree.Managers
             ApplicationDbContext db,
             IWebHostEnvironment env,
             IMemoryCache cache,
-            IPasswordManager passwordManager)
+            IPasswordManager passwordManager,
+            ILoggerFactory loggerFactory)
         {
 			_emailSenderService = emailSenderService;
             _emailSender = emailSender;
             _config = config;
             _db = db;
             _env = env;
-            _dbMgr = new DbManager(passwordManager, cache, config);
+            _dbMgr = new DbManager(passwordManager, cache, config, loggerFactory);
             _convertManager = new ConvertManager();
         }
 
