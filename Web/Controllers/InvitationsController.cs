@@ -47,7 +47,12 @@ namespace QueryTree.Controllers
                 return NotFound("Could not find user");
             }
 
-            var invites = db.OrganisationInvites.Where(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null);
+            var invites = db
+                .OrganisationInvites
+                .Include(c => c.CreatedBy)
+                .Where(uc => uc.AcceptedOn == null && uc.RejectedOn == null)
+                .ToList()
+                .Where(uc => string.Compare(uc.InviteEmail, CurrentUser.Email, StringComparison.OrdinalIgnoreCase) == 0);
 
             if (invites.Any() == false)
             {
@@ -57,9 +62,7 @@ namespace QueryTree.Controllers
 
             List<InvitationViewModel> viewModels = new List<InvitationViewModel>();
 
-            foreach(var orgGrp in invites
-                .Include(c => c.CreatedBy)
-                .GroupBy(c => c.OrganisationId))
+            foreach (var orgGrp in invites.GroupBy(c => c.OrganisationId))
             {
                 InvitationViewModel viewModel = new InvitationViewModel
                 {
