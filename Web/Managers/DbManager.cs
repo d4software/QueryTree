@@ -175,7 +175,7 @@ namespace QueryTree.Managers
                             + "            AND C.TABLE_NAME = PK.TABLE_NAME "
                             + "            AND C.COLUMN_NAME = PK.COLUMN_NAME "
                             + "WHERE C.TABLE_SCHEMA = @schema "
-                            + "ORDER BY C.TABLE_NAME, COLUMN_NAME;";
+                            + "ORDER BY C.TABLE_NAME, C.ORDINAL_POSITION;";
                         cmd = CreateCommand(type, conn, sql);
                         cmd.Parameters.Add(new MySqlParameter("@schema", databaseName));
                     }
@@ -279,7 +279,7 @@ namespace QueryTree.Managers
                         result.Tables.Add(currentTable);
                     }
 
-                    if (tableName == currentTable.Name) 
+                    if (tableName == currentTable.Name)
                     {
                         currentTable.Columns.Add(new QueryTree.Models.DbColumn
                         {
@@ -357,7 +357,7 @@ namespace QueryTree.Managers
                     break;
                 case DatabaseType.SQLServer:
                     {
-                        string sql = "SELECT C.TABLE_SCHEMA AS CHILD_TABLE_SCHEMA, " 
+                        string sql = "SELECT C.TABLE_SCHEMA AS CHILD_TABLE_SCHEMA, "
                             + "    C.TABLE_NAME AS CHILD_TABLE_NAME, "
                             + "    C.COLUMN_NAME AS CHILD_COLUMN_NAME, "
                             + "    P.TABLE_SCHEMA AS PARENT_TABLE_SCHEMA, "
@@ -408,11 +408,11 @@ namespace QueryTree.Managers
                     DbTable dbTable = null;
                     if (column.IsPrimaryKey == false && column.Parent == null)
                     {
-                        dbTable = dbModel.Tables.FirstOrDefault(t => 
-                            t.Schema == table.Schema && 
+                        dbTable = dbModel.Tables.FirstOrDefault(t =>
+                            t.Schema == table.Schema &&
                             ((t.Name.ToLower() + "_id") == column.Name.ToLower()) ||
                             ((t.Name.ToLower() + "id") == column.Name.ToLower()));
-                     
+
                         if (dbTable != null)
                         {
                             column.Parent = dbTable.Columns[0] as Models.DbColumn;
@@ -428,7 +428,7 @@ namespace QueryTree.Managers
             queue.Push(table);
 
             HashSet<DbTable> parents = new HashSet<DbTable>();
-            
+
             while (queue.Any())
             {
                 var curr = queue.Pop();
