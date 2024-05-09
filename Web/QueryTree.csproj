@@ -38,7 +38,7 @@
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Npgsql" Version="6.0.7" />
+    <PackageReference Include="Npgsql" Version="8.0.3" />
     <PackageReference Include="MySql.Data" Version="8.0.31" />
     <PackageReference Include="Hangfire" Version="1.7.32" />
     <PackageReference Include="SSH.NET" Version="2020.0.2" />
