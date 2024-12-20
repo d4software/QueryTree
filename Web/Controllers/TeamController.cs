@@ -480,7 +480,7 @@ namespace QueryTree.Controllers
 		{
 			var email = new MimeMessage();
             email.From.Add(new MailboxAddress("QueryTree", _config.GetValue<string>("Email:SenderAddress")));
-			email.To.Add(new MailboxAddress(inviteEmail));
+			email.To.Add(new MailboxAddress(inviteEmail, inviteEmail));
 			email.Subject = string.Format("You have been invited to use QueryTree by {0}", fromEmail);
 
             var templatePath = _env.ContentRootPath.TrimEnd('/') + '/';

@@ -147,7 +147,7 @@ namespace QueryTree.Controllers
 		{
 			var email = new MimeMessage();
             email.From.Add(new MailboxAddress(UTF8Encoding.UTF8, "QueryTree", _config.GetValue<string>("Email:SenderAddress")));
-			email.To.Add(new MailboxAddress(userLink.InviteEmail ?? userLink.ApplicationUser.Email));
+			email.To.Add(new MailboxAddress(userLink.ApplicationUser.FirstName + " " + userLink.ApplicationUser.LastName, userLink.InviteEmail ?? userLink.ApplicationUser.Email));
 			email.Subject = string.Format("You have been invited to use QueryTree by {0}", userLink.CreatedBy.Email);
 
             var webRoot = _env.ContentRootPath.TrimEnd('/') + '/';

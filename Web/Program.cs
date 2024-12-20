@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -9,12 +8,10 @@ using QueryTree.Models;
 using QueryTree.Services;
 using QueryTree;
 using System;
-using System.Configuration;
 using Hangfire.SQLite;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
@@ -75,6 +72,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IPasswordManager, PasswordManager>(); // Allows controllers to set/get/delete database credentials
 builder.Services.AddTransient<IScheduledEmailManager, ScheduledEmailManager>();
 builder.Services.AddMemoryCache();
+builder.Services.AddHangfireServer();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -98,8 +96,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 if (builder.Configuration["RunHangfire"] == "true")
 {
-    app.UseHangfireServer();
-
     var dashboardOptions = new DashboardOptions
     {
         Authorization = new[] { new HangfireAuthorizationFilter() }

@@ -82,8 +82,6 @@ namespace QueryTree.Managers
             
             PopulateData(data, spreadsheet);
 
-            spreadsheet.Close();
-            
             stream.Flush();
 
             return stream.ToArray();

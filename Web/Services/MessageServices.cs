@@ -47,7 +47,7 @@ namespace QueryTree
 		{
 			var email = new MimeMessage();
             email.From.Add(new MailboxAddress("QueryTree", _config.GetValue<string>("Email:SenderAddress")));
-			email.To.Add(new MailboxAddress(to));
+			email.To.Add(new MailboxAddress(to, to));
 			email.Subject = subject;
             email.Body = new TextPart("plain") { Text = body };
 

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using System.Data.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using QueryTree.Enums;
@@ -618,7 +618,7 @@ namespace QueryTree.Managers
             switch (type)
             {
                 case DatabaseType.MySQL:
-                    conn = new MySqlConnection(string.Format("server={0};port={1};uid={2};pwd={3};database={4};Convert Zero Datetime=True;SslMode=Preferred", server, port, username, password, databaseName));
+                    conn = new MySqlConnection(string.Format("server={0};port={1};uid={2};pwd={3};database={4};Convert Zero Datetime=True;SslMode=Preferred;", server, port, username, password, databaseName));
                     conn.Open();
                     break;
                 case DatabaseType.PostgreSQL:

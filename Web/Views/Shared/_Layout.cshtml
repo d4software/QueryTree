@@ -40,7 +40,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav"></ul>
-                @Html.Partial("_LoginPartial")
+                <partial name="_LoginPartial"></partial>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
         @RenderBody()
         <br />
     </div>
-    @Html.Partial("_FooterPartial")
+    <partial name="_FooterPartial"></partial>
     <script src="~/js/base.js"></script>
     @RenderSection("scripts", required: false)
     @if (!String.IsNullOrEmpty(CustomizationConfiguration.Value.BaseUri))

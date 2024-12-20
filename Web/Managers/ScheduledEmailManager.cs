@@ -78,7 +78,7 @@ namespace QueryTree.Managers
                 var message = new MimeKit.MimeMessage();
 
                 foreach (var email in recipients.Split(','))
-                    message.To.Add(new MailboxAddress(email));
+                    message.To.Add(new MailboxAddress(email, email));
 
                 message.From.Add(new MailboxAddress("QueryTree", _config.GetValue<string>("Email:SenderAddress")));
                 message.Subject = string.Format("Here's your scheduled report {0}", queryName);
