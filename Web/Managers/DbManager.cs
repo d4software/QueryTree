@@ -196,7 +196,7 @@ namespace QueryTree.Managers
                             + "            AND C.TABLE_NAME = PK.TABLE_NAME "
                             + "            AND C.COLUMN_NAME = PK.COLUMN_NAME "
                             + "WHERE C.TABLE_SCHEMA <> 'information_schema' AND C.TABLE_SCHEMA <> 'pg_catalog' "
-                            + "ORDER BY C.TABLE_SCHEMA, C.TABLE_NAME, C.COLUMN_NAME;";
+                            + "ORDER BY C.TABLE_SCHEMA, C.TABLE_NAME, C.ORDINAL_POSITION;";
                         cmd = CreateCommand(type, conn, sql);
                     }
                     break;
@@ -216,7 +216,7 @@ namespace QueryTree.Managers
                             + "            AND C.TABLE_NAME = PK.TABLE_NAME "
                             + "            AND C.COLUMN_NAME = PK.COLUMN_NAME "
                             + "WHERE C.TABLE_SCHEMA <> 'sys' AND C.TABLE_NAME <> '__MigrationHistory' "
-                            + "ORDER BY C.TABLE_SCHEMA, C.TABLE_NAME, PK.COLUMN_NAME DESC, C.COLUMN_NAME ";
+                            + "ORDER BY C.TABLE_SCHEMA, C.TABLE_NAME, PK.COLUMN_NAME DESC, C.ORDINAL_POSITION";
                         cmd = CreateCommand(type, conn, sql);
                     }
                     break;
