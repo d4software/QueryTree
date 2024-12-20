@@ -10,7 +10,7 @@ namespace QueryTree.Engine
         private string Values1;
         private IList<int> DataSeriesColumnIndexes;
         private string NodeType;
-        
+
         public override void UpdateSettings(Dictionary<string, object> settings)
         {
             base.UpdateSettings(settings);
@@ -19,7 +19,7 @@ namespace QueryTree.Engine
             {
                 HorizontalAxis = (string)settings["HorizontalAxis"];
             }
-                
+
             if (settings.ContainsKey("Values1"))
             {
                 Values1 = (string)settings["Values1"];
@@ -63,7 +63,7 @@ namespace QueryTree.Engine
                     }
                 }
             }
-            
+
             return newCols;
         }
 
@@ -105,7 +105,7 @@ namespace QueryTree.Engine
             {
                 SortColumnIndexes = new List<int>() { GetColumns().IndexOf(HorizontalAxis) };
             }
-            
+
 			var input1 = InputDict[Inputs[0]];
 			var input1Cols = input1.GetColumns();
             var input1ColTypes = input1.GetColumnTypes();

@@ -22,7 +22,7 @@ namespace QueryTree.Controllers
 		private IEmailSender _emailSender;
         private IWebHostEnvironment _env;
         private IConfiguration _config;
-		
+
 		public UserDatabaseConnectionsController(
             ApplicationDbContext dbContext,
             UserManager<ApplicationUser> userManager,
@@ -43,7 +43,7 @@ namespace QueryTree.Controllers
 
             var userConnections = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id);
-            
+
             if (userConnections.Any(uc => uc.DatabaseConnectionID == databaseConnection.DatabaseConnectionID))
             {
                 hasAccess = true;
@@ -79,7 +79,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: UserDatabaseConnections/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -105,7 +105,7 @@ namespace QueryTree.Controllers
 
                 var lowercaseEmail = userDatabaseConnection.InviteEmail.ToLower();
                 var invitedUser = db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == lowercaseEmail);
-                
+
                 if (invitedUser != null && db.UserDatabaseConnections.Any(u => u.DatabaseConnectionID == userDatabaseConnection.DatabaseConnectionID && u.ApplicationUserID == invitedUser.Id))
                 {
                     ModelState.AddModelError("Error", "This User already has an access to this Database Connection");
@@ -119,7 +119,7 @@ namespace QueryTree.Controllers
                     ModelState.AddModelError("Error", "This User has already been invited to be an Organisation Admin for this Database Connection");
                 }
                 else
-                { 
+                {
                     userDatabaseConnection.CreatedOn = DateTime.Now;
                     userDatabaseConnection.CreatedBy = CurrentUser;
 
@@ -135,9 +135,9 @@ namespace QueryTree.Controllers
                     SendDatabaseInviteMail(userDatabaseConnection);
 
                     return RedirectToAction("Details", "Home", new { id = userDatabaseConnection.DatabaseConnectionID });
-                } 
+                }
             }
-            
+
             ViewBag.types = new[] { UserDatabaseTypes.Admin, UserDatabaseTypes.ReportBuilder, UserDatabaseTypes.ReportViewer }.Select(e => new { Id = (int)e, Value = e.ToString() });
 
             return View(userDatabaseConnection);
@@ -223,7 +223,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: UserDatabaseConnections/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -248,7 +248,7 @@ namespace QueryTree.Controllers
             if (ModelState.IsValid)
             {
                 existingUserDatabaseConnection.Type = userDatabaseConnection.Type;
-                
+
                 db.SaveChanges();
 
                 return RedirectToAction("Details", "Home", new { id = existingUserDatabaseConnection.DatabaseConnectionID });
@@ -309,9 +309,9 @@ namespace QueryTree.Controllers
             }
 
             int? dbId = existingUserDatabaseConnection.DatabaseConnectionID;
-            
+
             db.UserDatabaseConnections.Remove(existingUserDatabaseConnection);
-            
+
             db.SaveChanges();
 
             if (dbId.HasValue)

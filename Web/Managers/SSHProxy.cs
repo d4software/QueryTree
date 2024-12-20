@@ -80,7 +80,7 @@ namespace QueryTree.Managers
             {
                 return new SshClient(SshServer, SshPort, SshCredentials.Username, SshCredentials.PrivateKeyFile);
             }
-            else 
+            else
             {
                 return new SshClient(SshServer, SshPort, SshCredentials.Username, SshCredentials.Password);
             }
@@ -212,7 +212,7 @@ namespace QueryTree.Managers
             }
             catch
             {
-               
+
                 Error = "An unexpected error occurred.";
             }
             finally

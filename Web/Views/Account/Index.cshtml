@@ -25,11 +25,11 @@
             <div class="col-md-offset-3 col-md-9">
                 <input type="submit" value="Save" class="btn btn-lg btn-success" />
                 @Html.ActionLink("Edit Team Members", "Index", "Team", null, new { @class = "btn btn-lg btn-default" })
-                
+
             </div>
         </div>
     }
-    
+
     @Html.ActionLink("Change your password", "ChangePassword", "Manage", null, new { @class = "btn btn-lg btn-primary" })
     @if (Model.OtherConnections.Any())
     {
@@ -44,7 +44,7 @@
             }
         </dl>
         <p class="small">These connections will not count towards your plan</p>
-    }        
+    }
 </div>
 
 @section Scripts {

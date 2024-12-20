@@ -3,8 +3,8 @@
 
 # QueryTree
 
-QueryTree is an ad-hoc reporting tool that works with any Microsoft 
-SQL Server, PostgreSQL or MySQL database. It allows users to query 
+QueryTree is an ad-hoc reporting tool that works with any Microsoft
+SQL Server, PostgreSQL or MySQL database. It allows users to query
 databases, build reports and schedule those reports to email distribution
 lists, without needing to write any code.
 
@@ -12,7 +12,7 @@ For more information see the [QueryTree website](http://querytreeapp.com)
 
 ## Features
 
-QueryTree can connect to MySQL and PostgreSQL databases using SSH tunnels, 
+QueryTree can connect to MySQL and PostgreSQL databases using SSH tunnels,
 secured with passwords or key files.
 
 Supports customization of the logo image, system name and CSS used
@@ -21,14 +21,14 @@ within the app.
 Can use either Sqlite or Microsoft SQL Server database for it's own user
 and reports data storage.
 
-Database and SSH passwords are stored in its database in encryped form, 
+Database and SSH passwords are stored in its database in encryped form,
 using AES encryption. Users may provide their own key file, or let the
 system generate one on first run. Keys can be shared between mutliple
 web servers in a load balancing scenario.
 
-Users may choose to build their own plugins to store database/SSH 
-passwords in an external key vault. This is achieved by implementing 
-a .NET interface and registering the class in the appSettings.config 
+Users may choose to build their own plugins to store database/SSH
+passwords in an external key vault. This is achieved by implementing
+a .NET interface and registering the class in the appSettings.config
 file. See [Building a password manager](/docs/password-manager.md)
 for more information.
 
@@ -112,7 +112,7 @@ Now listening on: http://localhost:5000
 Application started. Press Ctrl+C to shut down.
 ```
 
-Visit the URL shown in your browser. You should see the QueryTree application. 
+Visit the URL shown in your browser. You should see the QueryTree application.
 
 5. For use in production environments, QueryTree should be run behind a reverse proxy such as nginx. For more information on hosting QueryTree using nginx see: https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
 

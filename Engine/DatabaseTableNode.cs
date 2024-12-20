@@ -54,8 +54,8 @@ namespace QueryTree.Engine
         }
 
         /// <summary>
-        /// Special version of the GetColumnName for database tables, which 
-        /// selects the actual table_name.column_name rather than the aliased 
+        /// Special version of the GetColumnName for database tables, which
+        /// selects the actual table_name.column_name rather than the aliased
         /// name(e.g.node_xxx.Column_x).
         /// </summary>
         /// <param name="colNumber">Col number.</param>
@@ -124,7 +124,7 @@ namespace QueryTree.Engine
 
         public string GetDatabaseFrom()
         {
-            return GetDatabaseTable();  // In most cases, bit after the FROM clause will just be 'FROM XXX', but joins may return 'FROM XXX JOIN YYY ON XXX.A = YYY.B';    
+            return GetDatabaseTable();  // In most cases, bit after the FROM clause will just be 'FROM XXX', but joins may return 'FROM XXX JOIN YYY ON XXX.A = YYY.B';
         }
 
         public override string GetQuerySql()

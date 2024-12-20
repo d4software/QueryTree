@@ -188,7 +188,7 @@ namespace QueryTree.Engine
 
             return columns;
         }
-		
+
         public override IList<string> GetColumnTypes()
         {
             var colTypes = new List<string>();
@@ -254,7 +254,7 @@ namespace QueryTree.Engine
                 }
 
                 var aggStr = GetAggStr(
-                    aggFunction != AggregationFunction.Count ? AggColumnIndexes[i] : 0, 
+                    aggFunction != AggregationFunction.Count ? AggColumnIndexes[i] : 0,
                     aggFunction);
 
                 selectCols.Add(string.Format("{0} AS Column_{1:D}", aggStr, selectCols.Count));

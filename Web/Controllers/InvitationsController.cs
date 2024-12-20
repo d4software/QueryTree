@@ -68,7 +68,7 @@ namespace QueryTree.Controllers
                 {
                     OrganisationInviteId = orgGrp.First().OrganisationInviteId
                 };
-                
+
                 Organisation organisation = db.Organisations.First(ba => ba.OrganisationId == orgGrp.Key);
                 viewModel.OrganisationId = organisation.OrganisationId;
 
@@ -77,9 +77,9 @@ namespace QueryTree.Controllers
                     .OrderBy(_ => _)
                     .Distinct()
                     .ToList();
-                
+
                 viewModel.OrganisationName = organisation.OrganisationName;
-                
+
                 viewModels.Add(viewModel);
             }
 
@@ -87,7 +87,7 @@ namespace QueryTree.Controllers
             {
                 List<string> databasesMerged = new List<string>();
                 List<string> databasesLost = new List<string>();
-                
+
                 List<string> databases = db.DatabaseConnections
                     .Where(d => d.OrganisationId == CurrentUser.OrganisationId)
                     .ToList()
@@ -107,7 +107,7 @@ namespace QueryTree.Controllers
                 {
                     databasesLost = databases;
                 }
-                
+
                 foreach(var viewModel in viewModels)
                 {
                     viewModel.DatabasesMerged = databasesMerged;
@@ -141,7 +141,7 @@ namespace QueryTree.Controllers
 
             List<DatabaseConnection> leave = new List<DatabaseConnection>();
             List<DatabaseConnection> migrate = new List<DatabaseConnection>();
-            
+
             // Migrate or cut connections with databases as necessary.
             List<DatabaseConnection> databases = db.DatabaseConnections
                 .Where(d => d.OrganisationId == CurrentUser.OrganisationId)
@@ -160,7 +160,7 @@ namespace QueryTree.Controllers
             {
                 leave = databases;
             }
-            
+
             foreach(var database in leave)
             {
                 // there shouldn't be any of these, but do it just in case
@@ -171,17 +171,17 @@ namespace QueryTree.Controllers
             {
                 // there shouldn't be any of these, but do it just in case
                 db.UserDatabaseConnections.RemoveWhere(uc => uc.DatabaseConnectionID == database.DatabaseConnectionID && uc.ApplicationUserID == CurrentUser.Id);
-                
+
                 database.Organisation = organisation;
             }
-            
+
             CurrentUser.OrganisationId = organisation.OrganisationId;
 
             invite.AcceptedOn = DateTime.Now;
-            
+
             // reject other invitations to other organisations
             var invitesToReject = db.OrganisationInvites.Where(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.OrganisationInviteId != invite.OrganisationInviteId);
-        
+
             foreach (var inviteToReject in invitesToReject)
             {
                 inviteToReject.RejectedOn = DateTime.Now;
@@ -191,14 +191,14 @@ namespace QueryTree.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        
+
         public ActionResult Reject(int id)
         {
             if (CurrentUser == null)
             {
                 return NotFound("Could not find user");
             }
-            
+
             var invite = db.OrganisationInvites.FirstOrDefault(uc => uc.InviteEmail.ToLower() == CurrentUser.Email.ToLower() && uc.AcceptedOn == null && uc.RejectedOn == null && uc.OrganisationInviteId == id);
 
             if (invite == null)

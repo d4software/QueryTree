@@ -76,5 +76,5 @@ namespace QueryTree.Managers
                 }
             }
         }
-    }    
+    }
 }

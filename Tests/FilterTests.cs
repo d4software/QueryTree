@@ -94,7 +94,7 @@ namespace QueryTree.Engine.Tests
                 ]";
 			}
 		}
-		
+
 		private string NodesJsonGreaterThanDate
 		{
 			get

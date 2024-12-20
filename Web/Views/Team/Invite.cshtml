@@ -4,8 +4,8 @@
     ViewBag.Title = "QueryTree";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var teamNameInBrackets = string.IsNullOrWhiteSpace(Model.OrganisationName) == false 
-        ? $"(${Model.OrganisationName})" 
+    var teamNameInBrackets = string.IsNullOrWhiteSpace(Model.OrganisationName) == false
+        ? $"(${Model.OrganisationName})"
         : "";
 }
 
@@ -61,7 +61,7 @@
                     {
                         <input type="hidden" name="IsOrganisationAdmin" value="true" />
                     }
-                        
+
                     <div id="databaseTables" @Html.Raw(Model.IsOrganisationAdmin ? "style=\"display: none;\"" : "")>
                         @if (Model.DatabasePermissions.Count > 0)
                         {
@@ -92,7 +92,7 @@
                             </div>
                         }
                     </div>
-                    
+
                     <div class="form-group">
                         <div class="col-md-offset-4 col-md-8">
                             <input type="submit" value="Invite" class="btn btn-lg btn-success" />

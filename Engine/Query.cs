@@ -8,7 +8,7 @@ namespace QueryTree.Engine
     public class Query
     {
         private List<NodeBase> Nodes;
-        
+
         public Query(DatabaseType type, string queryJson, IList<ITableInfo> tables)
         {
             var nodeSettings = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(queryJson);

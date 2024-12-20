@@ -10,7 +10,7 @@ namespace QueryTree.Managers
 {
     public class ConvertManager
     {
-        
+
         private void PopulateData(QueryResponse data, SpreadsheetDocument spreadsheet)
         {
             Excel.AddWorksheet(spreadsheet, "Data");
@@ -21,7 +21,7 @@ namespace QueryTree.Managers
             foreach (string column in data.Columns)
             {
                 Excel.SetCellValue(spreadsheet, worksheet, col, row, column, false, false);
-                
+
                 //if (columnType == "datetime")
                 //{
                 //    using (ExcelRange range = ws.Cells[2, col, 1 + data.Rows.Count, col])
@@ -29,7 +29,7 @@ namespace QueryTree.Managers
                 //        range.Style.Numberformat.Format = "dd/mm/yyyy hh:mm";
                 //    }
                // }
-                
+
                 col++;
             }
 
@@ -49,18 +49,18 @@ namespace QueryTree.Managers
                     {
                         if (cellData is DateTime)
                         {
-                            Excel.SetCellValue(spreadsheet, worksheet, col, row, (DateTime)cellData, 1, true);    
+                            Excel.SetCellValue(spreadsheet, worksheet, col, row, (DateTime)cellData, 1, true);
                         }
                         else if (cellData is Int32 || cellData is Double)
                         {
                             Excel.SetCellValue(spreadsheet, worksheet, col, row, Convert.ToDouble(cellData), null, true);
                         }
-                        else 
+                        else
                         {
                             Excel.SetCellValue(spreadsheet, worksheet, col, row, cellData.ToString(), false, false);
                         }
                     }
-                    
+
                     col++;
                 }
 
@@ -73,13 +73,13 @@ namespace QueryTree.Managers
         public byte[] ToExcel(QueryResponse data)
         {
             var stream = new MemoryStream();
-            
+
             DocumentFormat.OpenXml.Packaging.SpreadsheetDocument spreadsheet;
-            
+
             spreadsheet = Excel.CreateWorkbook(stream);
-            
+
             Excel.AddBasicStyles(spreadsheet);
-            
+
             PopulateData(data, spreadsheet);
 
             stream.Flush();

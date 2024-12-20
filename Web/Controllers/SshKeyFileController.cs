@@ -67,7 +67,7 @@ namespace QueryTree.Controllers
                 return Json(new { Status = "error" , Message = "Error uploading file, please try again" });
             }
         }
-        
+
         private bool ValidateSshKeyFile(byte[] data)
         {
             try

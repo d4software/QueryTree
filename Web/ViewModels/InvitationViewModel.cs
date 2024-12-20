@@ -9,7 +9,7 @@ namespace QueryTree.ViewModels
 {
     public class InvitationViewModel
     {
-        public InvitationViewModel() 
+        public InvitationViewModel()
         {
             DatabasesMerged = new List<string>();
             DatabasesLost = new List<string>();

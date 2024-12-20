@@ -31,7 +31,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -58,7 +58,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: Simple/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,7 +74,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -133,7 +133,7 @@ namespace QueryTree.Controllers
 
 
         // POST: Simple/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

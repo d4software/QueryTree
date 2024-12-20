@@ -100,7 +100,7 @@ namespace QueryTree.Engine.Tests
             int i = -1;
             while ((i = sql.IndexOf("node_1 AS", i+1)) >= 0)
                 c++;
-            
+
             // The "node_1" datatable should only be defined once in the query
 			Assert.Equal(1, c);
 		}

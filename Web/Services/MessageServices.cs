@@ -21,16 +21,16 @@ namespace QueryTree
 
         public EmailSender(IConfiguration config)
         {
-            _config = config;    
+            _config = config;
         }
-        
+
         public void SendMail(MimeMessage message)
         {
 			using (var client = new SmtpClient())
 			{
 				// For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
 				client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-				
+
                 client.Connect(_config.GetValue<string>("Email:SmtpHost"), _config.GetValue<int>("Email:SmtpPort"), _config.GetValue<bool>("Email:UseSSL"));
 
 				// Note: only needed if the SMTP server requires authentication
@@ -42,7 +42,7 @@ namespace QueryTree
 				client.Disconnect(true);
 			}
         }
-        
+
 		public void SendMail(string to, string subject, string body)
 		{
 			var email = new MimeMessage();

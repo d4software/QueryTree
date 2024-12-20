@@ -81,7 +81,7 @@ namespace QueryTree.Controllers
                 }
 
                 viewModel.DatabasePermissions = viewModel.DatabasePermissions.OrderBy(p => p.DatabaseName).ToList();
-                
+
                 viewModels.Add(viewModel);
             }
 
@@ -124,7 +124,7 @@ namespace QueryTree.Controllers
 
             return View(viewModels);
         }
-        
+
         // GET: Team/Invite
         public ActionResult Invite()
         {
@@ -143,11 +143,11 @@ namespace QueryTree.Controllers
 
             viewModel.OrganisationName = CurrentUser.Organisation.OrganisationName;
             viewModel.OrganisationDatabaseCount = db.DatabaseConnections.Count(dc => dc.OrganisationId == CurrentUser.OrganisationId);
-            
+
             List<DatabaseConnection> databases = new List<DatabaseConnection>();
-            
+
             databases = db.DatabaseConnections.Where(d => d.OrganisationId == CurrentUser.OrganisationId).ToList();
-        
+
             foreach (var database in databases)
             {
                 viewModel.DatabasePermissions.Add(new PermissionViewModel.DatabasePermission
@@ -157,7 +157,7 @@ namespace QueryTree.Controllers
                     AccessType = "None",
                 });
             }
-            
+
             return View(viewModel);
         }
 
@@ -326,9 +326,9 @@ namespace QueryTree.Controllers
             {
                 viewModel.DatabasePermissions = new List<PermissionViewModel.DatabasePermission>();
             }
-            
+
             var currentConnections = db.UserDatabaseConnections.Where(uc => uc.ApplicationUserID == user.Id).ToList();
-            
+
             if (viewModel.IsOrganisationAdmin)
             {
                 // Remove any DB specific permissions
@@ -392,7 +392,7 @@ namespace QueryTree.Controllers
             {
                 return BadRequest();
             }
-            
+
             if (CurrentUser == null)
             {
                 return NotFound("Could not find user");
@@ -408,7 +408,7 @@ namespace QueryTree.Controllers
             }
 
             ViewBag.Email = email;
-            
+
             return View();
         }
 

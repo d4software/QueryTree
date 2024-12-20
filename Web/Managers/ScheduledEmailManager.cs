@@ -33,7 +33,7 @@ namespace QueryTree.Managers
 		public ScheduledEmailManager(
 			IEmailSenderService emailSenderService,
 			IEmailSender emailSender,
-			IConfiguration config, 
+			IConfiguration config,
             ApplicationDbContext db,
             IWebHostEnvironment env,
             IMemoryCache cache,
@@ -56,7 +56,7 @@ namespace QueryTree.Managers
 				return;
 			}
 
-			if(!_emailSenderService.TrySetDelivered(queryId)) 
+			if(!_emailSenderService.TrySetDelivered(queryId))
 			{
 				return;
 			}
@@ -64,7 +64,7 @@ namespace QueryTree.Managers
 			var query = _db.Queries
                 .Include(q => q.DatabaseConnection)
                 .FirstOrDefault(q => q.QueryID == queryId);
-                
+
             if (query != null && query.QueryDefinition != null)
             {
                 var queryDefinition = JsonConvert.DeserializeObject<dynamic>(query.QueryDefinition);

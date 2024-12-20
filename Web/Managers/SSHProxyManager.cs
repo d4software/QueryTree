@@ -67,7 +67,7 @@ namespace QueryTree.Managers
 
             return false;
         }
-        
+
         public static bool TryUseProxy(string server, int port, string sshServer, int sshPort, SshProxyCredentials credentials, DatabaseConnection connection, Action<SSHProxy> action, out string error)
         {
             return TryUseProxy(server, port, sshServer, sshPort, credentials, action, out error);
@@ -92,7 +92,7 @@ namespace QueryTree.Managers
                 UseProxy(proxy, action);
                 return true;
             }
-            else 
+            else
             {
                 proxy = new SSHProxy(server, port, sshServer, sshPort, credentials);
 

@@ -32,8 +32,8 @@ namespace QueryTree.Engine
         }
 
 		/// <summary>
-		/// Based on this node's inputs and settings, what columns will it 
-        /// return, default implementation returns all the columns from its 
+		/// Based on this node's inputs and settings, what columns will it
+        /// return, default implementation returns all the columns from its
         /// first input
         /// </summary>
         /// <returns>The columns.</returns>
@@ -46,7 +46,7 @@ namespace QueryTree.Engine
         }
 
 		/// <summary>
-		/// Based on this node's inputs and settings, what will the types of 
+		/// Based on this node's inputs and settings, what will the types of
         /// its columns be
 		/// </summary>
 		/// <returns>The column types.</returns>

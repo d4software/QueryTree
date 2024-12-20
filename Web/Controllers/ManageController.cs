@@ -58,10 +58,10 @@ namespace QueryTree.Controllers
                 }
                 AddErrors(result);
             }
-            
+
             return View(model);
         }
-        
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace QueryTree.Engine
 {
-    public enum FilterOperator 
+    public enum FilterOperator
     {
         EqualTo,
         DoesNotEqual,
@@ -337,13 +337,13 @@ namespace QueryTree.Engine
                                 {
                                     compareValue = "LOWER(" + compareValue + ")";
                                 }
-                                
+
                                 if (DatabaseType == DatabaseType.PostgreSQL && IsBoolType(columnTypes[FilterColumnIndex.Value]))
                                 {
                                     compareValue = (new List<string>() { "1", "YES", "TRUE" }).Contains(compareValue.ToUpper()) ? "TRUE" : "FALSE";
                                 }
                             }
-                                
+
                             switch (Operator)
                             {
                                 case FilterOperator.EqualTo:

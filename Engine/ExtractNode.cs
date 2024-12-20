@@ -41,7 +41,7 @@ namespace QueryTree.Engine
             else
             {
                 return "LENGTH";
-            }		        
+            }
         }
 
         public override bool IsConfigured()
@@ -52,7 +52,7 @@ namespace QueryTree.Engine
         public override void UpdateSettings(Dictionary<string, object> settings)
         {
             base.UpdateSettings(settings);
-            
+
             if (settings.ContainsKey("InputColumnIndex"))
             {
                 InputColumnIndex = Convert.ToInt32(settings["InputColumnIndex"]);
@@ -62,7 +62,7 @@ namespace QueryTree.Engine
             {
                 StartType = (ExtractStartTypes)Enum.Parse(typeof(ExtractStartTypes), settings["StartType"].ToString());
             }
-            
+
             if (settings.ContainsKey("StartPosition"))
             {
                 StartPosition = Convert.ToInt32(settings["StartPosition"]);
@@ -93,7 +93,7 @@ namespace QueryTree.Engine
                 ResultColumnName = (string)settings["ResultColumnName"];
             }
         }
- 
+
         public override IList<string> GetColumns()
         {
             var baseCols = new List<string>();
@@ -279,7 +279,7 @@ namespace QueryTree.Engine
                 newColumnDefinition,
                 GetColumns().Count - 1,
                 input1.GetDependencySql());
-            
+
             return sql;
         }
     }

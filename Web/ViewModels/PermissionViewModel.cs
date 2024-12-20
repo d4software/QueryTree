@@ -16,7 +16,7 @@ namespace QueryTree.ViewModels
         public string Email { get; set; }
 
         public bool IsOrganisationAdmin { get; set; }
-        
+
         [Display(Name ="Organisation Name")]
         public string OrganisationName { get; set; }
 
