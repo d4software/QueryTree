@@ -41,7 +41,7 @@ namespace QueryTree.Managers
         workbookStylesPart = spreadSheet.WorkbookPart.AddNewPart<DocumentFormat.OpenXml.Packaging.WorkbookStylesPart>();
         workbookStylesPart.Stylesheet = new DocumentFormat.OpenXml.Spreadsheet.Stylesheet();
         workbookStylesPart.Stylesheet.Save();
-         
+
          return spreadSheet;
       }
 

@@ -10,7 +10,7 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "mainForm" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -112,7 +112,7 @@
                                     @Html.ValidationMessage("keyFile", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div id="uploaded">                        
+                            <div id="uploaded">
                                 @{string filename = Model.SshKeyFile != null ? Model.SshKeyFile.Filename : null; }
                                 <a id="filename">@filename</a>
                                 <br />
@@ -148,7 +148,7 @@
                 </div>
             </div>
 
-            @Html.Partial("_ConnectionHelpers")
+            <partial name="_ConnectionHelpers"></partial>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -158,7 +158,7 @@
             </div>
         </div>
     </div>
-    
+
 }
 
 <div>

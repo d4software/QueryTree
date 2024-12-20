@@ -30,7 +30,7 @@ namespace QueryTree.Engine
         public override bool IsConfigured()
         {
             return Inputs.Count == 1
-                //&& len(self.columns) > 0 
+                //&& len(self.columns) > 0
                 && IncludedColumnIndexes.Count > 0;
         }
 

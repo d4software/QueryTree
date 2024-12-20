@@ -84,7 +84,7 @@ namespace QueryTree.Managers
 
 			Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
 			Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, cipher.Length);
-			
+
             using (var aes = Aes.Create())
             {
                 aes.Key = key;
@@ -111,7 +111,7 @@ namespace QueryTree.Managers
 			var keyFilePath = Path.IsPathRooted(_config.Value.Keyfile) ?
                 _config.Value.Keyfile :
                 Path.Combine(_env.ContentRootPath, _config.Value.Keyfile);
-            
+
             if (File.Exists(keyFilePath))
             {
                 using (var keyFile = File.OpenRead(keyFilePath))
@@ -121,7 +121,7 @@ namespace QueryTree.Managers
                     return bytes;
                 }
             }
-            else 
+            else
             {
                 var key = GetRandomBytes(16);
                 using (var keyFile = File.OpenWrite(keyFilePath))
@@ -158,7 +158,7 @@ namespace QueryTree.Managers
         public string GetSecret(string entityId)
         {
 			var dbSecret = _db.Secrets.FirstOrDefault(s => s.SecretID == entityId);
-            if (dbSecret != null) 
+            if (dbSecret != null)
             {
                 return Decrypt(dbSecret.SecretData);
             }

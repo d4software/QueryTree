@@ -17,7 +17,7 @@
             @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-default" })
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-horizontal col-md-12">
             <hr />
@@ -42,12 +42,12 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <div class="row">
         <div class="col-md-12">
-            @Html.Partial("_Qt_Advanced")
-        </div>   
+            <partial name="_Qt_Advanced"></partial>
+        </div>
     </div>
 
     <div class="row">
@@ -62,7 +62,7 @@
         </div>
     </div>
 }
-<div>    
+<div>
 </div>
 
 @section Scripts {

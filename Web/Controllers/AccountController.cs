@@ -121,7 +121,7 @@ namespace QueryTree.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string email)
@@ -173,7 +173,7 @@ namespace QueryTree.Controllers
                 var user = await CreateUser(model.FirstName, model.LastName, model.OrganisationName, model.Email, model.Password);
 
                 if (user != null)
-                { 
+                {
                     await _signInManager.SignInAsync(user, isPersistent:false);
 
                     return RedirectToAction("Index", "Home");
@@ -335,12 +335,12 @@ namespace QueryTree.Controllers
             }
 
             vm.OtherConnections = otherConnections;
-            
+
             ViewBag.InfoAlert = message;
 
             return View(vm);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(SettingsViewModel settings)
@@ -348,7 +348,7 @@ namespace QueryTree.Controllers
             db.Entry(CurrentUser).Reference(u => u.Organisation).Load();
 
             CurrentUser.Organisation.OrganisationName = settings.OrganisationName;
-            
+
             await db.SaveChangesAsync();
 
             return Index();

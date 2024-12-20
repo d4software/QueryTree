@@ -15,7 +15,7 @@ namespace QueryTree.Controllers
     {
 		public QueriesController(
             ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager) 
+            UserManager<ApplicationUser> userManager)
             : base(userManager, dbContext)
 		{
 		}
@@ -43,7 +43,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanViewQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -67,7 +67,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace QueryTree.Controllers
         }
 
         // POST: Queries/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -95,7 +95,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -140,7 +140,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -150,14 +150,14 @@ namespace QueryTree.Controllers
         }
 
         // POST: Queries/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Query query)
         {
             Query dbQuery = db.Queries.Find(query.QueryID);
-            
+
             if (dbQuery == null)
             {
                 return NotFound();
@@ -204,7 +204,7 @@ namespace QueryTree.Controllers
             {
                 return BadRequest();
             }
-            
+
             Query query = db.Queries.Find(id.Value);
             if (query == null)
             {
@@ -221,7 +221,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();
@@ -251,7 +251,7 @@ namespace QueryTree.Controllers
             var userPermissions = db.UserDatabaseConnections
                 .Where(uc => uc.ApplicationUserID == CurrentUser.Id)
                 .ToList();
-            
+
             if (PermissionMgr.UserCanModifyQuery(userPermissions, database) == false && database.OrganisationId != CurrentUser.OrganisationId)
             {
                 return NotFound();

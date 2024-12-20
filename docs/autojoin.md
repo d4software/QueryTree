@@ -10,7 +10,7 @@ There are two ways to tell QueryTree how to join between tables.
 
 ## Foreign Keys
 
-The most robust way to tell QueryTree how to join between tables is to create a foreign key relationship between the tables. 
+The most robust way to tell QueryTree how to join between tables is to create a foreign key relationship between the tables.
 
 For example, given the following two tables, QueryTree will prompt to join from "orders" to "users".
 

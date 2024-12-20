@@ -68,7 +68,7 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
-        
+
             <div style="margin-left: 180px; padding: 0">
                 <input type="submit" value="Delete" class="btn btn-lg btn-danger" />
                 @Html.ActionLink("Cancel", "Index", new { }, new { @class = "btn btn-default" })

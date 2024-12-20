@@ -1,6 +1,6 @@
-﻿namespace QueryTree.Services 
+﻿namespace QueryTree.Services
 {
-	public interface IEmailSenderService 
+	public interface IEmailSenderService
 	{
 		bool TrySetDelivered(int messageId);
 	}

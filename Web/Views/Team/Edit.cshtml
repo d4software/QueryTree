@@ -26,7 +26,7 @@
                         @Html.HiddenFor(model => model.ApplicationUserID)
                     </div>
                 </div>
-                
+
                 @if (Model.OganisationHasDatabases)
                 {
                     <div class="form-group">
@@ -71,7 +71,7 @@
                             }
                         </div>
                         <div class="col-md-6">
-                            @Html.Partial("_AccessTypeHelp")
+                            <partial name="_AccessTypeHelp"></partial>
                         </div>
                     }
                     else

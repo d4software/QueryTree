@@ -13,13 +13,13 @@ namespace QueryTree.Models
 
         [Display(Name = "Database")]
         public int DatabaseConnectionID { get; set; }
-        
+
         public virtual DatabaseConnection DatabaseConnection { get; set; }
         public string ApplicationUserID{ get; set; }
 
         [ForeignKey("ApplicationUserID")]
         public virtual ApplicationUser ApplicationUser { get; set; }
-        
+
         [Display(Name="Access Level")]
         public UserDatabaseTypes Type { get; set; }
         public string CreatedByID { get; set; }

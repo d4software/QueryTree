@@ -12,7 +12,7 @@ namespace Web.Migrations
             {
                 migrationBuilder.Sql("ALTER TABLE DatabaseConnections ADD COLUMN SshServer TEXT;");
             }
-            else 
+            else
             {
                 migrationBuilder.AddColumn<string>(
                     table: "DatabaseConnections",
@@ -30,9 +30,9 @@ namespace Web.Migrations
                 migrationBuilder.Sql(@"
 
 PRAGMA foreign_keys=off;
- 
+
 ALTER TABLE DatabaseConnections RENAME TO temp_DatabaseConnections;
- 
+
 CREATE TABLE DatabaseConnections
 (
   DatabaseConnectionID INTEGER NOT NULL
@@ -60,7 +60,7 @@ CREATE TABLE DatabaseConnections
   UseSshKey            INTEGER NOT NULL,
   Username             TEXT    NOT NULL
 );
- 
+
 INSERT INTO DatabaseConnections (
     DatabaseConnectionID,
     CreatedOn,
@@ -95,14 +95,14 @@ INSERT INTO DatabaseConnections (
     UseSshKey,
     Username
   FROM temp_DatabaseConnections;
- 
+
 DROP TABLE temp_DatabaseConnections;
- 
+
 PRAGMA foreign_keys=on;
-                
+
                 ");
             }
-            else 
+            else
             {
                 migrationBuilder.DropColumn(
                     name: "SshServer",

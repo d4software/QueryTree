@@ -6,14 +6,14 @@
 @{
 	ViewBag.Title = "Edit";
 	Layout = "~/Views/Shared/_Layout.cshtml";
-}    
+}
 <div class="row">
     <div class="col-md-8">
         <h3>Edit your report<span class="small">
         @if (CustomizationConfiguration.Value.AllowAdvancedQuery)
         {
             @:, or <a href="#" data-toggle="modal" data-target="#myModal">convert to an advanced query</a>.</span></h3>
-        } 
+        }
     </div>
     <div class="col-md-4" style="text-align:right; margin-top:21px">
         @Html.ActionLink("Cancel", "Details", "Home", new { id = Model.DatabaseConnectionID }, new { @class = "btn btn-default" })
@@ -35,7 +35,7 @@
         </div>
         <div class="form-inline" style="overflow: auto; display:none;"  data-bind="visible: !TablesLoading()">
             <div class="form-group">
-                <label class="control-label">Table name</label>    
+                <label class="control-label">Table name</label>
                 <!--ko if: Tables-->
                 <select class="form-control margin-bottom" name="Table" data-bind="options: Tables, value: Table, event: { change: $root.changeDataSource }, visible: Tables().length > 0"></select>
                 <p data-bind="visible: Tables().length == 0">No tables found</p>
@@ -86,14 +86,14 @@
         <button class="btn btn-success" data-bind="click: apply"><span class="glyphicon glyphicon-ok"></span> Next</button>
     </div>
 </div>
-        
+
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <a href="#" data-bind="click: function() { if (currentData()) { section(2); } }"><h3 class="panel-title pull-left"><span class="glyphicon glyphicon-filter"></span> Filter your data</h3></a>
         <span class="label label-success pull-right" data-bind="visible: filters().length > 0 && !loading() && typeof filteredRowCount() === 'number', text: filteredRowCount() + ' rows'" style="display: none;"></span>
         <img src="~/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">
     </div>
-    <div class="panel-body collapse toolFilterTool" data-bind="css: { 'in': $root.section() == 2 }">        
+    <div class="panel-body collapse toolFilterTool" data-bind="css: { 'in': $root.section() == 2 }">
         <!-- ko if: filters().length == 0 -->
             <label class="control-label">Filtering focuses your data by only showing rows that meet a particular criteria.</label>
         <!-- /ko -->
@@ -149,9 +149,9 @@
         <!--ko if: statistics-->
         <!--ko with: statistics-->
         <span class="label label-success pull-right" data-bind="visible: !$root.loading() && (typeof rowCount() === 'number'), text: rowCount() + ' rows'" style="display: none;"></span>
-        <!--/ko-->   
         <!--/ko-->
-        <img src="~/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">    
+        <!--/ko-->
+        <img src="~/images/loading.gif" class="pull-right" style="height: 24px;" data-bind="visible: loading">
     </div>
     <div class="panel-body collapse toolStatsTool" data-bind="css: { 'in': $root.section() == 3 }">
         <!-- ko if: !statistics() -->
@@ -199,14 +199,14 @@
             </div>
             <!--/ko-->
         </div>
-        <!--/ko-->        
-        <!--/ko-->   
+        <!--/ko-->
+        <!--/ko-->
         <!--/ko-->
     </div>
     <div class="panel-footer clearfix collapse toolStatsTool" data-bind="css: { 'in': $root.section() == 3 }">
         <button class="btn btn-primary" data-bind="click: function() { addStatistic(); }"><span class="glyphicon glyphicon-plus-sign"></span> Add Calculation</button>
         <button class="btn btn-primary" data-bind="visible: statistics, click: function() { statistics().AddGroupBy(); }"><span class="glyphicon glyphicon-plus-sign"></span> Add Breakdown</button>
-        <button class="btn btn-success" data-bind="visible: statistics, click: applyStatistics"><span class="glyphicon glyphicon-ok"></span> Next</button>   
+        <button class="btn btn-success" data-bind="visible: statistics, click: applyStatistics"><span class="glyphicon glyphicon-ok"></span> Next</button>
         <button class="btn btn-secondary" data-bind="visible: !statistics(), click: applyStatistics"><span class="glyphicon glyphicon-remove-sign"></span> Skip</button>
     </div>
 </div>
@@ -340,7 +340,7 @@
     </div>
 </div>
 
-@section Scripts { 
+@section Scripts {
     <script src="https://cdn.jsdelivr.net/g/jquery.ui@1.9.2,knockout@3.4.0,d3js@3.5.17,momentjs@2.13.0"></script>
     <partial name="_SqbInclude" />
 

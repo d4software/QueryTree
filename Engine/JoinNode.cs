@@ -12,7 +12,7 @@ namespace QueryTree.Engine
         FullOuter,
         Cross
     }
-    
+
     public class JoinNode : DataProcessorNode, ICollapsibleQueryNode
     {
         private JoinType JoinType;
@@ -163,15 +163,15 @@ namespace QueryTree.Engine
                 else
                 {
                     return input2.GetColumnName(colNumber - input1.GetColumns().Count);
-                }   
+                }
             }
         }
 
 		/// <summary>
-		/// Build the FROM xxx JOIN yyy ON xxx.col = yyy.col part of the JOIN 
+		/// Build the FROM xxx JOIN yyy ON xxx.col = yyy.col part of the JOIN
         /// query.
-        /// 
-        /// If the inputs are themselves data tables or other joins, collapses 
+        ///
+        /// If the inputs are themselves data tables or other joins, collapses
         /// the query without using CTEs or inline views(in MySQL).
         /// </summary>
         /// <returns>The table from.</returns>

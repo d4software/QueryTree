@@ -10,7 +10,7 @@ docker run -p 8080:80 --name querytree -d d4software/querytree:latest
 
 The image runs QueryTree Web on port 80 so you'll need to proxy through to port 80.
 
-`--name` Sets a name for the container, this can be anything you want. It makes it easier to re-run this container with your saved configurations later. If this is not set docker will assign a random name to the container. 
+`--name` Sets a name for the container, this can be anything you want. It makes it easier to re-run this container with your saved configurations later. If this is not set docker will assign a random name to the container.
 
 ### Confirm the container is running
 
@@ -41,7 +41,7 @@ To override these settings in docker you can provide an enviroment variable that
 
 The format for these enviroment variables match the JSON structure of the file but instead of using dot notation you need to replace the DOT (.) with two underscores(__).
 
-Take the `Customization.SystemName` configuration as an example. 
+Take the `Customization.SystemName` configuration as an example.
 
 ```json
 {

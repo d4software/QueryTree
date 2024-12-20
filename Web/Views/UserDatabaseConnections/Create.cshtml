@@ -17,7 +17,7 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                
+
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.DatabaseConnectionID)
 
@@ -55,6 +55,6 @@
 
     </div>
     <div class="col-md-6">
-        @Html.Partial("_AccessTypeHelp")
+        <partial name="_AccessTypeHelp"></partial>
     </div>
 </div>

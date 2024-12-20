@@ -11,7 +11,7 @@ namespace QueryTree.Engine
         PostgreSQL = 3,
         SQLServer = 1
     }
-    
+
     public abstract class NodeBase
     {
         public DatabaseType DatabaseType = DatabaseType.MySQL;
@@ -22,14 +22,14 @@ namespace QueryTree.Engine
         protected List<bool> SortDirections = new List<bool>() { true }; // True == ascending
 
 		/// <summary>
-		/// Returns a SQL query which will be used to define a view. This view 
-		/// will be selected from by the NodeBase.get_select_sql code.The 
-		/// results of that will be passed via the process_data method before 
+		/// Returns a SQL query which will be used to define a view. This view
+		/// will be selected from by the NodeBase.get_select_sql code.The
+		/// results of that will be passed via the process_data method before
 		/// being returned to the client
 		/// </summary>
 		/// <returns>The query string.</returns>
 		public abstract string GetQuerySql();
-		
+
         public abstract bool IsConfigured();
 
 		public virtual void UpdateSettings(Dictionary<string, object> settings)
@@ -214,7 +214,7 @@ namespace QueryTree.Engine
             {
                 dependencies.Remove(this);
             }
-            
+
             dependencies.Insert(0, this);
         }
 
@@ -226,7 +226,7 @@ namespace QueryTree.Engine
             {
                 query.AppendFormat("SELECT {0} FROM ({1} ORDER BY {2}) AS results",
                     GetSelectColumns(),
-                    GetQuerySql(), 
+                    GetQuerySql(),
                     GetSortColumns());
 
                 if (startRow.HasValue && rowCount.HasValue)
@@ -258,13 +258,13 @@ namespace QueryTree.Engine
                         GetNodeAlias(),
                         startRow.Value + 1, startRow.Value + rowCount.Value);
 				}
-                else 
+                else
                 {
                     query.AppendFormat("SELECT {0} FROM {1}",
                         GetSelectColumns(),
-                        GetNodeAlias());    
+                        GetNodeAlias());
                 }
-                
+
                 query.AppendFormat(" ORDER BY {0}", GetSortColumns());
             }
 
@@ -274,7 +274,7 @@ namespace QueryTree.Engine
         public string GetCountQuerySql()
         {
             var query = new StringBuilder();
-        
+
             if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.PostgreSQL)
             {
 				IList<NodeBase> nodes = new List<NodeBase>();
@@ -293,7 +293,7 @@ namespace QueryTree.Engine
             {
                 return GetNodeAlias();
             }
-            else 
+            else
             {
                 return string.Format("({0}) AS {1}", GetQuerySql(), GetNodeAlias());
             }

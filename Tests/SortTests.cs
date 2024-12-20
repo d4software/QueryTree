@@ -9,7 +9,7 @@ namespace QueryTree.Engine.Tests
     {
         private string NodesJson
         {
-            get 
+            get
             {
                 return @"[
                     {
@@ -30,7 +30,7 @@ namespace QueryTree.Engine.Tests
 
         private List<ITableInfo> DatabaseInfo
         {
-            get 
+            get
             {
                 return new List<ITableInfo>()
                 {

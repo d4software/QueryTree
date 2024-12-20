@@ -11,12 +11,12 @@ namespace QueryTree.Managers
         public static List<UserDatabaseTypes> GetDatabasePermissions(DatabaseConnection database, IEnumerable<UserDatabaseConnection> userPermissions)
         {
             List<UserDatabaseTypes> results = new List<UserDatabaseTypes>();
-            
+
             results = userPermissions
                 .Where(p => p.DatabaseConnectionID == database.DatabaseConnectionID)
                 .Select(p => p.Type)
                 .ToList();
-            
+
             return results;
         }
 
@@ -64,7 +64,7 @@ namespace QueryTree.Managers
             var permissions = GetDatabasePermissions(database, userPermissions);
 
             return permissions.Any(p => ViewDatabaseTypes.Contains(p));
-        }        
+        }
 
         public static bool UserCanModifyDatabase(IEnumerable<UserDatabaseConnection> userPermissions, DatabaseConnection database)
         {
