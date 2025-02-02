@@ -1,7 +1,8 @@
 [![CircleCI](https://circleci.com/gh/d4software/QueryTree.svg?style=svg)](https://circleci.com/gh/d4software/QueryTree)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/d4software/QueryTree?svg=true)](https://ci.appveyor.com/api/projects/status/github/d4software/QueryTree?svg=true)
+[![Docker](https://img.shields.io/docker/pulls/d4software/querytree.svg?style=flat)](https://hub.docker.com/r/d4software/querytree/)
 
-# QueryTree
+# ![qt](.github/querytree.png) QueryTree
 
 QueryTree is an ad-hoc reporting tool that works with any Microsoft
 SQL Server, PostgreSQL or MySQL database. It allows users to query
@@ -41,6 +42,12 @@ for more information.
 - [Running from Binaries](#running-from-binaries)
 - [Running the Tests](#running-the-tests)
 - [Running with Docker](/docs/docker.md)
+
+### Deploy to a cloud
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 
 ### Prerequisites
 

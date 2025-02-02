@@ -1,0 +1,14 @@
+{
+  "name": "QueryTree",
+  "description": "Data reporting and visualization for your app",
+  "repository": "https://github.com/d4software/QueryTree",
+  "logo": "https://cdn.rawgit.com/d4software/QueryTree/master/.github/querytree.png",
+  "keywords": [
+    "database",
+    "analytics",
+    "report-builder",
+    "data-visualization",
+    "data-analysis"
+    ],
+  "stack": "container"
+}
